@@ -12,9 +12,7 @@ crypto_dataset_day_month <- function(timeframe, firstDay, lastDay, crytocurrenty
   )
   
   # Date
-  firstDay <- as.Date(firstDay,format="%d/%m/%Y") 
-  lastDay <- as.Date(lastDay,format="%d/%m/%Y")
-  time <- round(as.numeric(as.POSIXct(lastDay, format="%m/%d/%Y")))
+  ActualTime = as.POSIXct(data$Data$time,origin = "1970-01-01",tz = "GMT")
   
   # Number of points of hour dataframe
   n <- as.numeric(lastDay-firstDay)
