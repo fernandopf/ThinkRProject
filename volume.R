@@ -1,25 +1,22 @@
-crytocurrency_dataframe <- function(timeframe, firstDay, lastDay, crytocurrenty = "BTC", comparison = "USD") {
+crytocurrency_dataframe <- function(firstDay, lastDay, crytocurrenty = "BTC", comparison = "USD") {
   library(dplyr)
   # Initialitaion of the data frame with all the desired output
   df <- data.frame(
     Date=as.Date(character()),
-    priceHighest=double(),
-    priceLowest = double(),
-    priceOpen = double(),
-    priceClose = double()
-  )
+    Volume=double(),
+    )
   
   # Date
   firstDay <- as.Date(firstDay,format="%d/%m/%Y") 
   lastDay <- as.Date(lastDay,format="%d/%m/%Y")
   time <- round(as.numeric(as.POSIXct(lastDay1, format="%m/%d/%Y")))
-
+  
   # Number of points of hour dataframe
   n <- as.numeric(lastDay-firstDay)
+  incr <- 3600*24
   
   if (timeframe %in% c("Day", "day")){
     a <- "histoday"
-    incr <- 3600*24
   } 
   else if(timeframe %in% c("Minute", "minute")){
     a <- "histominute"
@@ -50,8 +47,7 @@ crytocurrency_dataframe <- function(timeframe, firstDay, lastDay, crytocurrenty 
       high=data$Data$high,
       low = data$Data$low,
       open = data$Data$open,
-      close = data$Data$close,
-      volume = data$Data$volume
+      close = data$Data$close
     )
   }
   # If the number of points is higher than the maximum we need to do a for loop
@@ -70,13 +66,12 @@ crytocurrency_dataframe <- function(timeframe, firstDay, lastDay, crytocurrenty 
         high=data$Data$high,
         low = data$Data$low,
         open = data$Data$open,
-        close = data$Data$close,
-        volume = data$Data$volume
+        close = data$Data$close
       )
       df <- rbind(df, df1)
       time <- time - 2000*incr
     }
   }
-  df <-df %>% mutate(direction = ifelse(open >close, "increasing", "decreasing")) %>% arrange(Date)
+  df <-df %>% mutate(direction = ifelse(high >low, "increasing", "decreasing")) %>% arrange(Date)
   return(df)
 }
