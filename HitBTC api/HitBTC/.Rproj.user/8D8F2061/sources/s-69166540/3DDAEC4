@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1543052462020.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "3DDAEC4",
+    "lastKnownWriteTime" : 11550773376712710,
+    "last_content_update" : 1543052462020,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "id" : "08c02290741c477b9efdb769f4c9d7ac",
+        "name" : "out",
+        "title" : "out"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "object_explorer"
+}
