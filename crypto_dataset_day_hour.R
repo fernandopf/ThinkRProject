@@ -1,4 +1,4 @@
-crypto_dataset_day_month <- function(timeframe, firstDay, lastDay, crytocurrenty = "BTC", comparison = "USD") {
+crypto_dataset_day_hour <- function(timeframe, firstDay, lastDay, crytocurrenty = "BTC", comparison = "USD") {
   library(dplyr)
   library(jsonlite)
   # Initialitaion of the data frame with all the desired output
@@ -12,7 +12,10 @@ crypto_dataset_day_month <- function(timeframe, firstDay, lastDay, crytocurrenty
   )
   
   # Date
-  ActualTime = as.POSIXct(data$Data$time,origin = "1970-01-01",tz = "GMT")
+  firstDay <- as.Date(firstDay,format="%d/%m/%Y") 
+  lastDay <- as.Date(lastDay,format="%d/%m/%Y")
+  
+  time <- round(as.numeric(as.POSIXct(lastDay, format="%m/%d/%Y")))
   
   # Number of points of hour dataframe
   n <- as.numeric(lastDay-firstDay)
@@ -23,7 +26,7 @@ crypto_dataset_day_month <- function(timeframe, firstDay, lastDay, crytocurrenty
   } 
   else if (timeframe %in% c("Hour", "hour")) {
     a <- "histohour"
-    n <- round(n*60)
+    n <- round(n*24)
     incr <- 3600
   } 
   else {
