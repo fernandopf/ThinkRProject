@@ -1,7 +1,7 @@
 crypto_dataset_lastweek_minute <- function(crytocurrenty = "BTC", comparison = "USD") {
   library(dplyr)
   library(jsonlite)
-  
+hit  
   actualTime <- round(as.numeric(Sys.time()))
   MaxLimit <- as.numeric(Sys.time()-as.difftime(7, unit="days"))
   

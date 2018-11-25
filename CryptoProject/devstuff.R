@@ -4,7 +4,7 @@ usethis::use_mit_license()
 
 #vignette
 usethis::use_vignette("userguide")
-utils::globalVariables(c("."), add = FALSE)
+
 # Dependencies
 usethis::use_package("dplyr")
 usethis::use_package("jsonlite")
