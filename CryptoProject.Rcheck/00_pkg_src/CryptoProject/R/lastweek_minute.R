@@ -1,5 +1,5 @@
 
-#' lastweek_minute
+#' Title
 #'
 #' Function to get the information from the cryptocompare API per minute
 #'
@@ -9,14 +9,16 @@
 #'
 #' @return dataframe with the time, highest price, lowest price, open price, close price of the chosen timeframe
 #' @export lastweek_minute
+#'
 #' @importFrom dplyr mutate arrange
 #' @importFrom jsonlite fromJSON
 #' @return dataframe with all the information required
+#'
 #' @examples
 lastweek_minute <- function(crytocurrenty = "BTC", comparison = "USD") {
 
   actualTime <- round(as.numeric(Sys.time()))
-  MaxLimit <- as.numeric(Sys.time()-as.difftime(7, units="days"))
+  MaxLimit <- as.numeric(Sys.time()-as.difftime(7, unit="days"))
 
   # Number of points of  dataframe
   n <- round(actualTime-MaxLimit)/60
@@ -34,7 +36,7 @@ lastweek_minute <- function(crytocurrenty = "BTC", comparison = "USD") {
     link <- paste("https://min-api.cryptocompare.com/data/histominute?fsym=",crytocurrenty, "&tsym=", comparison,"&limit=", n1, "&aggregate=1&toTs=",time, "&extraParams=your_app_name", sep = "")
     data <- fromJSON(link)
     df1 <- data.frame(
-      date= as.POSIXct(data$Data$time,origin = "1970-01-01",tz = "GMT"),
+      Date= as.POSIXct(data$Data$time,origin = "1970-01-01",tz = "GMT"),
       high=data$Data$high,
       low = data$Data$low,
       open = data$Data$open,
@@ -50,6 +52,6 @@ lastweek_minute <- function(crytocurrenty = "BTC", comparison = "USD") {
 
   df <-df %>%
   mutate(direction = ifelse(open >close, "increasing", "decreasing")) %>%
-  arrange(date)
+  arrange(Date)
   return(df)
 }

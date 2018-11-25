@@ -14,5 +14,6 @@ VignetteBuilder: knitr
 Imports: 
     jsonlite,
     dplyr,
-    magrittr
+    magrittr,
+    curl
 RoxygenNote: 6.1.1

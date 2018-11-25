@@ -2,6 +2,7 @@
 
 export("%>%")
 export(day_hour)
+export(lastweek_minute)
 importFrom(dplyr,arrange)
 importFrom(dplyr,mutate)
 importFrom(jsonlite,fromJSON)

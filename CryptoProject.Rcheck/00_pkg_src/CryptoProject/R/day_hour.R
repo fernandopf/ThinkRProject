@@ -4,27 +4,19 @@
 #' Function to get the information from the cryptocompare API
 #'
 #' This function has been designed to get a dataframe from the crytocompare API with the highest, lowest, open and close price from the crytocurrency chosen in hour or day timeframe.
-#' @param timeframe: timeframe in hour or day
-#' @param firstDay: first day to analyse in dd/mm/yyyy format
-#' @param lastDay: last day to analyse in dd/mm/yyyy format
-#' @param crytocurrenty: cryptocurrency to analyse
-#' @param comparison: currency to be compared
+#' @param timeframe timeframe in hour or day
+#' @param firstDay first day to analyse in dd/mm/yyyy format
+#' @param lastDay last day to analyse in dd/mm/yyyy format
+#' @param crytocurrenty cryptocurrency to analyse
+#' @param comparison currency to be compared
 #'
 #' @return dataframe with the time, highest price, lowest price, open price, close price of the chosen timeframe
 #' @export day_hour
 #' @importFrom dplyr mutate arrange
 #' @importFrom jsonlite fromJSON
+#' @return dataframe with all the information required
 #' @examples
 day_hour <- function(timeframe, firstDay, lastDay, crytocurrenty = "BTC", comparison = "USD") {
-  # Initialitaion of the data frame with all the desired output
-  df <- data.frame(
-    Date=as.Date(character()),
-    high=double(),
-    low = double(),
-    open = double(),
-    close = double(),
-    volume = double()
-  )
 
   # Date
   firstDay <- as.Date(firstDay,format="%d/%m/%Y")
@@ -85,10 +77,16 @@ day_hour <- function(timeframe, firstDay, lastDay, crytocurrenty = "BTC", compar
         close = dataPrice$Data$close,
         volume = dataVolume$Data$volume
       )
-      df <- rbind(df, df1)
+      if (i ==1){
+        df <- df1
+      } else {
+        df <- rbind(df, df1)
+      }
       time <- time - 2000*incr
     }
   }
-  df <-df %>% mutate(direction = ifelse(open >close, "increasing", "decreasing")) %>% arrange(Date)
+  df <-df %>%
+  mutate(direction = ifelse(open >close, "increasing", "decreasing")) %>%
+  arrange(Date)
   return(df)
 }

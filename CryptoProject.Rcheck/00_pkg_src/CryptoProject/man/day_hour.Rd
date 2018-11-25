@@ -8,18 +8,20 @@ day_hour(timeframe, firstDay, lastDay, crytocurrenty = "BTC",
   comparison = "USD")
 }
 \arguments{
-\item{timeframe:}{timeframe in hour or day}
+\item{timeframe}{timeframe in hour or day}
 
-\item{firstDay:}{first day to analyse in dd/mm/yyyy format}
+\item{firstDay}{first day to analyse in dd/mm/yyyy format}
 
-\item{lastDay:}{last day to analyse in dd/mm/yyyy format}
+\item{lastDay}{last day to analyse in dd/mm/yyyy format}
 
-\item{crytocurrenty:}{cryptocurrency to analyse}
+\item{crytocurrenty}{cryptocurrency to analyse}
 
-\item{comparison:}{currency to be compared}
+\item{comparison}{currency to be compared}
 }
 \value{
 dataframe with the time, highest price, lowest price, open price, close price of the chosen timeframe
+
+dataframe with all the information required
 }
 \description{
 Function to get the information from the cryptocompare API

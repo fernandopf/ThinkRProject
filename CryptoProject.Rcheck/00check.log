@@ -16,9 +16,7 @@
 * checking whether package 'CryptoProject' can be installed ... OK
 * checking package directory ... OK
 * checking 'build' directory ... OK
-* checking DESCRIPTION meta-information ... NOTE
-License components which are templates and need '+ file LICENSE':
-  MIT
+* checking DESCRIPTION meta-information ... OK
 * checking top-level files ... OK
 * checking for left-over files ... OK
 * checking index information ... OK
@@ -36,27 +34,19 @@ License components which are templates and need '+ file LICENSE':
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
 * checking R code for possible problems ... NOTE
-day_hour: no visible global function definition for '%>%'
 day_hour: no visible binding for global variable 'Date'
+lastweek_minute: warning in as.difftime(7, unit = "days"): argumentos
+  parcialmente correctos de 'unit' a 'units'
+lastweek_minute: no visible binding for global variable 'Date'
 Undefined global functions or variables:
-  %>% Date
+  Date
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
 * checking Rd cross-references ... OK
 * checking for missing documentation entries ... OK
 * checking for code/documentation mismatches ... OK
-* checking Rd \usage sections ... WARNING
-Undocumented arguments in documentation object 'day_hour'
-  'timeframe' 'firstDay' 'lastDay' 'crytocurrenty' 'comparison'
-Documented arguments not in \usage in documentation object 'day_hour':
-  'timeframe:' 'firstDay:' 'lastDay:' 'crytocurrenty:' 'comparison:'
-
-Functions with \usage entries need to have the appropriate \alias
-entries, and all their arguments documented.
-The \usage entries must correspond to syntactically valid R code.
-See chapter 'Writing R documentation files' in the 'Writing R
-Extensions' manual.
+* checking Rd \usage sections ... OK
 * checking Rd contents ... OK
 * checking for unstated dependencies in examples ... OK
  WARNING
@@ -68,4 +58,4 @@ Extensions' manual.
 * checking package vignettes in 'inst/doc' ... OK
 * checking re-building of vignette outputs ... OK
 * DONE
-Status: 2 WARNINGs, 2 NOTEs
+Status: 1 WARNING, 1 NOTE

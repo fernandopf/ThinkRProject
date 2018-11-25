@@ -48,7 +48,7 @@ day_hour <- function(timeframe, firstDay, lastDay, crytocurrenty = "BTC", compar
     dataPrice <- fromJSON(link)
     dataVolume <- fromJSON(linkVolume)
     df <- data.frame(
-      Date= as.POSIXct(dataPrice$Data$time,origin = "1970-01-01",tz = "GMT"),
+      date= as.POSIXct(dataPrice$Data$time,origin = "1970-01-01",tz = "GMT"),
       high=dataPrice$Data$high,
       low = dataPrice$Data$low,
       open = dataPrice$Data$open,
@@ -70,7 +70,7 @@ day_hour <- function(timeframe, firstDay, lastDay, crytocurrenty = "BTC", compar
       dataPrice <- fromJSON(linkPrice)
       dataVolume <- fromJSON(linkVolume)
       df1 <- data.frame(
-        Date= as.POSIXct(dataPrice$Data$time,origin = "1970-01-01",tz = "GMT"),
+        date= as.POSIXct(dataPrice$Data$time,origin = "1970-01-01",tz = "GMT"),
         high=dataPrice$Data$high,
         low = dataPrice$Data$low,
         open = dataPrice$Data$open,
@@ -85,6 +85,8 @@ day_hour <- function(timeframe, firstDay, lastDay, crytocurrenty = "BTC", compar
       time <- time - 2000*incr
     }
   }
-  df <-df %>% mutate(direction = ifelse(open >close, "increasing", "decreasing")) %>% arrange(Date)
+  df <-df %>%
+  mutate(direction = ifelse(open >close, "increasing", "decreasing")) %>%
+  arrange(date)
   return(df)
 }
