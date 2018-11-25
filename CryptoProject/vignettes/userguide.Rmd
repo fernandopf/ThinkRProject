@@ -161,7 +161,7 @@ head(example2)
 
 ### Transfer daily or hourily data to weekly or monthly data
 
-```{r}
+```{r message=TRUE, warning=FALSE}
 weekly_monthly_transformation <- function(df, timeframe){
   library(lubridate)
   library(dplyr)
@@ -184,3 +184,24 @@ df.transformed <- df %>%
 example2 <- weekly_monthly_transformation(example1, "week")
 head(example2)
 ```
+
+### Put financial indicators into the dataset
+```{r}
+averages <- function(df, n_MA, n_quick_MACD, n_slow_MACD, n_signal_MACD){
+library(pracma)
+ out <- df %>% 
+  mutate(daily_average = (high +low)/2)  %>% 
+  mutate(MA = movavg(x = daily_average, n = n_MA, type = "s")) %>% 
+  mutate(quick_EMA = movavg(x = daily_average, n = n_quick_MACD, type = "e")) %>% 
+  mutate(slow_EMA = movavg(x = daily_average, n = n_slow_MACD, type = "e")) %>% 
+  mutate(signal_MACD = movavg(x = daily_average, n = n_signal_MACD, type = "e")) %>%
+  mutate(MACD = quick_EMA - slow_EMA)
+return(out)
+}
+
+```
+
+```{r}
+averages(example2, 5, 26, 12, 9)
+```
+

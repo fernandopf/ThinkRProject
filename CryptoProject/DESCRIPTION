@@ -17,5 +17,6 @@ Imports:
     magrittr,
     curl,
     lubridate,
-    utils
+    utils,
+    pracma
 RoxygenNote: 6.1.1
