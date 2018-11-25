@@ -15,5 +15,7 @@ Imports:
     jsonlite,
     dplyr,
     magrittr,
-    curl
+    curl,
+    lubridate,
+    utils
 RoxygenNote: 6.1.1
