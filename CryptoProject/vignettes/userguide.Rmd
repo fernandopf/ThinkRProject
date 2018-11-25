@@ -205,3 +205,31 @@ return(out)
 averages(example2, 5, 26, 12, 9)
 ```
 
+
+### Master function (only works for non-minute data)
+```{r}
+crypto <- function(timeframe, firstDay, lastDay, crytocurrenty = "BTC", comparison = "USD", n_MA, n_quick_MACD, n_slow_MACD, n_signal_MACD){
+  if (timeframe %in% c("Week", "week", "Month", "month")){
+    df <- day_hour(timeframe = "day", firstDay, lastDay, crytocurrenty, comparison); 
+    df.transformed <- weekly_monthly_transformation(df, timeframe);
+    df.averaged <- averages(df.transformed, n_MA, n_quick_MACD, n_slow_MACD, n_signal_MACD)
+  }
+  else {
+    df <- day_hour(timeframe, firstDay, lastDay, crytocurrenty, comparison);
+    df.averaged <- averages(df,n_MA, n_quick_MACD, n_slow_MACD, n_signal_MACD)
+  }
+  return(df.averaged)
+}
+```
+
+
+### Examples
+```{r}
+example3 <- crypto("week", "01/12/2017", "01/08/2018", "BTC", "USD",5, 26, 12, 9)
+tail(example3)
+```
+
+```{r}
+example4 <- crypto("hour", "01/07/2018", "01/08/2018", "BTC", "USD",5, 26, 12, 9)
+tail(example4)
+```

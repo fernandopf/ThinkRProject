@@ -2,6 +2,7 @@
 
 export("%>%")
 export(averages)
+export(crypto)
 export(day_hour)
 export(lastweek_minute)
 export(weekly_monthly_transformation)
