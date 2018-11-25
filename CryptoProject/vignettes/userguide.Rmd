@@ -233,3 +233,24 @@ tail(example3)
 example4 <- crypto("hour", "01/07/2018", "01/08/2018", "BTC", "USD",5, 26, 12, 9)
 tail(example4)
 ```
+
+### Function to get the correlation
+
+```{r}
+crypto_correlation <- function(firstDay, lastDay, cryptoA, cryptoB){
+  library(dplyr)
+  cryptoAData <- day_hour("hour", firstDay, lastDay, cryptoA ) %>%
+    mutate(avg = (high + low)/2) %>%
+    select(avg)
+  cryptoBData <- day_hour("hour", firstDay, lastDay, cryptoB ) %>%
+    mutate(avg = (high + low)/2) %>%
+    select(avg)
+  return(cor(cryptoAData,cryptoBData))
+}
+```
+
+```{r}
+correlation <- crypto_correlation("01/09/2018", "01/10/2018", "BTC", "ETH")
+```
+
+
