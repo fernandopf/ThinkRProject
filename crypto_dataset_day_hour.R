@@ -1,16 +1,7 @@
 crypto_dataset_day_hour <- function(timeframe, firstDay, lastDay, crytocurrenty = "BTC", comparison = "USD") {
   library(dplyr)
   library(jsonlite)
-  # Initialitaion of the data frame with all the desired output
-  df <- data.frame(
-    Date=as.Date(character()),
-    high=double(),
-    low = double(),
-    open = double(),
-    close = double(),
-    volume = double()
-  )
-  
+
   # Date
   firstDay <- as.Date(firstDay,format="%d/%m/%Y") 
   lastDay <- as.Date(lastDay,format="%d/%m/%Y")
@@ -70,7 +61,11 @@ crypto_dataset_day_hour <- function(timeframe, firstDay, lastDay, crytocurrenty 
         close = dataPrice$Data$close,
         volume = dataVolume$Data$volume
       )
-      df <- rbind(df, df1)
+      if (i ==1){
+        df <- df1
+      } else {
+        df <- rbind(df, df1)
+      }
       time <- time - 2000*incr
     }
   }

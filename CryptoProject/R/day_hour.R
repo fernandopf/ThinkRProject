@@ -17,15 +17,6 @@
 #' @return dataframe with all the information required
 #' @examples
 day_hour <- function(timeframe, firstDay, lastDay, crytocurrenty = "BTC", comparison = "USD") {
-  # Initialitaion of the data frame with all the desired output
-  df <- data.frame(
-    date=as.Date(character()),
-    high=double(),
-    low = double(),
-    open = double(),
-    close = double(),
-    volume = double()
-  )
 
   # Date
   firstDay <- as.Date(firstDay,format="%d/%m/%Y")
@@ -57,7 +48,7 @@ day_hour <- function(timeframe, firstDay, lastDay, crytocurrenty = "BTC", compar
     dataPrice <- fromJSON(link)
     dataVolume <- fromJSON(linkVolume)
     df <- data.frame(
-      date= as.POSIXct(dataPrice$Data$time,origin = "1970-01-01",tz = "GMT"),
+      Date= as.POSIXct(dataPrice$Data$time,origin = "1970-01-01",tz = "GMT"),
       high=dataPrice$Data$high,
       low = dataPrice$Data$low,
       open = dataPrice$Data$open,
@@ -79,17 +70,21 @@ day_hour <- function(timeframe, firstDay, lastDay, crytocurrenty = "BTC", compar
       dataPrice <- fromJSON(linkPrice)
       dataVolume <- fromJSON(linkVolume)
       df1 <- data.frame(
-        date= as.POSIXct(dataPrice$Data$time,origin = "1970-01-01",tz = "GMT"),
+        Date= as.POSIXct(dataPrice$Data$time,origin = "1970-01-01",tz = "GMT"),
         high=dataPrice$Data$high,
         low = dataPrice$Data$low,
         open = dataPrice$Data$open,
         close = dataPrice$Data$close,
         volume = dataVolume$Data$volume
       )
-      df <- rbind(df, df1)
+      if (i ==1){
+        df <- df1
+      } else {
+        df <- rbind(df, df1)
+      }
       time <- time - 2000*incr
     }
   }
-  df <-df %>% mutate(direction = ifelse(open >close, "increasing", "decreasing")) %>% arrange(date)
+  df <-df %>% mutate(direction = ifelse(open >close, "increasing", "decreasing")) %>% arrange(Date)
   return(df)
 }
