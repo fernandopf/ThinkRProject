@@ -12,6 +12,7 @@
 #' @return correlation between crypto A and crypto B
 #' @export
 #' @importFrom dplyr select mutate
+#' @importFrom stats cor
 #'
 #' @examples
 crypto_correlation <- function(firstDay, lastDay, cryptoA, cryptoB){
