@@ -1,0 +1,34 @@
+---
+title: "weekly_monthly_transformation"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(xts)
+library(lubridate)
+```
+
+```{r}
+df_daily <- crypto_dataset_day_month("Day", "24/08/2017", "24/12/2017", crytocurrenty = "BTC", comparison = "USD")
+#df_hourly <- crypto_dataset_day_month("Hour", "24/07/2017", "24/12/2017", crytocurrenty = "BTC", comparison = "USD")
+```
+
+```{r}
+weekly_monthly_transformation <- function(df, weekly_or_monthly){
+  if (weekly_or_monthly == "m"){
+df %>% 
+  group_by(Month = floor_date(Date, "month")) %>% 
+  summarise(high = max(high), low = min(low), open = head(open, n = 1), close = tail(close, n = 1), volume = sum(volume))
+  }
+  else if (weekly_or_monthly == "w"){
+df %>% 
+  group_by(Week = floor_date(Date, "week")) %>% 
+  summarise(high = max(high), low = min(low), open = head(open, n = 1), close = tail(close, n = 1), volume = sum(volume))
+  }
+}
+
+weekly_monthly_transformation(df_daily, "m")
+#weekly_monthly_transformation(df_hourly, "w")
+```
+

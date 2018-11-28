@@ -1,0 +1,24 @@
+"0","df <- read_csv(""https://raw.githubusercontent.com/fernandopf/ThinkRProject/fernando/cryto.csv"")
+"
+"2","Missing column names filled in: 'X1' [1]"
+"2","Parsed with column specification:
+cols(
+  X1 = col_integer(),
+  Date = col_datetime(format = """"),
+  high = col_double(),
+  low = col_double(),
+  open = col_double(),
+  close = col_double()
+)
+"
+"0","averages <- function(df, n_MA, n_quick_MACD, n_slow_MACD, n_signal_MACD){"
+"0"," out <- df %>% "
+"0","  mutate(daily_average = (high +low)/2)  %>% "
+"0","  mutate(MA = movavg(x = daily_average, n = n_MA, type = ""s"")) %>% "
+"0","  mutate(quick_EMA = movavg(x = daily_average, n = n_quick_MACD, type = ""e"")) %>% "
+"0","  mutate(slow_EMA = movavg(x = daily_average, n = n_slow_MACD, type = ""e"")) %>% "
+"0","  mutate(signal_MACD = movavg(x  b= daily_average, n = n_signal_MACD, type = ""e"")) %>% "
+"2","Error: unexpected symbol in:
+""  mutate(slow_EMA = movavg(x = daily_average, n = n_slow_MACD, type = ""e"")) %>% 
+  mutate(signal_MACD = movavg(x  b""
+"

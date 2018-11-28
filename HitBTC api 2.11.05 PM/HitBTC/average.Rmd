@@ -1,0 +1,31 @@
+---
+title: "Indicator Manipulation"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(pracma)
+```
+
+```{r}
+df <- read_csv("https://raw.githubusercontent.com/fernandopf/ThinkRProject/fernando/cryto.csv")
+
+averages <- function(df, n_MA, n_quick_MACD, n_slow_MACD, n_signal_MACD){
+ out <- df %>% 
+  mutate(daily_average = (high +low)/2)  %>% 
+  mutate(MA = movavg(x = daily_average, n = n_MA, type = "s")) %>% 
+  mutate(quick_EMA = movavg(x = daily_average, n = n_quick_MACD, type = "e")) %>% 
+  mutate(slow_EMA = movavg(x = daily_average, n = n_slow_MACD, type = "e")) %>% 
+  mutate(signal_MACD = movavg(x  b= daily_average, n = n_signal_MACD, type = "e")) %>% 
+  mutate(MACD = quick_EMA - slow_EMA)
+return(out)
+}
+
+
+changed <- averages(df, 50, 26, 12, 9)
+
+write.csv(changed, file = "average.csv", row.names = TRUE)
+```
+
