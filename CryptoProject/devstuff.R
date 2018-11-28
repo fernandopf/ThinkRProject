@@ -5,6 +5,9 @@ usethis::use_mit_license()
 #vignette
 usethis::use_vignette("userguide")
 
+#Attachments
+attachment::create_dependencies_file()
+
 # Dependencies
 usethis::use_package("dplyr")
 usethis::use_package("jsonlite")
@@ -13,5 +16,8 @@ usethis::use_package("pracma")
 usethis::use_pipe()
 usethis::use_package("curl")
 usethis::use_package("utils")
+usethis::use_package("plotly")
+usethis::use_package("rlang")
+usethis::use_package("stats")
 #Documents
 devtools::document()
