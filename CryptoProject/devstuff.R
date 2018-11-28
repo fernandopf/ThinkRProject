@@ -5,6 +5,9 @@ usethis::use_mit_license()
 #vignette
 usethis::use_vignette("userguide")
 
+#Attachments
+attachment::create_dependencies_file()
+
 # Dependencies
 usethis::use_package("dplyr")
 usethis::use_package("jsonlite")
