@@ -1,0 +1,12 @@
+globalVariables(
+  c(
+    ".",
+    "high",
+    "low",
+    "daily_average",
+    "quick_EMA",
+    "slow_EMA",
+    "avg",
+    "volume"
+  )
+)
