@@ -1,4 +1,0 @@
-"0","fromJSON(""https://api.hitbtc.com/api/2/history/order?symbol=ETHBTC"")
-"
-"2","Error in open.connection(con, ""rb"") : HTTP error 401.
-"

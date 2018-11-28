@@ -1,1 +1,0 @@
-{"frames":[],"message":"Error: unexpected symbol in:\n\"  mutate(slow_EMA = movavg(x = daily_average, n = n_slow_MACD, type = \"e\")) %>% \n  mutate(signal_MACD = movavg(x  b\"\n"}
