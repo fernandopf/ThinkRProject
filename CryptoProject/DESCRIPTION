@@ -21,5 +21,6 @@ Imports:
     pracma,
     plotly,
     rlang,
-    stats
+    stats,
+    glue
 RoxygenNote: 6.1.1

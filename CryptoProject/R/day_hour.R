@@ -14,6 +14,8 @@
 #' @export day_hour
 #' @importFrom dplyr mutate arrange
 #' @importFrom jsonlite fromJSON
+#' @importFrom glue glue
+
 #' @return dataframe with all the information required
 #' @examples
 day_hour <- function(timeframe, firstDay, lastDay, crytocurrenty = "BTC", comparison = "USD") {
@@ -43,8 +45,8 @@ day_hour <- function(timeframe, firstDay, lastDay, crytocurrenty = "BTC", compar
 
   # Maximum number of points is 2000
   if (n <= 2000) {
-    link <- paste("https://min-api.cryptocompare.com/data/", a,"?fsym=",crytocurrenty, "&tsym=", comparison,"&limit=", n, "&aggregate=1&toTs=",time, "&extraParams=ThinkR", sep = "")
-    linkVolume <- paste("https://min-api.cryptocompare.com/data/exchange/", a,"?tsym=",crytocurrenty,"&limit=", n, "&toTs=",time, "&extraParams=ThinkR", sep = "")
+    link <- glue("https://min-api.cryptocompare.com/data/{a}?fsym={crytocurrenty}&tsym={comparison}&limit={n}&aggregate=1&toTs={time}&extraParams=ThinkR")
+    linkVolume <- glue("https://min-api.cryptocompare.com/data/exchange/{a}?tsym={crytocurrenty}&limit={n}&toTs={time}&extraParams=ThinkR")
     dataPrice <- fromJSON(link)
     dataVolume <- fromJSON(linkVolume)
     df <- data.frame(
@@ -61,12 +63,13 @@ day_hour <- function(timeframe, firstDay, lastDay, crytocurrenty = "BTC", compar
     # Round to the highest Integuer
     iterations <- ceiling(n/2000)
     n1 <- 2000
+    # For to get data from the API several times
     for (i in 1:iterations){
       if (i ==iterations){
         n1 =n-2000*(iterations-1)
       }
-      linkPrice <- paste("https://min-api.cryptocompare.com/data/", a,"?fsym=",crytocurrenty, "&tsym=", comparison,"&limit=", n1, "&aggregate=1&toTs=",time, "&extraParams=ThinkR", sep = "")
-      linkVolume <- paste("https://min-api.cryptocompare.com/data/exchange/", a,"?tsym=",crytocurrenty,"&limit=", n1, "&toTs=",time, "&extraParams=ThinkR", sep = "")
+      linkPrice <- glue("https://min-api.cryptocompare.com/data/{a}?fsym={crytocurrenty}&tsym={comparison}&limit={n1}&aggregate=1&toTs={time}&extraParams=ThinkR")
+      linkVolume <- glue("https://min-api.cryptocompare.com/data/exchange/{a}?tsym={crytocurrenty}&limit={n1}&toTs={time}&extraParams=ThinkR")
       dataPrice <- fromJSON(linkPrice)
       dataVolume <- fromJSON(linkVolume)
       df1 <- data.frame(
