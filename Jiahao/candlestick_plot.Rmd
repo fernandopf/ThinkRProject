@@ -82,54 +82,55 @@ p
 ```
 
 ```{r}
-candle_plot <- function(data, supp_type){
-  
-  #Careful with NSE!!
-  supp_type <- enquo(supp_type)
-  
-  #Colors depending on if price is increasing or decreasing
-  increase <- list(line = list(color = '#17BECF'))
-  decrease <- list(line = list(color = '#7F7F7F'))
-
-  #Main plot
-  p1 <- data %>% 
-    #Candlestick plot
-    plot_ly(x = ~Date, type="candlestick",
-            open = ~open, close = ~close,
-            high = ~high, low = ~low, 
-            name = "Stock price", increasing = increase, decreasing= decrease) %>% #Setting colors for increasing or decreasing stock
-      #Daily average line
-      add_lines(x = ~Date, y = ~daily_average , name = "Daily avg",
-                line = list(color = 'black', width = 1),
-                hoverinfo = "none", inherit = F) %>%
-      #Moving Average line
-      add_lines(x = ~Date, y = ~MA , name = "MA50",
-                line = list(color = 'red', width = 1),
-                hoverinfo = "none", inherit = F) %>%
-      #Layout of plot
-      layout(yaxis = list(title="Price", fixedrange=FALSE), title = "Info")
-  
-  #Supplementary plot: depending on type parameter
-  p2 <- data %>%
-    plot_ly(x=~Date, y=~!!supp_type, type='bar', name = "MACD",
-            color = ~direction, colors = c('#17BECF','#7F7F7F')) %>%
-    layout(yaxis = list(title = "MACD", fixedrange=FALSE))
-  
-  #Merging both plots into one interacting plot
-  p <- subplot(p1, p2, heights = c(0.7,0.2), nrows=2,
-               shareX = TRUE, titleY = TRUE) %>%
-        layout( title = "Info",
-                legend = list(orientation = 'h', x = 0.5, y = 1,
-                         xanchor = 'center',font = list(size = 10)))
-
-  return(p2)
-}
+# candle_plot <- function(data, supp_type){
+#   
+#   #Careful with NSE!!
+#   supp_type <- enquo(supp_type)
+#   
+#   #Colors depending on if price is increasing or decreasing
+#   increase <- list(line = list(color = '#17BECF'))
+#   decrease <- list(line = list(color = '#7F7F7F'))
+# 
+#   #Main plot
+#   p1 <- data %>% 
+#     #Candlestick plot
+#     plot_ly(x = ~Date, type="candlestick",
+#             open = ~open, close = ~close,
+#             high = ~high, low = ~low, 
+#             name = "Stock price", increasing = increase, decreasing= decrease) %>% #Setting colors for increasing or decreasing stock
+#       #Daily average line
+#       add_lines(x = ~Date, y = ~daily_average , name = "Daily avg",
+#                 line = list(color = 'black', width = 1),
+#                 hoverinfo = "none", inherit = F) %>%
+#       #Moving Average line
+#       add_lines(x = ~Date, y = ~MA , name = "MA50",
+#                 line = list(color = 'red', width = 1),
+#                 hoverinfo = "none", inherit = F) %>%
+#       #Layout of plot
+#       layout(yaxis = list(title="Price", fixedrange=FALSE), title = "Info")
+#   
+#   #Supplementary plot: depending on type parameter
+#   p2 <- data %>%
+#     plot_ly(x=~Date, y=~!!supp_type, type='bar', name = "MACD",
+#             color = ~direction, colors = c('#17BECF','#7F7F7F')) %>%
+#     layout(yaxis = list(title = "MACD", fixedrange=FALSE))
+#   
+#   #Merging both plots into one interacting plot
+#   p <- subplot(p1, p2, heights = c(0.7,0.2), nrows=2,
+#                shareX = TRUE, titleY = TRUE) %>%
+#         layout( title = "Info",
+#                 legend = list(orientation = 'h', x = 0.5, y = 1,
+#                          xanchor = 'center',font = list(size = 10)))
+# 
+#   return(p2)
+# }
 ```
 
 ```{r}
-candle_plot(data= sample_data, MACD)
-```
-```{r}
-as.character(!!supp_type)
+# candle_plot(data= sample_data, MACD)
+# ```
+# 
+# ```{r}
+# as.character(!!supp_type)
 ```
 
