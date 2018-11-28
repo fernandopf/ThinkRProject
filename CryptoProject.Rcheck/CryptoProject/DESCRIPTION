@@ -1,0 +1,18 @@
+Package: CryptoProject
+Title: What the Package Does (one line, title case)
+Version: 0.0.0.9000
+Authors@R: person("Jiahao", "Wang", email = "jiahao.wang@polytechnique.edu", role = c("aut", "cre"))
+Description: What the package does (one paragraph).
+Depends: R (>= 3.5.0)
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
+Imports: jsonlite, dplyr, magrittr
+RoxygenNote: 6.1.1
+NeedsCompilation: no
+Packaged: 2018-11-25 17:54:38 UTC; Rocio
+Author: Jiahao Wang [aut, cre]
+Maintainer: Jiahao Wang <jiahao.wang@polytechnique.edu>
+Built: R 3.5.1; ; 2018-11-25 17:54:42 UTC; windows
