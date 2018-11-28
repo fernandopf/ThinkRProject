@@ -1,0 +1,24 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1543168244880.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1342627192",
+    "id" : "F0AAEE70",
+    "lastKnownWriteTime" : 1543170822,
+    "last_content_update" : 1543170822126,
+    "path" : "~/ThinkRProject/CryptoProject/R/lastweek_minute.R",
+    "project_path" : "R/lastweek_minute.R",
+    "properties" : {
+        "cursorPosition" : "3,57",
+        "scrollLine" : "0",
+        "source_window_id" : "",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 9,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

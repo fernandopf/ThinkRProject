@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1543168562717.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1274360994",
+    "id" : "E20E9D19",
+    "lastKnownWriteTime" : 1543247455,
+    "last_content_update" : 1543247455987,
+    "path" : "~/ThinkRProject/CryptoProject/vignettes/userguide.Rmd",
+    "project_path" : "vignettes/userguide.Rmd",
+    "properties" : {
+        "cursorPosition" : "29,18",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1543171194866.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3522524961",
+    "id" : "BEFB6C77",
+    "lastKnownWriteTime" : 1543172408,
+    "last_content_update" : 1543172408060,
+    "path" : "~/ThinkRProject/CryptoProject/R/weekly_monthly_transformation.R",
+    "project_path" : "R/weekly_monthly_transformation.R",
+    "properties" : {
+        "cursorPosition" : "10,11",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
