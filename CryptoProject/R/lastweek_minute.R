@@ -11,6 +11,8 @@
 #' @export lastweek_minute
 #' @importFrom dplyr mutate arrange
 #' @importFrom jsonlite fromJSON
+#' @importFrom glue glue
+#'
 #' @return dataframe with all the information required
 #' @examples
 lastweek_minute <- function(crytocurrenty = "BTC", comparison = "USD") {
@@ -31,7 +33,7 @@ lastweek_minute <- function(crytocurrenty = "BTC", comparison = "USD") {
     if (i ==iterations){
       n1 =n-2000*(iterations-1)
     }
-    link <- paste("https://min-api.cryptocompare.com/data/histominute?fsym=",crytocurrenty, "&tsym=", comparison,"&limit=", n1, "&aggregate=1&toTs=",time, "&extraParams=your_app_name", sep = "")
+    link <- glue("https://min-api.cryptocompare.com/data/histominute?fsym={crytocurrenty}&tsym={comparison}&limit={n1}&aggregate=1&toTs={time}&extraParams=your_app_name")
     data <- fromJSON(link)
     df1 <- data.frame(
       date= as.POSIXct(data$Data$time,origin = "1970-01-01",tz = "GMT"),
