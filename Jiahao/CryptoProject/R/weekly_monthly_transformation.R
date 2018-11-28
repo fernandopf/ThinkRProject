@@ -19,6 +19,7 @@ weekly_monthly_transformation <- function(df, timeframe){
     df.transformed <- df %>%
       group_by(date = floor_date(date, "month")) %>%
       summarise(high = max(high), low = min(low), open = head(open, n = 1), close = tail(close, n = 1), volume = sum(volume))
+	  
   }
   else if (timeframe %in% c("Week", "week")){
     df.transformed <- df %>%
