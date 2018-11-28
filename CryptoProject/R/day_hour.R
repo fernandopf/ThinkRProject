@@ -68,7 +68,7 @@ day_hour <- function(timeframe, firstDay, lastDay, crytocurrenty = "BTC", compar
       if (i ==iterations){
         n1 =n-2000*(iterations-1)
       }
-      link <- glue("https://min-api.cryptocompare.com/data/{a}?fsym={crytocurrenty}&tsym={comparison}&limit={n1}&aggregate=1&toTs={time}&extraParams=ThinkR")
+      linkPrice <- glue("https://min-api.cryptocompare.com/data/{a}?fsym={crytocurrenty}&tsym={comparison}&limit={n1}&aggregate=1&toTs={time}&extraParams=ThinkR")
       linkVolume <- glue("https://min-api.cryptocompare.com/data/exchange/{a}?tsym={crytocurrenty}&limit={n1}&toTs={time}&extraParams=ThinkR")
       dataPrice <- fromJSON(linkPrice)
       dataVolume <- fromJSON(linkVolume)
