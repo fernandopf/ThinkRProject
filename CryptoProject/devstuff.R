@@ -11,6 +11,7 @@ usethis::use_package("jsonlite")
 usethis::use_package("lubridate")
 usethis::use_package("pracma")
 usethis::use_pipe()
+usethis::use_package("glue")
 usethis::use_package("curl")
 usethis::use_package("utils")
 #Documents

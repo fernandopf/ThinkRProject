@@ -18,5 +18,6 @@ Imports:
     curl,
     lubridate,
     utils,
-    pracma
+    pracma,
+    glue
 RoxygenNote: 6.1.1
