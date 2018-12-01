@@ -31,6 +31,21 @@ head(minuteExample)
 
 ```
 
+###Tsp_data
+
+```{r}
+now <- round(as.numeric(as.POSIXct(Sys.time(), format="%Y/%m/%d")))
+Tsp_data(now) %>% head()
+```
+
+
+###lastweek_news_counter example
+
+```{r}
+lastweek_news_counter("BTC") %>% head()
+```
+
+
 
 ### Transfer daily or hourily data to weekly or monthly data
 
@@ -69,4 +84,5 @@ correlation <- crypto_correlation("01/09/2018", "01/10/2018", "BTC", "ETH")
 ```{r}
 candle_plot(data= example4, volume)
 ```
+
 
