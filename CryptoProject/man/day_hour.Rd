@@ -4,7 +4,7 @@
 \alias{day_hour}
 \title{day_hour}
 \usage{
-day_hour(timeframe, firstDay, lastDay, crytocurrenty = "BTC",
+day_hour(timeframe, firstDay, lastDay, crypocurrency = "BTC",
   comparison = "USD")
 }
 \arguments{
@@ -14,7 +14,7 @@ day_hour(timeframe, firstDay, lastDay, crytocurrenty = "BTC",
 
 \item{lastDay}{last day to analyse in dd/mm/yyyy format}
 
-\item{crytocurrenty}{cryptocurrency to analyse}
+\item{crypocurrency}{cryptocurrency to analyse}
 
 \item{comparison}{currency to be compared}
 }
@@ -27,5 +27,5 @@ dataframe with all the information required
 Function to get the information from the cryptocompare API
 }
 \details{
-This function has been designed to get a dataframe from the crytocompare API with the highest, lowest, open and close price from the crytocurrency chosen in hour or day timeframe.
+This function has been designed to get a dataframe from the crypocurrency API with the highest, lowest, open and close price from the crypocurrency chosen in hour or day timeframe.
 }

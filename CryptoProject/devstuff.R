@@ -19,5 +19,6 @@ usethis::use_package("utils")
 usethis::use_package("plotly")
 usethis::use_package("rlang")
 usethis::use_package("stats")
+
 #Documents
 devtools::document()

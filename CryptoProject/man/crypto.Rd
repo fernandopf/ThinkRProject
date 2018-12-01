@@ -4,7 +4,7 @@
 \alias{crypto}
 \title{Crypto}
 \usage{
-crypto(timeframe, firstDay, lastDay, crytocurrenty = "BTC",
+crypto(timeframe, firstDay, lastDay, crypocurrency = "BTC",
   comparison = "USD", n_MA, n_quick_MACD, n_slow_MACD, n_signal_MACD)
 }
 \arguments{
@@ -14,7 +14,7 @@ crypto(timeframe, firstDay, lastDay, crytocurrenty = "BTC",
 
 \item{lastDay}{last day to analyse in dd/mm/yyyy format}
 
-\item{crytocurrenty}{cryptocurrency to analyse}
+\item{crypocurrency}{cryptocurrency to analyse}
 
 \item{comparison}{currency to be compared}
 

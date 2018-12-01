@@ -3,11 +3,11 @@
 #'
 #' Function to get the information from the cryptocompare API
 #'
-#' This function has been designed to get a dataframe from the crytocompare API with the highest, lowest, open and close price from the crytocurrency chosen in hour or day timeframe.
+#' This function has been designed to get a dataframe from the crypocurrency API with the highest, lowest, open and close price from the crypocurrency chosen in hour or day timeframe.
 #' @param timeframe timeframe in hour or day
 #' @param firstDay first day to analyse in dd/mm/yyyy format
 #' @param lastDay last day to analyse in dd/mm/yyyy format
-#' @param crytocurrenty cryptocurrency to analyse
+#' @param crypocurrency cryptocurrency to analyse
 #' @param comparison currency to be compared
 #'
 #' @return dataframe with the time, highest price, lowest price, open price, close price of the chosen timeframe
@@ -18,7 +18,7 @@
 
 #' @return dataframe with all the information required
 #' @examples
-day_hour <- function(timeframe, firstDay, lastDay, crytocurrenty = "BTC", comparison = "USD") {
+day_hour <- function(timeframe, firstDay, lastDay, crypocurrency = "BTC", comparison = "USD") {
 
   # Date
   firstDay <- as.Date(firstDay,format="%d/%m/%Y")
@@ -45,8 +45,8 @@ day_hour <- function(timeframe, firstDay, lastDay, crytocurrenty = "BTC", compar
 
   # Maximum number of points is 2000
   if (n <= 2000) {
-    link <- glue("https://min-api.cryptocompare.com/data/{a}?fsym={crytocurrenty}&tsym={comparison}&limit={n}&aggregate=1&toTs={time}&extraParams=ThinkR")
-    linkVolume <- glue("https://min-api.cryptocompare.com/data/exchange/{a}?tsym={crytocurrenty}&limit={n}&toTs={time}&extraParams=ThinkR")
+    link <- glue("https://min-api.cryptocompare.com/data/{a}?fsym={crypocurrency}&tsym={comparison}&limit={n}&aggregate=1&toTs={time}&extraParams=ThinkR")
+    linkVolume <- glue("https://min-api.cryptocompare.com/data/exchange/{a}?tsym={crypocurrency}&limit={n}&toTs={time}&extraParams=ThinkR")
     dataPrice <- fromJSON(link)
     dataVolume <- fromJSON(linkVolume)
     df <- data.frame(
@@ -68,8 +68,8 @@ day_hour <- function(timeframe, firstDay, lastDay, crytocurrenty = "BTC", compar
       if (i ==iterations){
         n1 =n-2000*(iterations-1)
       }
-      linkPrice <- glue("https://min-api.cryptocompare.com/data/{a}?fsym={crytocurrenty}&tsym={comparison}&limit={n1}&aggregate=1&toTs={time}&extraParams=ThinkR")
-      linkVolume <- glue("https://min-api.cryptocompare.com/data/exchange/{a}?tsym={crytocurrenty}&limit={n1}&toTs={time}&extraParams=ThinkR")
+      linkPrice <- glue("https://min-api.cryptocompare.com/data/{a}?fsym={crypocurrency}&tsym={comparison}&limit={n1}&aggregate=1&toTs={time}&extraParams=ThinkR")
+      linkVolume <- glue("https://min-api.cryptocompare.com/data/exchange/{a}?tsym={crypocurrency}&limit={n1}&toTs={time}&extraParams=ThinkR")
       dataPrice <- fromJSON(linkPrice)
       dataVolume <- fromJSON(linkVolume)
       df1 <- data.frame(
