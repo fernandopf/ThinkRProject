@@ -22,5 +22,6 @@ Imports:
     plotly,
     rlang,
     stats,
-    glue
+    glue,
+    httr
 RoxygenNote: 6.1.1

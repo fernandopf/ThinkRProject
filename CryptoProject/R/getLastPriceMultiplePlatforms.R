@@ -12,6 +12,7 @@
 #' @importFrom rlang is_empty
 #' @importFrom utils head tail
 #' @importFrom jsonlite fromJSON
+#' @importFrom httr GET
 #'
 #' @examples
 getLastPriceMultiplePlatforms <- function(cryptocurrency){
