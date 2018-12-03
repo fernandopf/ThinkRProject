@@ -42,37 +42,28 @@ day_hour <- function(timeframe, firstDay, lastDay, cryptocurrency = "BTC", compa
     print('No valid timeframe')
     return();
   }
+  # If the cryptocurrency and the comparsion are the same, we return one dataset with all the prices equal to 1 and the volume equal to 0.
 
-  # Maximum number of points is 2000
-  if (n <= 2000) {
-    link <- glue("https://min-api.cryptocompare.com/data/{a}?fsym={cryptocurrency}&tsym={comparison}&limit={n}&aggregate=1&toTs={time}&extraParams=ThinkR")
-    linkVolume <- glue("https://min-api.cryptocompare.com/data/exchange/{a}?tsym={cryptocurrency}&limit={n}&toTs={time}&extraParams=ThinkR")
-    dataPrice <- fromJSON(link)
-    dataVolume <- fromJSON(linkVolume)
+
+  if (cryptocurrency == comparison){
+    dates <- sapply(0:n, function(i){
+      as.numeric(as.POSIXct(firstDay, format="%m/%d/%Y")) +(i)*incr
+    })
     df <- data.frame(
-      date= as.POSIXct(dataPrice$Data$time,origin = "1970-01-01",tz = "GMT"),
-      high=dataPrice$Data$high,
-      low = dataPrice$Data$low,
-      open = dataPrice$Data$open,
-      close = dataPrice$Data$close,
-      volume = dataVolume$Data$volume
-    )
-  }
-  # If the number of points is higher than the maximum we need to do a for loop
-  else {
-    # Round to the highest Integuer
-    iterations <- ceiling(n/2000)
-    n1 <- 2000
-    # For to get data from the API several times
-    for (i in 1:iterations){
-      if (i ==iterations){
-        n1 =n-2000*(iterations-1)
-      }
-      linkPrice <- glue("https://min-api.cryptocompare.com/data/{a}?fsym={cryptocurrency}&tsym={comparison}&limit={n1}&aggregate=1&toTs={time}&extraParams=ThinkR")
-      linkVolume <- glue("https://min-api.cryptocompare.com/data/exchange/{a}?tsym={cryptocurrency}&limit={n1}&toTs={time}&extraParams=ThinkR")
-      dataPrice <- fromJSON(linkPrice)
+      date= as.POSIXct(dates,origin = "1970-01-01",tz = "GMT"),
+      high=1,
+      low = 1,
+      open = 1,
+      close = 1,
+      volume = 0)
+  } else {
+    # Maximum number of points is 2000
+    if (n <= 2000) {
+      link <- glue("https://min-api.cryptocompare.com/data/{a}?fsym={cryptocurrency}&tsym={comparison}&limit={n}&aggregate=1&toTs={time}&extraParams=ThinkR")
+      linkVolume <- glue("https://min-api.cryptocompare.com/data/exchange/{a}?tsym={cryptocurrency}&limit={n}&toTs={time}&extraParams=ThinkR")
+      dataPrice <- fromJSON(link)
       dataVolume <- fromJSON(linkVolume)
-      df1 <- data.frame(
+      df <- data.frame(
         date= as.POSIXct(dataPrice$Data$time,origin = "1970-01-01",tz = "GMT"),
         high=dataPrice$Data$high,
         low = dataPrice$Data$low,
@@ -80,12 +71,36 @@ day_hour <- function(timeframe, firstDay, lastDay, cryptocurrency = "BTC", compa
         close = dataPrice$Data$close,
         volume = dataVolume$Data$volume
       )
-      if (i ==1){
-        df <- df1
-      } else {
-        df <- rbind(df, df1)
+    }
+    # If the number of points is higher than the maximum we need to do a for loop
+    else {
+      # Round to the highest Integuer
+      iterations <- ceiling(n/2000)
+      n1 <- 2000-1
+      # For to get data from the API several times
+      for (i in 1:iterations){
+        if (i ==iterations){
+          n1 =n-2000*(iterations-1)-1
+        }
+        linkPrice <- glue("https://min-api.cryptocompare.com/data/{a}?fsym={cryptocurrency}&tsym={comparison}&limit={n1}&aggregate=1&toTs={time}&extraParams=ThinkR")
+        linkVolume <- glue("https://min-api.cryptocompare.com/data/exchange/{a}?tsym={cryptocurrency}&limit={n1}&toTs={time}&extraParams=ThinkR")
+        dataPrice <- fromJSON(linkPrice)
+        dataVolume <- fromJSON(linkVolume)
+        df1 <- data.frame(
+          date= as.POSIXct(dataPrice$Data$time,origin = "1970-01-01",tz = "GMT"),
+          high=dataPrice$Data$high,
+          low = dataPrice$Data$low,
+          open = dataPrice$Data$open,
+          close = dataPrice$Data$close,
+          volume = dataVolume$Data$volume
+        )
+        if (i ==1){
+          df <- df1
+        } else {
+          df <- rbind(df, df1)
+        }
+        time <- time - 2000*incr
       }
-      time <- time - 2000*incr
     }
   }
   df <-df %>%

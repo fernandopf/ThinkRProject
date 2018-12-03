@@ -22,5 +22,5 @@ crypto_correlation <- function(firstDay, lastDay, cryptoA, cryptoB){
   cryptoBData <- day_hour("hour", firstDay, lastDay, cryptoB ) %>%
     mutate(avg = (high + low)/2) %>%
     select(avg)
-  return(cor(cryptoAData,cryptoBData))
+  return(cor(cryptoAData,cryptoBData)[1])
 }
