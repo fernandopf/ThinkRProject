@@ -59,34 +59,49 @@ ui <- fluidPage(
 # Server of Shiny App
 server <- function(input, output, session) {
   
-  # observe({
-  #   if (!is.null(input$timerange) ){
-  #     if( as.numeric(input$timerange[2] - input$timerange[1]) > 12 * 30 ){
-  #             updateSelectInput(session, inputId = "timeframe", label = "Choose first and last day: ",
-  #                         selected = "month", choices = c("Month" = "month", "Week" = "week") )
-  #         }
-  #         #If the timerange is bigger than 3 months but smaller than a year, timeframe can be month, week or day
-  #         else if( as.numeric(input$timerange[2] - input$timerange[1]) > 3*30 ){
-  #           updateSelectInput(session, inputId = "timeframe", label = "Choose first and last day: ",
-  #                         selected = "week", choices = c("Month" = "month", "Week" = "week", "Day" ="day") )
-  #         }
-  #         #If the timerange is bigger than 1 month but smaller than 3, timeframe can only be week or day
-  #         else if( as.numeric(input$timerange[2] - input$timerange[1]) > 30 ){
-  #           updateSelectInput(session, inputId = "timeframe", label = "Choose first and last day: ",
-  #                         selected = "day", choices = c("Week" = "week", "Day" = "day") )
-  #         }
-  #         #If the timerange is bigger 1 week but smaller than a month, timeframe can only be day
-  #         else if( as.numeric(input$timerange[2] - input$timerange[1]) > 7 ) {
-  #           updateSelectInput(session, inputId = "timeframe", label = "Choose first and last day: ",
-  #                           selected = "day", choices = c("Day" = "day") )
-  #         }
-  #         #If the timerange is smaller than 1 week, timeframe can be day or hour
-  #         else {
-  #           updateSelectInput(session, inputId = "timeframe", label = "Choose first and last day: ",
-  #                         selected = "day", choices = c("Day" = "day", "Hour" = "hour") )
-  #         }
-  #   }
-  # })
+  param <- reactiveValues(
+    frame = "day",
+    start = Sys.Date() - 30,
+    end = Sys.Date() ,
+    coin = "BTC",
+    compare = "USD"
+  )
+  
+  observe({
+    param$frame <- input$timeframe
+    param$timerange <- input$timerange
+    param$coin <- input$currency
+    param$compare <- input$comparison
+  })
+  
+  observe({
+    # if (!is.null(input$timerange) ){
+      if( as.numeric(input$timerange[2] - input$timerange[1]) > 12 * 30 ){
+              updateSelectInput(session, inputId = "timeframe", label = "Choose first and last day: ",
+                          selected = "month", choices = c("Month" = "month", "Week" = "week") )
+          }
+          #If the timerange is bigger than 3 months but smaller than a year, timeframe can be month, week or day
+          else if( as.numeric(input$timerange[2] - input$timerange[1]) > 3*30 ){
+            updateSelectInput(session, inputId = "timeframe", label = "Choose first and last day: ",
+                          selected = "week", choices = c("Month" = "month", "Week" = "week", "Day" ="day") )
+          }
+          #If the timerange is bigger than 1 month but smaller than 3, timeframe can only be week or day
+          else if( as.numeric(input$timerange[2] - input$timerange[1]) > 30 ){
+            updateSelectInput(session, inputId = "timeframe", label = "Choose first and last day: ",
+                          selected = "day", choices = c("Week" = "week", "Day" = "day") )
+          }
+          #If the timerange is bigger 1 week but smaller than a month, timeframe can only be day
+          else if( as.numeric(input$timerange[2] - input$timerange[1]) > 7 ) {
+            updateSelectInput(session, inputId = "timeframe", label = "Choose first and last day: ",
+                            selected = "day", choices = c("Day" = "day") )
+          }
+          #If the timerange is smaller than 1 week, timeframe can be day or hour
+          else {
+            updateSelectInput(session, inputId = "timeframe", label = "Choose first and last day: ",
+                          selected = "day", choices = c("Day" = "day", "Hour" = "hour") )
+          }
+    # }
+  })
   
   # output$ui <- renderUI({
   #   #If the timerange is bigger than a year, timeframe can only be month or week
@@ -117,40 +132,6 @@ server <- function(input, output, session) {
   # })
 
   #------------------------------------------------------------------------------------
-
-  # param2 <- reactive({
-  #   req(input$timerange, input$timeframe, input$currency, input$comparison)
-  #   
-  #   param$frame  <- input$timeframe
-  #   param$start <-  input$timerange[1]
-  #   param$end <-  input$timerange[2]
-  #   param$coin <-  input$currency
-  #   param$compare <-  input$comparison
-  # })
-  
-  # r <- reactive({
-  #   list(
-  #     input$timeframe,
-  #     input$timerange,
-  #     input$currency,
-  #     input$comparison
-  #   )
-  # })
-  
-  param <- reactiveValues(
-    frame = "day",
-    start = Sys.Date() - 30,
-    end = Sys.Date() ,
-    coin = "BTC",
-    compare = "USD"
-  )
-  
-  observe({
-    param$frame <- input$timeframe
-    param$timerange <- input$timerange
-    param$coin <- input$currency
-    param$compare <- input$comparison
-  })
   
   output$mainPlot <- renderPlotly({
 
@@ -167,10 +148,6 @@ server <- function(input, output, session) {
 
       candle_plot(df, MACD)
     })
-
-
-  
-
 
 
 }
