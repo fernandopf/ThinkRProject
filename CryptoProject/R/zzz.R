@@ -7,6 +7,12 @@ globalVariables(
     "quick_EMA",
     "slow_EMA",
     "avg",
-    "volume"
+    "volume",
+    "Label",
+    "Price",
+    "id",
+    "mentioned",
+    "symbol",
+    "fullName"
   )
 )

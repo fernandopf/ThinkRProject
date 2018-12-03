@@ -19,13 +19,13 @@ weekly_monthly_transformation <- function(df, timeframe){
     df.transformed <- df %>%
       group_by(date = floor_date(date, "month")) %>%
       summarise(high = max(high), low = min(low), open = head(open, n = 1), close = tail(close, n = 1), volume = sum(volume)) %>%
-      mutate ( direction = ifelse( open > close, "increasing", "decreasing"))
+      mutate(direction = ifelse(open > close, "increasing", "decreasing"))
   }
   else if (timeframe %in% c("Week", "week")){
     df.transformed <- df %>%
       group_by(date = floor_date(date, "week")) %>%
-	    summarise(high = max(high), low = min(low), open = head(open, n = 1), close = tail(close, n = 1), volume = sum(volume)) %>%
-	    mutate ( direction = ifelse( open > close, "increasing", "decreasing"))
+      summarise(high = max(high), low = min(low), open = head(open, n = 1), close = tail(close, n = 1), volume = sum(volume)) %>%
+      mutate(direction = ifelse(open > close, "increasing", "decreasing"))
   }
   return(df.transformed)
 }

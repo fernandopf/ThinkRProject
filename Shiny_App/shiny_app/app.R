@@ -3,6 +3,7 @@ library(shiny)
 library(shinythemes)
 library(markdown)
 library(CryptoProject)
+library(plotly)
 
 #User interfqce
 ui <- fluidPage(
@@ -19,7 +20,7 @@ ui <- fluidPage(
            column(3, wellPanel(
              dateRangeInput(inputId = "timerange", 
                             label = "Choose first and last day: ",
-                            start = Sys.Date() - 5, end = Sys.Date() + 5,
+                            start = Sys.Date() - 30, end = Sys.Date(),
                             separator = " - ", format = "dd/mm/yy",
                             startview = 'year', language = 'fr', weekstart = 1)
             )
@@ -40,7 +41,7 @@ ui <- fluidPage(
             )
            ),
           mainPanel(
-            plotOutput("mainPlot")
+            plotlyOutput("mainPlot")
           )
           ) #End of fluidRow
       ),
@@ -138,35 +139,30 @@ server <- function(input, output, session) {
   
   param <- reactiveValues(
     frame = "day",
-    start = Sys.Date() - 5,
-    end = Sys.Date() + 5,
+    start = Sys.Date() - 30,
+    end = Sys.Date() ,
     coin = "BTC",
     compare = "USD"
   )
   
   observe({
-
     param$frame <- input$timeframe
     param$timerange <- input$timerange
     param$coin <- input$currency
     param$compare <- input$comparison
   })
   
-  output$mainPlot <- renderPlot({
-    # frame <- r()[[1]]
-    # start <- r()[[2]][1]
-    # end <- r()[[2]][2]
-    # coin <- r()[[3]]
-    # compare <- r()[[4]]
+  output$mainPlot <- renderPlotly({
+
     frame <- param$frame
     start <- param$timerange[1]
     end <- param$timerange[2]
     coin <- param$coin
     compare <- param$compare
     
-      df <- crypto(timeframe = frame, firstDay = format(timerange[1], "%d/%m/%Y"), 
-                   lastDay = format(timerange[2], "%d/%m/%Y"), 
-                   crytocurrenty = coin, comparison = compare, 
+      df <- crypto(timeframe = frame, firstDay = format(start, "%d/%m/%Y"), 
+                   lastDay = format(end, "%d/%m/%Y"), 
+                   cryptocurrency = coin, comparison = compare, 
                    n_MA = 5, n_quick_MACD = 12, n_slow_MACD = 26, n_signal_MACD = 9)
 
       candle_plot(df, MACD)
