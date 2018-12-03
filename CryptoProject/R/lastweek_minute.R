@@ -3,8 +3,8 @@
 #'
 #' Function to get the information from the cryptocompare API per minute
 #'
-#' This function has been designed to get a dataframe from the crytocompare API with the highest, lowest, open and close price from the crytocurrency chosen in minute of the last week.
-#' @param crytocurrenty cryptocurrency to analyse
+#' This function has been designed to get a dataframe from the cryptocompare API with the highest, lowest, open and close price from the cryptocurrency chosen in minute of the last week.
+#' @param cryptocurrency cryptocurrency to analyse
 #' @param comparison currency to be compared
 #'
 #' @return dataframe with the time, highest price, lowest price, open price, close price of the chosen timeframe
@@ -15,7 +15,7 @@
 #'
 #' @return dataframe with all the information required
 #' @examples
-lastweek_minute <- function(crytocurrenty = "BTC", comparison = "USD") {
+lastweek_minute <- function(cryptocurrency = "BTC", comparison = "USD") {
 
   actualTime <- round(as.numeric(Sys.time()))
   MaxLimit <- as.numeric(Sys.time()-as.difftime(7, units="days"))
@@ -33,7 +33,7 @@ lastweek_minute <- function(crytocurrenty = "BTC", comparison = "USD") {
     if (i ==iterations){
       n1 =n-2000*(iterations-1)
     }
-    link <- glue("https://min-api.cryptocompare.com/data/histominute?fsym={crytocurrenty}&tsym={comparison}&limit={n1}&aggregate=1&toTs={time}&extraParams=your_app_name")
+    link <- glue("https://min-api.cryptocompare.com/data/histominute?fsym={cryptocurrency}&tsym={comparison}&limit={n1}&aggregate=1&toTs={time}&extraParams=your_app_name")
     data <- fromJSON(link)
     df1 <- data.frame(
       date= as.POSIXct(data$Data$time,origin = "1970-01-01",tz = "GMT"),
