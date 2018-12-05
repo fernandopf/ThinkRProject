@@ -13,5 +13,5 @@ getLastPriceMultiplePlatforms(cryptocurrency)
 dataframe with prices on six platforms
 }
 \description{
-a function used to get the prices of the imputted crypto on 6 platforms
+Function used to get the last price of the imputted crypto on the 6 biggest platforms
 }
