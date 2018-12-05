@@ -11,7 +11,6 @@ name_coins <- read.csv("data/coins.csv", header = FALSE)[,1]
 all_coins <- as.list(name_coins)
 names(all_coins) <- name_coins
 
-
 #User interface
 ui <- fluidPage(
    theme = shinytheme("sandstone"),
@@ -130,14 +129,10 @@ server <- function(input, output, session){
   })
 
   #------------------------------------------------------------------------------------
-  
-  observeEvent( input$MACD, {
-    a <- enquo(MACD)
-  })
-  
-  #First tab plot: Currency prices, moving averages,...
-  output$mainPlot <- renderPlotly({
 
+  #First tab plot: Currency prices, moving averages,...; default MACD
+  output$mainPlot <- renderPlotly({
+    
     frame <- param$frame
     start <- param$timerange[1]
     end <- param$timerange[2]
@@ -145,16 +140,53 @@ server <- function(input, output, session){
     compare <- param$compare
     ma <- param$ma
     
-      df <- crypto(timeframe = frame, firstDay = format(start, "%d/%m/%Y"), 
-                   lastDay = format(end, "%d/%m/%Y"), 
-                   cryptocurrency = coin, comparison = compare, 
-                   n_MA = ma, n_quick_MACD = 12, n_slow_MACD = 26, n_signal_MACD = 9)
-
-      ##########Depending on actionButtons
-      candle_plot(df, a)
-
+    df <- crypto(timeframe = frame, firstDay = format(start, "%d/%m/%Y"), 
+                 lastDay = format(end, "%d/%m/%Y"), 
+                 cryptocurrency = coin, comparison = compare, 
+                 n_MA = ma, n_quick_MACD = 12, n_slow_MACD = 26, n_signal_MACD = 9)
+    
+    candle_plot(df, MACD)
+  })
+  
+  #Change main plot if user choose MACD
+  observeEvent(input$MACD, {
+    output$mainPlot <- renderPlotly({
       
+      frame <- param$frame
+      start <- param$timerange[1]
+      end <- param$timerange[2]
+      coin <- param$coin
+      compare <- param$compare
+      ma <- param$ma
+
+      df <- crypto(timeframe = frame, firstDay = format(start, "%d/%m/%Y"),
+                  lastDay = format(end, "%d/%m/%Y"),
+                  cryptocurrency = coin, comparison = compare,
+                  n_MA = ma, n_quick_MACD = 12, n_slow_MACD = 26, n_signal_MACD = 9)
+      candle_plot(df, MACD)
     })
+  })
+  
+  #Change main plot if user choose VOLUME
+  observeEvent(input$VOLUME, {
+    output$mainPlot <- renderPlotly({
+      
+      frame <- param$frame
+      start <- param$timerange[1]
+      end <- param$timerange[2]
+      coin <- param$coin
+      compare <- param$compare
+      ma <- param$ma
+
+      df <- crypto(timeframe = frame, firstDay = format(start, "%d/%m/%Y"),
+                   lastDay = format(end, "%d/%m/%Y"),
+                   cryptocurrency = coin, comparison = compare,
+                   n_MA = ma, n_quick_MACD = 12, n_slow_MACD = 26, n_signal_MACD = 9)
+      candle_plot(df, volume)
+    })
+  })
+  
+
 
 
 }
