@@ -8,6 +8,8 @@ usethis::use_vignette("userguide")
 #Attachments
 attachment::create_dependencies_file()
 
+usethis::use_roxygen_md()
+
 # Dependencies
 usethis::use_package("dplyr")
 usethis::use_package("jsonlite")
@@ -19,5 +21,8 @@ usethis::use_package("utils")
 usethis::use_package("plotly")
 usethis::use_package("rlang")
 usethis::use_package("stats")
+usethis::use_package("httr")
+usethis::use_package("ggplot2")
+
 #Documents
 devtools::document()

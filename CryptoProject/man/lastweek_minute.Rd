@@ -4,10 +4,10 @@
 \alias{lastweek_minute}
 \title{lastweek_minute}
 \usage{
-lastweek_minute(crytocurrenty = "BTC", comparison = "USD")
+lastweek_minute(cryptocurrency = "BTC", comparison = "USD")
 }
 \arguments{
-\item{crytocurrenty}{cryptocurrency to analyse}
+\item{cryptocurrency}{cryptocurrency to analyse}
 
 \item{comparison}{currency to be compared}
 }
@@ -20,5 +20,5 @@ dataframe with all the information required
 Function to get the information from the cryptocompare API per minute
 }
 \details{
-This function has been designed to get a dataframe from the crytocompare API with the highest, lowest, open and close price from the crytocurrency chosen in minute of the last week.
+This function has been designed to get a dataframe from the cryptocompare API with the highest, lowest, open and close price from the cryptocurrency chosen in minute of the last week.
 }

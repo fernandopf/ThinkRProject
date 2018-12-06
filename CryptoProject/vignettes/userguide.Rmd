@@ -31,6 +31,21 @@ head(minuteExample)
 
 ```
 
+###Tsp_data
+
+```{r}
+now <- round(as.numeric(as.POSIXct(Sys.time(), format="%Y/%m/%d")))
+Tsp_data(now) %>% head()
+```
+
+
+###lastweek_news_counter example
+
+```{r}
+lastweek_news_counter("BTC") %>% head()
+```
+
+
 
 ### Transfer daily or hourily data to weekly or monthly data
 
@@ -61,7 +76,8 @@ tail(example4)
 ### Function to get the correlation
 
 ```{r}
-correlation <- crypto_correlation("01/09/2018", "01/10/2018", "BTC", "ETH")
+correlation <- crypto_correlation("01/09/2018", "01/10/2018", "GBP", "UBT")
+print(correlation)
 ```
 
 ###Candlestick plot example
@@ -69,4 +85,12 @@ correlation <- crypto_correlation("01/09/2018", "01/10/2018", "BTC", "ETH")
 ```{r}
 candle_plot(data= example4, volume)
 ```
+
+### Function to get the last Price from Multiple Platforms
+```{r}
+lastPrice <- getLastPriceMultiplePlatforms("BTC")
+head(lastPrice)
+```
+
+
 
