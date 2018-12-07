@@ -2,8 +2,8 @@
 #'
 #' Function to get the last price of the cryptocurrency in comparision with the desired currency of the platform Bitfinex
 #'
-#' @param cryptocurrency
-#' @param comparison
+#' @param cryptocurrency cryptocurrency id
+#' @param comparison to be compared with
 #'
 #' @return string with the last price of Bitfinex, the criptocurrency and the comparison
 #' @importFrom glue glue

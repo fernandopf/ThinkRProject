@@ -91,6 +91,10 @@ candle_plot(data= example4, volume)
 lastPrice <- getLastPriceMultiplePlatforms("BTC")
 head(lastPrice)
 ```
-
+### Function to get the last Price from Bitfinex
+```{r}
+lastPrice <- getLastPriceBitfinex("ETH", "BTC")
+print(lastPrice)
+```
 
 
