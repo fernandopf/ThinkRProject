@@ -20,6 +20,7 @@ usethis::use_package("plotly")
 usethis::use_package("rlang")
 usethis::use_package("stats")
 usethis::use_package("httr")
+usethis::use_package("ggplot2")
 
 #Documents
 devtools::document()
