@@ -84,15 +84,15 @@ ui <- fluidPage(
           
           #Main Panel: Plot
           mainPanel(
-           textOutput("latestprice"),
-           plotlyOutput("mainPlot")
+            htmlOutput("latestprice"),
+            plotlyOutput("mainPlot")
          )
       ) #End of Sidebar Layout
       
     ), #End of first tab
     
     #------------------------------------2nd tabPanel-------------------------------------
-      tabPanel("Hourly Prices", 
+      tabPanel("Minutely Prices", 
                
         sidebarLayout(
             #Sidebar Layout-----------------
@@ -105,7 +105,7 @@ ui <- fluidPage(
                            selected = "USD", choices = all_coins ),
                #Grouping by what timeframe in news counter
                selectInput(inputId = "grouping", label = "News count group by what timeframe",
-                           selected = "day", choices = c("Day" = "day", "12 Hours" = "12 hours", "6 Hours" = "6 hours", "3 Hours" = "3 hours", "1 Hour" = "hour") )
+                           selected = "3 hours", choices = c("Day" = "day", "12 Hours" = "12 hours", "6 Hours" = "6 hours", "3 Hours" = "3 hours", "1 Hour" = "hour") )
                         )
                       ,
                #End of Sidebar Panel-----------------
@@ -139,7 +139,7 @@ ui <- fluidPage(
 
                #Main Panel: Average price on six platform and Plot
                mainPanel(
-                 textOutput("averageprice"),
+                 htmlOutput("averageprice"),
                  DTOutput(outputId ="pricetable")
                )
                #End of siderbarLayout
@@ -333,7 +333,7 @@ server <- function(input, output, session){
     #Print the latest price
     output$latestprice <- renderText({
       autoInvalidate()
-      getLastPriceBitfinex(coin, compare)
+      glue::glue("<font color=\"#FF0000\"><TT><font size=10>{getLastPriceBitfinex(coin, compare)}</TT></font>     <p><TT><font size=3>update time: {as.character(Sys.time())}</TT></font>")
     })
     
   }) #End of observer for plot transformation due to tab selection
@@ -386,7 +386,7 @@ server <- function(input, output, session){
   output$averageprice <- renderText({
     pricecomparison <- getLastPriceMultiplePlatforms(param3$cryptoID)
     meanprice <- round(mean(as.numeric(pricecomparison$Price), na.rm = TRUE), digits = 2)
-    glue::glue("The average price is {meanprice}")
+    glue::glue("<font color=\"#FF0000\"><TT><font size=3>The average price is</TT></font> <TT><font size=10>{meanprice}</TT></font> <TT><font size=3>{param3$cryptoID}/USD</TT></font>   <p><TT><font size=3>update time: {as.character(Sys.time())}</TT></font>")
   })
   
   
