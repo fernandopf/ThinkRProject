@@ -5,7 +5,7 @@
 #'
 #' This function has been designed to get a dataframe from the cryptocurrency API with the highest, lowest, open and close price from the cryptocurrency chosen in hour or day timeframe.
 #' @param timeframe timeframe in hour or day
-#' @param firstDay first day to analyse in dd/mm/yyyy format
+#' @param firstDay first day to analyse in dd/mm/yyyy format : if the input is the same as the lastDay, will be set as the day before lastDay
 #' @param lastDay last day to analyse in dd/mm/yyyy format
 #' @param cryptocurrency cryptocurrency to analyse
 #' @param comparison currency to be compared
@@ -23,6 +23,12 @@ day_hour <- function(timeframe, firstDay, lastDay, cryptocurrency = "BTC", compa
   # Date
   firstDay <- as.Date(firstDay,format="%d/%m/%Y")
   lastDay <- as.Date(lastDay,format="%d/%m/%Y")
+
+  #if the start day and the end day in same day: set start day = end day - 1
+
+  if (firstDay == lastDay){
+    firstDay <- firstDay - 1
+  }
 
   time <- round(as.numeric(as.POSIXct(lastDay, format="%m/%d/%Y")))
 

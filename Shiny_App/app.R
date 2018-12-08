@@ -37,9 +37,11 @@ ui <- fluidPage(
                         selected = "USD", choices = all_coins ),
             
             #Time range we we are interested in
+            
             dateRangeInput(inputId = "timerange", 
                            label = "Choose first and last day: ",
                            start = Sys.Date() - 90, end = Sys.Date(),
+                           min = "2010-01-01", max = Sys.Date(),
                            separator = " - ", format = "dd/mm/yy",
                            startview = 'year', language = 'fr', weekstart = 1),
             
