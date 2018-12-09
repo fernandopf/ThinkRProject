@@ -1,6 +1,6 @@
 #' getLastPriceMultiplePlatforms
 #'
-#' a function used to get the prices of the imputted crypto on 6 platforms
+#' Function used to get the last price of the imputted crypto on the 6 biggest platforms
 #'
 #' @param cryptocurrency cryptocurrency id
 #'
@@ -16,7 +16,6 @@
 #'
 #' @examples
 getLastPriceMultiplePlatforms <- function(cryptocurrency){
-  # Iniciatlization of dataframe
 
   # Bittrex
   linkBittrex <- "https://bittrex.com/api/v1.1/public/getmarketsummaries"

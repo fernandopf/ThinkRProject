@@ -13,6 +13,7 @@ globalVariables(
     "id",
     "mentioned",
     "symbol",
-    "fullName"
+    "fullName",
+    "time"
   )
 )

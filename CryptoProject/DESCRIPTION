@@ -1,6 +1,6 @@
 Package: CryptoProject
 Title: What the Package Does (one line, title case)
-Version: 0.0.0.9000
+Version: 0.0.0.9005
 Authors@R: person("Jiahao", "Wang", email = "jiahao.wang@polytechnique.edu", role = c("aut", "cre"))
 Description: What the package does (one paragraph).
 Depends: R (>= 3.5.0)
@@ -9,7 +9,8 @@ Encoding: UTF-8
 LazyData: true
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat
 VignetteBuilder: knitr
 Imports: 
     jsonlite,
@@ -23,5 +24,6 @@ Imports:
     rlang,
     stats,
     glue,
-    httr
+    httr,
+    ggplot2
 RoxygenNote: 6.1.1

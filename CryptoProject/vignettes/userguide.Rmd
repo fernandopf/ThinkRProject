@@ -76,13 +76,25 @@ tail(example4)
 ### Function to get the correlation
 
 ```{r}
-correlation <- crypto_correlation("01/09/2018", "01/10/2018", "BTC", "ETH")
+correlation <- crypto_correlation("01/09/2018", "01/10/2018", "GBP", "UBT")
+print(correlation)
 ```
 
 ###Candlestick plot example
 
 ```{r}
 candle_plot(data= example4, volume)
+```
+
+### Function to get the last Price from Multiple Platforms
+```{r}
+lastPrice <- getLastPriceMultiplePlatforms("BTC")
+head(lastPrice)
+```
+### Function to get the last Price from Bitfinex
+```{r}
+lastPrice <- getLastPriceBitfinex("ETH", "BTC")
+print(lastPrice)
 ```
 
 
