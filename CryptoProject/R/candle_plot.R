@@ -44,7 +44,7 @@ candle_plot <- function(data, supp_type){
   p2 <- data %>%
     plot_ly(x=~date, y=as.formula(supp_type), type='bar', name = "supp",
             color = ~direction, colors = c('green','red')) %>%
-    layout(yaxis = list(title = "supp", fixedrange=FALSE))
+    layout(yaxis = list(fixedrange=FALSE))
 
   #Merging both plots into one interacting plot
   p <- subplot(p1, p2, heights = c(0.7,0.2), nrows=2,

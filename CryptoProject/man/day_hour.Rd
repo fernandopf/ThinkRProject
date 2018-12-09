@@ -10,7 +10,7 @@ day_hour(timeframe, firstDay, lastDay, cryptocurrency = "BTC",
 \arguments{
 \item{timeframe}{timeframe in hour or day}
 
-\item{firstDay}{first day to analyse in dd/mm/yyyy format}
+\item{firstDay}{first day to analyse in dd/mm/yyyy format : if the input is the same as the lastDay, will be set as the day before lastDay}
 
 \item{lastDay}{last day to analyse in dd/mm/yyyy format}
 

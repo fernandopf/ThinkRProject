@@ -11,6 +11,7 @@ library(DT)
 name_coins <- read.csv("data/coins.csv", header = FALSE)[,1]
 all_coins <- as.list(name_coins)
 names(all_coins) <- name_coins
+no_currency_coins <- all_coins[-c(1,2,3)]  #Without USD, EUR and GBP
 
 #User interface
 ui <- fluidPage(
@@ -24,9 +25,9 @@ ui <- fluidPage(
     #-------------------------------1st tabPanel--------------------------------------
       tabPanel("Historical Price",
                
-        sidebarLayout(
+        sidebarLayout( 
           #Sidebar Layout-----------------
-          sidebarPanel(
+          sidebarPanel( 
             
             #Currency we are interested in
             selectInput(inputId = "currency", label = "Currency you are interested? ",
@@ -58,7 +59,7 @@ ui <- fluidPage(
             tags$b("Choose type supplementary plot:" ),
             
             fluidRow(
-                tabBox( id = "tabset", selected = "MACD", side = "left",
+                tabBox( id = "tabset", selected = "MACD", side = "left", width = 10,
                         tabPanel(title = "MACD", value = "MACD",
                                  
                                  #Number of points used to compute the slow moving average
@@ -120,21 +121,18 @@ ui <- fluidPage(
                     )
              
              
-             
-             
-             
-             
-             
-             
              ),#-------End of 2nd tab
-    #------------------------------------3nd tabPanel-------------------------------------
+    
+    #------------------------------------3rd tabPanel-------------------------------------
     tabPanel("Price Comparison"
              ,
              sidebarLayout(
                #Sidebar Layout-----------------
                sidebarPanel(
                  #The id of the cryptocurrency
-                 textInput( "cryptoID", label = "Enter Cryptocurrency ID", value = "BTC" )
+                 #textInput( "cryptoID", label = "Enter Cryptocurrency ID", value = "BTC" )
+                 selectInput(inputId = "cryptoID", label = "Enter Cryptocurrency ID",
+                             selected = "BTC", choices = no_currency_coins )
                )
                ,
                #End of Sidebar Panel-----------------
@@ -291,7 +289,7 @@ server <- function(input, output, session){
   })
 
   
-#Transforming plot when MACD or VOLUME tab selected
+  #Transforming plot when MACD or VOLUME tab selected
   observe({
     frame <- param1$frame
     start <- param1$timerange[1]
@@ -361,8 +359,8 @@ server <- function(input, output, session){
   output$lastweekPlot <- renderPlotly({
     
     
-    lastweekplot <- plot_lastweek(cryptocurrency = param2$cryptocurrency, comparison = param2$comparison,
-                                  grouping = param2$grouping)
+    lastweekplot <- plot_lastweek(cryptocurrency = param2$cryptocurrency, 
+                                  comparison = param2$comparison, grouping = param2$grouping)
     
     lastweekplot
   })
@@ -387,7 +385,7 @@ server <- function(input, output, session){
     })
   output$averageprice <- renderText({
     pricecomparison <- getLastPriceMultiplePlatforms(param3$cryptoID)
-    meanprice <- round(mean(as.numeric(pricecomparison$Price), na.rm = TRUE), digits = 2)
+    meanprice <- round(mean(as.numeric(pricecomparison$Price), na.rm = TRUE), digits = 4)
     glue::glue("<font color=\"#FF0000\"><TT><font size=3>The average price is</TT></font> <TT><font size=10>{meanprice}</TT></font> <TT><font size=3>{param3$cryptoID}/USD</TT></font>   <p><TT><font size=3>update time: {as.character(Sys.time())}</TT></font>")
   })
   
