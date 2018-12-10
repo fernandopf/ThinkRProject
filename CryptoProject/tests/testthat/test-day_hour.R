@@ -1,14 +1,12 @@
+# Set the dates to have more than one call to the API
+firstDay <- "01/08/2017"
+lastDay <- "01/01/2018"
 
 test_that("Function day_hour:", {
   skip_if_not(curl::has_internet(), message = "no internet")
 
-  # Set the dates to have more than one call to the API
-  firstDay <- "01/08/2017"
-  lastDay <- "01/01/2018"
   datasetToTest <- day_hour("hour", firstDay, lastDay, "BTC", "ETH")
 
-  #Number of rows
-  number_rows <- 24*as.numeric( as.Date(lastDay,format="%d/%m/%Y")-as.Date(firstDay,format="%d/%m/%Y"))
   expect_equal(nrow(datasetToTest), number_rows)
 
   # Dataset that have been checked
@@ -46,6 +44,9 @@ test_that("Error in the function:", {
 # Test that if the cryptocurrency to analyze and compare are the same, the high, low, open and close are a vector of ones ant the volume is a vectors of 0
 test_that("Cryptocurrency to analyze and compare are the same:", {
   skip_if_not(curl::has_internet(), message = "no internet")
+  #Number of rows
+  number_rows <- 24*as.numeric( as.Date(lastDay,format="%d/%m/%Y")-as.Date(firstDay,format="%d/%m/%Y"))
+
   ones <- rep(1, number_rows+1)
   zeros <- rep(0, number_rows+1)
   test_same_cryptocurrency_dataset <- day_hour("hour", firstDay, lastDay, "BTC", "BTC")
