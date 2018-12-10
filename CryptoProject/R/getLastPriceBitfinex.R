@@ -7,10 +7,18 @@
 #'
 #' @return string with the last price of Bitfinex, the criptocurrency and the comparison
 #' @importFrom glue glue
+#' @importFrom curl has_internet
+#'
 #' @export getLastPriceBitfinex
 #'
 #' @examples
 getLastPriceBitfinex <- function(cryptocurrency, comparison){
+
+   # First we need to check that we have internet connection (needed to call the API)
+  if (!has_internet()){
+    stop("You don't have internet connection")
+  }
+
   if (cryptocurrency == comparison){
     return("1")
   }

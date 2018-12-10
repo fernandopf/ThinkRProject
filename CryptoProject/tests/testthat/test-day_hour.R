@@ -12,16 +12,19 @@ pathTest1 <- system.file("extdata","day_hour_test1.csv",package = "CryptoProject
 test1 <- read.csv(pathTest1, sep = ",")
 
 test_that("Number of point dataset:", {
- expect_equal(nrow(datasetToTest), number_rows)
+  skip_if_not(curl::has_internet(), message = "no internet")
+  expect_equal(nrow(datasetToTest), number_rows)
 })
 
 # Test the price of a good datased that have been checked
 test_that("Price of the dataset:", {
-   expect_equivalent(datasetToTest$high,test1$high)
+  skip_if_not(curl::has_internet(), message = "no internet")
+  expect_equivalent(datasetToTest$high,test1$high)
 })
 
 # Test the class of the variables of the dataset
 test_that("Type of elements dataset:", {
+  skip_if_not(curl::has_internet(), message = "no internet")
   expect_is(datasetToTest$date, "POSIXct")
   expect_is(datasetToTest$high, "numeric")
   expect_is(datasetToTest$low, "numeric")
@@ -34,12 +37,14 @@ test_that("Type of elements dataset:", {
 # Test the error when the initial or last date is higher than the actual day
 higherDate <- format(Sys.time()+as.difftime(1, units="days"), "%d/%m/%Y")
 test_that("Error in the function:", {
+  skip_if_not(curl::has_internet(), message = "no internet")
   expect_error(day_hour("hour", higherDate, lastDay, "BTC", "ETH"))
 })
 
 
 # Test the error when the initial date is higher than lastday
 test_that("Error in the function:", {
+  skip_if_not(curl::has_internet(), message = "no internet")
   expect_error(day_hour("hour", "02/01/2018", "01/01/2018", "BTC", "ETH"))
 })
 
@@ -50,6 +55,7 @@ zeros <- rep(0, number_rows+1)
 test_same_cryptocurrency_dataset <- day_hour("hour", firstDay, lastDay, "BTC", "BTC")
 
 test_that("Cryptocurrency to analyze and compare are the same:", {
+   skip_if_not(curl::has_internet(), message = "no internet")
    expect_equivalent(test_same_cryptocurrency_dataset$high,ones)
    expect_equivalent(test_same_cryptocurrency_dataset$low,ones)
    expect_equivalent(test_same_cryptocurrency_dataset$close,ones)

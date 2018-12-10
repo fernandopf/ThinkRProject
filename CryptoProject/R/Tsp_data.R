@@ -8,10 +8,17 @@
 #' @return the dataframe retrieve from the api
 #' @export Tsp_data
 #' @importFrom glue glue
+#' @importFrom curl has_internet
 #' @importFrom jsonlite fromJSON
 #'
 #' @examples
 Tsp_data <- function(timestamp) {
+
+  # First we need to check that we have internet connection (needed to call the API)
+  if (!has_internet()){
+    stop("You don't have internet connection")
+  }
+
   link <- glue("https://min-api.cryptocompare.com/data/v2/news/?lTs={timestamp}")
   data <- fromJSON(link)
   data2 <- data.frame("time" = data$Data$published_on, "body" = data$Data$body)

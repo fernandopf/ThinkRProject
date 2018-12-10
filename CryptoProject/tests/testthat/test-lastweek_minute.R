@@ -1,3 +1,4 @@
+
 datasetToTest <- lastweek_minute( "BTC", "ETH")
 
 #Number of rows
@@ -6,12 +7,14 @@ MaxLimit <- as.numeric(Sys.time()-as.difftime(7, units="days"))
 number_rows <- round(actualTime-MaxLimit)/60
 
 test_that("Number of point dataset:", {
+  skip_if_not(curl::has_internet(), message = "no internet")
   expect_equal(nrow(datasetToTest), number_rows)
 })
 
 
 # Test the class of the variables of the dataset
 test_that("Number of point dataset:", {
+  skip_if_not(curl::has_internet(), message = "no internet")
   expect_is(datasetToTest$date, "POSIXct")
   expect_is(datasetToTest$high, "numeric")
   expect_is(datasetToTest$low, "numeric")
@@ -26,6 +29,7 @@ zeros <- rep(0, number_rows)
 test_same_cryptocurrency_dataset <- lastweek_minute("BTC", "BTC")
 
 test_that("Cryptocurrency to analyze and compare are the same:", {
+  skip_if_not(curl::has_internet(), message = "no internet")
   expect_equivalent(test_same_cryptocurrency_dataset$high,ones)
   expect_equivalent(test_same_cryptocurrency_dataset$low,ones)
   expect_equivalent(test_same_cryptocurrency_dataset$close,ones)

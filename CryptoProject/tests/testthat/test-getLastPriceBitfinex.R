@@ -1,6 +1,8 @@
+
 priceToTest<- getLastPriceBitfinex("ETH", "BTC")
 
 test_that("Class of the price:", {
+  skip_if_not(curl::has_internet(), message = "no internet")
   expect_is(class(priceToTest)[2], "character")
 })
 
@@ -8,6 +10,7 @@ test_that("Class of the price:", {
 priceEqualOne <- getLastPriceBitfinex("ETH", "ETH")
 
 test_that("Class of the price:", {
+  skip_if_not(curl::has_internet(), message = "no internet")
   expect_equivalent(priceEqualOne, "1")
 })
 
@@ -15,6 +18,7 @@ test_that("Class of the price:", {
 priceEqualZero <- getLastPriceBitfinex("ILoveCordoba", "ETH")
 
 test_that("Class of the price:", {
+  skip_if_not(curl::has_internet(), message = "no internet")
   expect_equivalent(priceEqualZero, "0")
 })
 

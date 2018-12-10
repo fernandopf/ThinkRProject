@@ -13,9 +13,15 @@
 #' @importFrom utils head tail
 #' @importFrom jsonlite fromJSON
 #' @importFrom httr GET
+#' @importFrom curl has_internet
 #'
 #' @examples
 getLastPriceMultiplePlatforms <- function(cryptocurrency){
+
+  # First we need to check that we have internet connection (needed to call the API)
+  if (!has_internet()){
+    stop("You don't have internet connection")
+  }
 
   # Bittrex
   linkBittrex <- "https://bittrex.com/api/v1.1/public/getmarketsummaries"

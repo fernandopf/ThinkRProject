@@ -20,7 +20,6 @@
 #' @examples
 crypto <- function(timeframe, firstDay, lastDay, cryptocurrency = "BTC", comparison = "USD", n_MA, n_quick_MACD, n_slow_MACD, n_signal_MACD){
 
-
   if (timeframe %in% c("Week", "week", "Month", "month")){
     df <- day_hour(timeframe = "day", firstDay, lastDay, cryptocurrency, comparison);
     df.transformed <- weekly_monthly_transformation(df, timeframe);

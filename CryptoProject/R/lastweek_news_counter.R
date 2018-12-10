@@ -10,8 +10,15 @@
 #' @importFrom dplyr select filter mutate group_by summarise
 #' @importFrom lubridate floor_date
 #' @importFrom jsonlite fromJSON
+#' @importFrom curl has_internet
 #' @examples
 lastweek_news_counter <- function(cryptocurrency = "BTC" ){
+
+  # First we need to check that we have internet connection (needed to call the API)
+  if (!has_internet()){
+    stop("You don't have internet connection")
+  }
+
   #find the keywords
   currency.df <- fromJSON("https://api.hitbtc.com/api/2/public/currency")
   name <- currency.df %>%

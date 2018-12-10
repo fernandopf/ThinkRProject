@@ -13,18 +13,22 @@
 #' @importFrom dplyr mutate arrange
 #' @importFrom jsonlite fromJSON
 #' @importFrom glue glue
+#' @importFrom curl has_internet
 #'
 #' @return dataframe with all the information required
 #' @examples
 lastweek_minute <- function(cryptocurrency = "BTC", comparison = "USD", only_two_minutes = FALSE) {
 
-  #  If only_two_minutes is TRUE, returns only last two minutes price
+  # First we need to check that we have internet connection (needed to call the API)
+  if (!has_internet()){
+    stop("You don't have internet connection")
+  }
 
-  if (only_two_minutes == TRUE){
+  #  If only_two_minutes is TRUE, returns only last two minutes price
+  if (only_two_minutes){
     actualTime <- round(as.numeric(Sys.time()))
     MaxLimit <- as.numeric(Sys.time()-as.difftime(2, units="mins"))
   }
-
   else {
     actualTime <- round(as.numeric(Sys.time()))
     MaxLimit <- as.numeric(Sys.time()-as.difftime(7, units="days"))

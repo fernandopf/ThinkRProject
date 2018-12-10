@@ -15,10 +15,16 @@
 #' @importFrom dplyr mutate arrange
 #' @importFrom jsonlite fromJSON
 #' @importFrom glue glue
+#' @importFrom curl has_internet
 
 #' @return dataframe with all the information required
 #' @examples
 day_hour <- function(timeframe, firstDay, lastDay, cryptocurrency = "BTC", comparison = "USD") {
+
+  # First we need to check that we have internet connection (needed to call the API)
+  if (!has_internet()){
+    stop("You don't have internet connection")
+  }
 
   # Date
   firstDay <- as.Date(firstDay,format="%d/%m/%Y")
