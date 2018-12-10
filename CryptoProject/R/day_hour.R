@@ -24,8 +24,17 @@ day_hour <- function(timeframe, firstDay, lastDay, cryptocurrency = "BTC", compa
   firstDay <- as.Date(firstDay,format="%d/%m/%Y")
   lastDay <- as.Date(lastDay,format="%d/%m/%Y")
 
-  #if the start day and the end day in same day: set start day = end day - 1
+  # Error when firstDay is higher than lastDay
+  if (firstDay > lastDay){
+    stop("FirstDay cannot be higher than LastDay")
+  }
 
+  # Error when lastDay is higher than actual date
+  if (lastDay > Sys.time()){
+    stop("LastDay cannot be higher than actualDate")
+  }
+
+  #if the start day and the end day in same day: set start day = end day - 1
   if (firstDay == lastDay){
     firstDay <- firstDay - 1
   }

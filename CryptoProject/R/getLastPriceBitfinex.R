@@ -24,7 +24,7 @@ getLastPriceBitfinex <- function(cryptocurrency, comparison){
     return("0")
   } else {
     Bitfinex <- fromJSON(urlBitfinex)
-    PriceBitfinex <-  Bitfinex$last_price
+    PriceBitfinex <-  round(Bitfinex$last_price,2)
   }
   return(glue("{PriceBitfinex} {cryptocurrency}/{comparison}"))
 }

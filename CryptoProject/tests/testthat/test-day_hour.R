@@ -6,9 +6,9 @@ lastDay <- "01/01/2018"
 number_rows <- 24*as.numeric( as.Date(lastDay,format="%d/%m/%Y")-as.Date(firstDay,format="%d/%m/%Y"))
 datasetToTest <- day_hour("hour", firstDay, lastDay, "BTC", "ETH")
 
-# # Dataset that have been checked
-# test1 <- read.csv("data/test_day_hour1.csv", sep = ",")
-#
+# Dataset that have been checked
+test1 <- read.csv("tests/testthat/data/test_day_hour1.csv", sep = ",")
+
  test_that("Number of point dataset:", {
    expect_equal(nrow(datasetToTest), number_rows)
  })
