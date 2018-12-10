@@ -6,12 +6,17 @@ library(CryptoProject)
 library(plotly)
 library(shinydashboard) #Make tabs as buttons
 library(DT)
+library(shinycssloaders) #show loader when loading plot and table
 
 #Reading all possible currencies from CSV
 name_coins <- read.csv("data/coins.csv", header = FALSE)[,1]
 all_coins <- as.list(name_coins)
 names(all_coins) <- name_coins
 no_currency_coins <- all_coins[-c(1,2,3)]  #Without USD, EUR and GBP
+
+#Global parameter
+n <- 24
+options(spinner.color ="#A9A9A9")
 
 #User interface
 ui <- fluidPage(
@@ -65,7 +70,7 @@ ui <- fluidPage(
                                  #Number of points used to compute the slow moving average
                                  numericInput( inputId= "slow_MA",
                                                label = "Slow EMA",
-                                               value = 24, min = 2, max = 85, step = 1),
+                                               value = n, min = 2, max = 85, step = 1),
                                  
                                  #Number of points used to compute quick moving average
                                  numericInput( inputId= "quick_MA",
@@ -81,14 +86,15 @@ ui <- fluidPage(
                           tabPanel(title = "VOLUME", value = "VOLUME")
                         
                       ) #End of tabBox
-                    )
+                    ),
+            actionButton(inputId = "Run_tab1", label= "RUN APP")
 
           ), #End of Sidebar Panel-----------------
           
           #Main Panel: Plot
           mainPanel(
             htmlOutput("latestprice"),
-            plotlyOutput("mainPlot")
+            withSpinner(plotlyOutput("mainPlot"))
          )
       ) #End of Sidebar Layout
       
@@ -108,14 +114,16 @@ ui <- fluidPage(
                            selected = "USD", choices = all_coins ),
                #Grouping by what timeframe in news counter
                selectInput(inputId = "grouping", label = "News count group by what timeframe",
-                           selected = "3 hours", choices = c("Day" = "day", "12 Hours" = "12 hours", "6 Hours" = "6 hours", "3 Hours" = "3 hours", "1 Hour" = "hour") )
-                        )
-                      ,
+                           selected = "3 hours", 
+                           choices = c("Day" = "day", "12 Hours" = "12 hours",
+                                       "6 Hours" = "6 hours", "3 Hours" = "3 hours", "1 Hour" = "hour")),
+               actionButton(inputId = "Run_tab2", label= "RUN APP")
+                        ),
                #End of Sidebar Panel-----------------
                
         #Main Panel: Plot
         mainPanel(
-          plotlyOutput("lastweekPlot")
+          withSpinner(plotlyOutput("lastweekPlot"))
                  )
                 #End of siderbarLayout
                     )
@@ -132,15 +140,15 @@ ui <- fluidPage(
                  #The id of the cryptocurrency
                  #textInput( "cryptoID", label = "Enter Cryptocurrency ID", value = "BTC" )
                  selectInput(inputId = "cryptoID", label = "Enter Cryptocurrency ID",
-                             selected = "BTC", choices = no_currency_coins )
-               )
-               ,
+                             selected = "BTC", choices = no_currency_coins ),
+                 actionButton(inputId = "Run_tab3", label= "RUN APP")
+               ),
                #End of Sidebar Panel-----------------
 
                #Main Panel: Average price on six platform and Plot
                mainPanel(
                  htmlOutput("averageprice"),
-                 DTOutput(outputId ="pricetable")
+                 withSpinner(DTOutput(outputId ="pricetable"))
                )
                #End of siderbarLayout
              )#-------End of 3rd tab
@@ -175,23 +183,27 @@ server <- function(input, output, session){
     compare = "USD",
     ma = 5,
     quick_MA = 12,
-    slow_MA = 26,
+    slow_MA = n,
     signal_MA = 9
   )
   
   observe({
-    param1$coin <- input$currency
-    param1$compare <- input$comparison
-    param1$ma <- input$MA
-    param1$slow_MA <- input$slow_MA
-    param1$quick_MA <- input$quick_MA
-    param1$signal_MA <- input$signal_MA
+    
+      param1$coin <- input$currency
+      param1$compare <- input$comparison
+      param1$ma <- input$MA
+      param1$slow_MA <- input$slow_MA
+      param1$quick_MA <- input$quick_MA
+      param1$signal_MA <- input$signal_MA
+
   })
   
   #Boundary for maximum number of points to compute the moving average
   observe({
-    param1$timerange <- input$timerange
-    param1$frame <- input$timeframe
+
+      param1$timerange <- input$timerange
+      param1$frame <- input$timeframe
+
     
     if (input$timeframe == "day"){
 
@@ -242,21 +254,23 @@ server <- function(input, output, session){
   
   #Options of timeframe when the time range is changed
   observe({
-    if( as.numeric(input$timerange[2] - input$timerange[1]) > 26 * 30 ){
+    #n = 24 because its a constraint in the statistics of slow_MA
+    #If the timerange is bigger than 24 months: we can compute default slow_MA for month size data points
+    if( as.numeric(input$timerange[2] - input$timerange[1]) > n * 30 ){
             updateSelectInput(session, inputId = "timeframe", label = "Choose first and last day: ",
                         selected = "month", choices = c("Month" = "month", "Week" = "week", "Day" = "day") )
         }
-        #If the timerange is bigger than 3 months but smaller than a year, timeframe can be week or day
-        else if( as.numeric(input$timerange[2] - input$timerange[1]) > 26 * 7 ){
+        #If the timerange is bigger than 24 weeks: we can compute default slow_MA for week size data points
+        else if( as.numeric(input$timerange[2] - input$timerange[1]) > n * 7 ){
           updateSelectInput(session, inputId = "timeframe", label = "Choose first and last day: ",
                         selected = "week", choices = c( "Week" = "week", "Day" ="day") )
         }
-        #If the timerange is bigger than 1 month but smaller than 3, timeframe can only be week or day
-        else if( as.numeric(input$timerange[2] - input$timerange[1]) > 26 ){
+        #If the timerange is bigger than 24 days: we can compute default slow_MA for day size data points
+        else if( as.numeric(input$timerange[2] - input$timerange[1]) > n ){
           updateSelectInput(session, inputId = "timeframe", label = "Choose first and last day: ",
                         selected = "day", choices = c( "Day" = "day") )
         }
-        #If the timerange is smaller than 1 week, timeframe can be day or hour
+        #If the timerange is bigger than 24 hours: we can compute default slow_MA for hour size data points
         else {
           updateSelectInput(session, inputId = "timeframe", label = "Choose first and last day: ",
                         selected = "hour", choices = c("Hour" = "hour") )
@@ -265,7 +279,7 @@ server <- function(input, output, session){
 
   #------------------------------------------------------------------------------------
   
-  #First tab plot: Currency prices, moving averages,...; default MACD
+  #First tab default plot: Currency prices, moving averages,...; default MACD
   output$mainPlot <- renderPlotly({
     
     frame <- param1$frame
@@ -291,27 +305,32 @@ server <- function(input, output, session){
   
   #Transforming plot when MACD or VOLUME tab selected
   observe({
-    frame <- param1$frame
-    start <- param1$timerange[1]
-    end <- param1$timerange[2]
-    coin <- param1$coin
-    compare <- param1$compare
-    ma <- param1$ma
-    slow_ma <- param1$slow_MA 
-    quick_ma <- param1$quick_MA 
-    signal_ma <- param1$signal_MA
+    input$Run_tab1   #Only change plot when user clicks on Run APP button
     
-    #Change main plot if user choose MACD
-    if (input$tabset == "MACD") {
-  
-    output$mainPlot <- renderPlotly({
+    isolate({
       
-      df <- crypto(timeframe = frame, firstDay = format(start, "%d/%m/%Y"),
-                   lastDay = format(end, "%d/%m/%Y"),
-                   cryptocurrency = coin, comparison = compare,
-                   n_MA = ma, n_quick_MACD = quick_ma, n_slow_MACD = slow_ma, n_signal_MACD = signal_ma)
+      frame <- param1$frame
+      start <- param1$timerange[1]
+      end <- param1$timerange[2]
+      coin <- param1$coin
+      compare <- param1$compare
+      ma <- param1$ma
+      slow_ma <- param1$slow_MA 
+      quick_ma <- param1$quick_MA 
+      signal_ma <- param1$signal_MA
+      
+      #Change main plot if user choose MACD
+      if (input$tabset == "MACD") {
     
-      candle_plot(df, MACD)
+      output$mainPlot <- renderPlotly({
+        
+        df <- crypto(timeframe = frame, firstDay = format(start, "%d/%m/%Y"),
+                     lastDay = format(end, "%d/%m/%Y"),
+                     cryptocurrency = coin, comparison = compare,
+                     n_MA = ma, n_quick_MACD = quick_ma, n_slow_MACD = slow_ma, n_signal_MACD = signal_ma)
+      
+        candle_plot(df, MACD)
+      
       }) #End of render
     } #End of if
     
@@ -328,7 +347,7 @@ server <- function(input, output, session){
       candle_plot(df, volume)
     }) #End of render
     }#End of else if
-    
+    }) #End of isolate
     
     #Print the latest price
     output$latestprice <- renderText({
@@ -349,9 +368,13 @@ server <- function(input, output, session){
   )
   
   observe({
-    param2$cryptocurrency <- input$currency2
-    param2$comparison <- input$comparison2
-    param2$grouping <- input$grouping
+    input$Run_tab2   #Only change plot when user clicks on Run APP button
+    
+    isolate({
+      param2$cryptocurrency <- input$currency2
+      param2$comparison <- input$comparison2
+      param2$grouping <- input$grouping
+    })
   })
   
   #------------------------------------------------------------------------------------
@@ -374,7 +397,10 @@ server <- function(input, output, session){
   )
 
   observe({
-    param3$cryptoID <- input$cryptoID
+    input$Run_tab3   #Only change plot when user clicks on Run APP button
+    isolate({
+      param3$cryptoID <- input$cryptoID
+    })
   })
 
   #------------------------------------------------------------------------------------
