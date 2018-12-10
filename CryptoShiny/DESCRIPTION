@@ -1,0 +1,34 @@
+Package: CryptoShiny
+Title: What the Package Does (one line, title case)
+Version: 0.0.0.9008
+Authors@R: person("Jiahao", "Wang", email = "jiahao.wang@polytechnique.edu", role = c("aut", "cre"))
+Description: What the package does (one paragraph).
+Depends: R (>= 3.5.0)
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: knitr
+Imports: 
+    jsonlite,
+    dplyr,
+    magrittr,
+    curl,
+    lubridate,
+    utils,
+    pracma,
+    plotly,
+    rlang,
+    stats,
+    glue,
+    httr,
+    ggplot2,
+    shinycssloaders,
+    shiny,
+    DT,
+    shinythemes,
+    shinydashboard
+RoxygenNote: 6.1.1

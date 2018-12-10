@@ -1,0 +1,100 @@
+---
+title: "Vignette Title"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r}
+library(CryptoShiny)
+```
+
+
+### Dataset_daily_hourly
+
+```{r}
+example1 <- day_hour("day", "01/12/2017", "01/08/2018", "BTC", "USD")
+head(example1)
+```
+
+###lastweek minute data
+
+
+```{r}
+
+minuteExample <- lastweek_minute("BTC", "USD")
+head(minuteExample)
+
+```
+
+###Tsp_data
+
+```{r}
+now <- round(as.numeric(as.POSIXct(Sys.time(), format="%Y/%m/%d")))
+Tsp_data(now) %>% head()
+```
+
+
+###lastweek_news_counter example
+
+```{r}
+lastweek_news_counter("BTC") %>% head()
+```
+
+
+
+### Transfer daily or hourily data to weekly or monthly data
+
+
+```{r}
+example2 <- weekly_monthly_transformation(example1, "week")
+head(example2)
+```
+
+
+```{r}
+averages(example2, 5, 26, 12, 9)
+```
+
+
+### Master function (only works for non-minute data)
+
+```{r}
+example3 <- crypto("week", "01/12/2017", "01/08/2018", "BTC", "USD",5, 26, 12, 9)
+tail(example3)
+```
+
+```{r}
+example4 <- crypto("hour", "01/07/2018", "01/08/2018", "BTC", "USD",5, 26, 12, 9)
+tail(example4)
+```
+
+### Function to get the correlation
+
+```{r}
+correlation <- crypto_correlation("01/09/2018", "01/10/2018", "GBP", "UBT")
+print(correlation)
+```
+
+###Candlestick plot example
+
+```{r}
+candle_plot(data= example4, volume)
+```
+
+### Function to get the last Price from Multiple Platforms
+```{r}
+lastPrice <- getLastPriceMultiplePlatforms("BTC")
+head(lastPrice)
+```
+### Function to get the last Price from Bitfinex
+```{r}
+lastPrice <- getLastPriceBitfinex("ETH", "BTC")
+print(lastPrice)
+```
+
+
