@@ -4,7 +4,7 @@
 \name{coins}
 \alias{coins}
 \title{This is data to be included in my package}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 23 rows and 1 columns.}
+\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 24 rows and 1 columns.}
 \usage{
 coins
 }

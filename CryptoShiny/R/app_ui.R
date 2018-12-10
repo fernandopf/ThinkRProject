@@ -12,12 +12,10 @@
 app_ui <- function() {
 
   #Reading all possible currencies from CSV
-  name_coins <- (CryptoShiny::coins)[,1]
+  name_coins <- (CryptoShiny::coins)
     #read.csv("data/coins.csv", header = FALSE)[,1]
   all_coins <- as.list(name_coins)
-  names(all_coins) <- name_coins
-  no_currency_coins <- all_coins[-c(1,2,3)]  #Without USD, EUR and GBP
-
+  no_currency_coins <- as.list(name_coins[-c(1,2,3),])  #Without USD, EUR and GBP
   #Global parameter
   n <- 24
   options(spinner.color ="#A9A9A9")

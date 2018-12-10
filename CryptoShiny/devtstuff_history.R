@@ -35,6 +35,6 @@ usethis::use_package("shinydashboard")
 #Documents
 devtools::document()
 
-coins <- read_csv("data-raw/coins.csv")
-usethis::use_data(coins)
+coins <- read_csv("data-raw/coins.csv", col_names = TRUE)[,1]
+usethis::use_data(coins, overwrite = TRUE)
 
