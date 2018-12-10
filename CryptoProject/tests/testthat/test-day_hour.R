@@ -8,7 +8,8 @@ number_rows <- 24*as.numeric( as.Date(lastDay,format="%d/%m/%Y")-as.Date(firstDa
 datasetToTest <- day_hour("hour", firstDay, lastDay, "BTC", "ETH")
 
 # Dataset that have been checked
-test1 <- read.csv("tests/testthat/data/day_hour_test1.csv", sep = ",")
+pathTest1 <- system.file("extdata","day_hour_test1.csv",package = "CryptoProject")
+test1 <- read.csv(pathTest1, sep = ",")
 
 test_that("Number of point dataset:", {
  expect_equal(nrow(datasetToTest), number_rows)

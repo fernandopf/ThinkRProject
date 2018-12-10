@@ -9,7 +9,9 @@ test_that("Number of point dataset:", {
 })
 
 # Dataset that have been checked
-test1 <- read.csv("tests/testthat/data/crypto_test1.csv", sep = ",")
+pathTest1 <- system.file("extdata","crypto_test1.csv",package = "CryptoProject")
+test1 <- read.csv(pathTest1, sep = ",")
+
 
 # Test the price of a good datased that have been checked
 test_that("Price of the dataset:", {
