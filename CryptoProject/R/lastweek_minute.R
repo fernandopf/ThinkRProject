@@ -6,6 +6,7 @@
 #' This function has been designed to get a dataframe from the cryptocompare API with the highest, lowest, open and close price from the cryptocurrency chosen in minute of the last week.
 #' @param cryptocurrency cryptocurrency to analyse
 #' @param comparison currency to be compared
+#' @param only_two_minutes whether only output last two minutes data
 #'
 #' @return dataframe with the time, highest price, lowest price, open price, close price of the chosen timeframe
 #' @export lastweek_minute
@@ -15,10 +16,19 @@
 #'
 #' @return dataframe with all the information required
 #' @examples
-lastweek_minute <- function(cryptocurrency = "BTC", comparison = "USD") {
+lastweek_minute <- function(cryptocurrency = "BTC", comparison = "USD", only_two_minutes = FALSE) {
 
-  actualTime <- round(as.numeric(Sys.time()))
-  MaxLimit <- as.numeric(Sys.time()-as.difftime(7, units="days"))
+  #  If only_two_minutes is TRUE, returns only last two minutes price
+
+  if (only_two_minutes == TRUE){
+    actualTime <- round(as.numeric(Sys.time()))
+    MaxLimit <- as.numeric(Sys.time()-as.difftime(2, units="mins"))
+  }
+
+  else {
+    actualTime <- round(as.numeric(Sys.time()))
+    MaxLimit <- as.numeric(Sys.time()-as.difftime(7, units="days"))
+  }
 
   # Number of points of  dataframe
   n <- round(actualTime-MaxLimit)/60

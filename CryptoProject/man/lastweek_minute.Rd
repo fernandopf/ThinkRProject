@@ -4,12 +4,15 @@
 \alias{lastweek_minute}
 \title{lastweek_minute}
 \usage{
-lastweek_minute(cryptocurrency = "BTC", comparison = "USD")
+lastweek_minute(cryptocurrency = "BTC", comparison = "USD",
+  only_two_minutes = FALSE)
 }
 \arguments{
 \item{cryptocurrency}{cryptocurrency to analyse}
 
 \item{comparison}{currency to be compared}
+
+\item{only_two_minutes}{whether only output last two minutes data}
 }
 \value{
 dataframe with the time, highest price, lowest price, open price, close price of the chosen timeframe

@@ -333,7 +333,8 @@ server <- function(input, output, session){
     #Print the latest price
     output$latestprice <- renderText({
       autoInvalidate()
-      glue::glue("<font color=\"#FF0000\"><TT><font size=10>{getLastPriceBitfinex(coin, compare)}</TT></font>     <p><TT><font size=3>update time: {as.character(Sys.time())}</TT></font>")
+      temp <- lastweek_minute(coin, compare, only_two_minutes = TRUE)
+      glue::glue("<font color=\"#FF0000\"><TT><font size=10>{temp[2,2]}</TT></font> <TT><font size=3>{coin}/{compare}</TT></font>    <p><TT><font size=3>update time: {as.character(Sys.time())}</TT></font>")
     })
     
   }) #End of observer for plot transformation due to tab selection
