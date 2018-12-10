@@ -1,4 +1,5 @@
 
+# Set the dates to have more than one call to the API
 firstDay <- "01/08/2017"
 lastDay <- "01/01/2018"
 
@@ -7,16 +8,16 @@ number_rows <- 24*as.numeric( as.Date(lastDay,format="%d/%m/%Y")-as.Date(firstDa
 datasetToTest <- day_hour("hour", firstDay, lastDay, "BTC", "ETH")
 
 # Dataset that have been checked
-test1 <- read.csv("tests/testthat/data/test_day_hour1.csv", sep = ",")
+test1 <- read.csv("tests/testthat/data/day_hour_test1.csv", sep = ",")
 
- test_that("Number of point dataset:", {
-   expect_equal(nrow(datasetToTest), number_rows)
- })
+test_that("Number of point dataset:", {
+ expect_equal(nrow(datasetToTest), number_rows)
+})
 
 # Test the price of a good datased that have been checked
-# test_that("Price of the dataset:", {
-#   expect_equivalent(datasetToTest$high,test1$high)
-# })
+test_that("Price of the dataset:", {
+   expect_equivalent(datasetToTest$high,test1$high)
+})
 
 # Test the class of the variables of the dataset
 test_that("Type of elements dataset:", {
@@ -29,10 +30,16 @@ test_that("Type of elements dataset:", {
   expect_is(datasetToTest$direction, "character")
 })
 
-# Test the error when the initial date is higher than the actual day
+# Test the error when the initial or last date is higher than the actual day
 higherDate <- format(Sys.time()+as.difftime(1, units="days"), "%d/%m/%Y")
 test_that("Error in the function:", {
   expect_error(day_hour("hour", higherDate, lastDay, "BTC", "ETH"))
+})
+
+
+# Test the error when the initial date is higher than lastday
+test_that("Error in the function:", {
+  expect_error(day_hour("hour", "02/01/2018", "01/01/2018", "BTC", "ETH"))
 })
 
 
