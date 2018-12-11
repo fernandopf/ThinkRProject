@@ -20,8 +20,6 @@ app_server <- function(input, output, session){
   #-------------------first tab---------------------------------------------------------------
 
 
-
-
   #All parameters for 1st tab
   param1 <- reactiveValues(
     frame = "day",
@@ -214,7 +212,6 @@ app_server <- function(input, output, session){
     cryptocurrency = "BTC",
     comparison = "USD"
   )
-
   observe({
     input$Run_tab2   #Only change plot when user clicks on Run APP button
 
@@ -229,11 +226,8 @@ app_server <- function(input, output, session){
 
   #Second tab plot: Currency prices from last week per minute; News count
   output$lastweekPlot <- renderPlotly({
-
-
     lastweekplot <- plot_lastweek(cryptocurrency = param2$cryptocurrency,
                                   comparison = param2$comparison, grouping = param2$grouping)
-
     lastweekplot
   })
 
@@ -264,6 +258,89 @@ app_server <- function(input, output, session){
     glue("<font color=\"#FF0000\"><TT><font size=3>The average price is</TT></font> <TT><font size=10>{meanprice}</TT></font> <TT><font size=3>{param3$cryptoID}/USD</TT></font>   <p><TT><font size=3>update time: {as.character(Sys.time())}</TT></font>")
   })
 
+
+
+
+
+  #-------------------forth tab---------------------------------------------------------------
+  param4 <- reactiveValues(
+    #action button 4.1
+    starting_date = "01/01/2017",
+    initial_USD = 5000,
+    initial_pocket = data.frame("date" = as.POSIXct("01/01/2017",format="%d/%m/%Y", origin = "1970-01-01",tz = "GMT"),
+                                "USD" = 5000,"EUR" = 0, "GBP" = 0,
+                                "BTC" = 0, "ETH" = 0, "BNB" = 0, "BCC" = 0, "NEO" = 0,
+                                "LTC" = 0, "QTUM" = 0, "ADA" = 0, "XRP" = 0, "EOS" = 0,
+                                "TUSD" = 0, "IOTA" = 0, "XLM" = 0, "ONT" = 0, "TRX" = 0,
+                                "ETC" = 0, "ICX" = 0, "VEN" = 0, "NULS" = 0, "VET" = 0,
+                                "PAX" = 0),
+
+    #action button 4.2
+    transaction_date = "05/05/2017",
+    buycurrency = "BTC",
+    sellcurrency = "USD",
+    unit = 0.02,
+    pocket = data.frame("date" = as.POSIXct("01/01/2017",format="%d/%m/%Y", origin = "1970-01-01",tz = "GMT"),
+                        "USD" = 5000,"EUR" = 0, "GBP" = 0,
+                        "BTC" = 0, "ETH" = 0, "BNB" = 0, "BCC" = 0, "NEO" = 0,
+                        "LTC" = 0, "QTUM" = 0, "ADA" = 0, "XRP" = 0, "EOS" = 0,
+                        "TUSD" = 0, "IOTA" = 0, "XLM" = 0, "ONT" = 0, "TRX" = 0,
+                        "ETC" = 0, "ICX" = 0, "VEN" = 0, "NULS" = 0, "VET" = 0,
+                        "PAX" = 0)
+  )
+  #------------------------------------------------------------------------------------
+  #Set the pocket
+  observe({
+    input$Run_tab4.1
+    isolate({
+      #can be modified under reactive environment:render,observe,reactive.
+      param4$starting_date <- input$starting_date
+      param4$initial_USD <- input$initial_USD
+      param4$initial_pocket <- data.frame("date" = as.POSIXct(input$starting_date,format="%d/%m/%Y", origin = "1970-01-01",tz = "GMT"),
+                                          "USD" = input$initial_USD,"EUR" = 0, "GBP" = 0,
+                                          "BTC" = 0, "ETH" = 0, "BNB" = 0, "BCC" = 0, "NEO" = 0,
+                                          "LTC" = 0, "QTUM" = 0, "ADA" = 0, "XRP" = 0, "EOS" = 0,
+                                          "TUSD" = 0, "IOTA" = 0, "XLM" = 0, "ONT" = 0, "TRX" = 0,
+                                          "ETC" = 0, "ICX" = 0, "VEN" = 0, "NULS" = 0, "VET" = 0,
+                                          "PAX" = 0)
+    })
+  })
+
+
+  #------------------------------------------------------------------------------------
+  #make the transaction
+  observe({
+    input$Run_tab4.2
+    isolate({
+      param4$transaction_date <- input$transaction_date
+      param4$buycurrency <- input$buycurrency
+      param4$sellcurrency <- input$sellcurrency
+      param4$unit <- input$unit
+    })
+  })
+
+  observeEvent(input$Run_tab4.1, {
+    param4$pocket <- param4$initial_pocket
+
+  })
+
+  observeEvent(input$Run_tab4.2, {
+    param4$pocket <- transaction(pocket_log = param4$pocket, input$unit,
+                                 buycurrency = input$buycurrency, sellcurrency = input$sellcurrency,
+                                 day = input$transaction_date)
+
+  })
+
+  output$pocket_log <- renderDT({
+    param4$pocket
+  })
+
+  output$netusdvalue <- renderText({
+
+
+    netusdvalue <- NetUSDValue(as.list( param4$pocket[nrow(param4$pocket),]), param4$pocket[nrow(param4$pocket),1] )
+    glue("<font color=\"#FF0000\"><TT><font size=3>The net values in your pocket is:</TT></font> <TT><font size=10>{netusdvalue}</TT></font> <TT><font size=3>USD</TT></font> <TT><font size=3>in day T :{param4$transaction_date}</TT></font>")
+  })
 
 
 } #End of server---------

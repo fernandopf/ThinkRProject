@@ -153,11 +153,58 @@ app_ui <- function() {
                             withSpinner(DTOutput(outputId ="pricetable"))
                           )
                           #End of siderbarLayout
-                        )#-------End of 3rd tab
+                        )
+                        ),#-------End of 3rd tab
+                        #------------------------------------4th tabPanel-------------------------------------
+              tabPanel("Trading simulation",
+              fluidRow(
+              #first column
+              column(3,
 
-               )
+              dateInput(inputId = "starting_date",
+                                label = "Choose a date to start the simulation",
+                                value = "01/01/2017",
+                                min = "2010-01-01", max = Sys.Date(),
+                                format = "dd/mm/yy",startview = 'year',
+                                language = 'fr', weekstart = 1),
 
-    ) #End NavBar
+              sliderInput("initial_USD",
+                          "How much you have?",
+                          min = 0, max = 50000,
+                          value = 5000, step = 100 ),
 
-  )#End of UI-------------------------
+              actionButton(inputId = "Run_tab4.1", label= "Let's go!")
+
+
+                ),#-------End of 1 column
+              column(3,
+                     dateInput(inputId = "transaction_date",
+                               label = "Day T",
+                               value = "05/05/2017",
+                               ###################
+                               #need to update the min constrain
+                               min = "01/01/2017", max = Sys.Date(),
+                               ###################
+                               format = "dd/mm/yy",startview = 'year',
+                               language = 'fr', weekstart = 1),
+                     selectInput(inputId = "buycurrency", label = "Currency you want to buy",
+                                 selected = "BTC", choices = all_coins ),
+                     selectInput(inputId = "sellcurrency", label = "Currency you want to sell",
+                                 selected = "USD", choices = all_coins ),
+                     ###################
+                     #htmlOutput("exchange"),
+                     ###################
+                     numericInput( "unit", label = "How many units?",
+                                   value = 0.02, min = 0, max = 1000, step = 1 ),
+                     actionButton(inputId = "Run_tab4.2", label= "Buy!")
+              ), #End of second column
+              #---------- 3rd column
+                column(10,
+                       htmlOutput("netusdvalue"),
+                       withSpinner(DTOutput(outputId ="pocket_log"))
+                       )
+              )#End of FluidRow
+          )#End of 4th tab
+        ) #End NavBar
+     ) #End fluidPage
 }
