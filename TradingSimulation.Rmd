@@ -1,0 +1,73 @@
+---
+title: "TradingSimulation"
+author: "Ching-yu LIN"
+date: "12/11/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(CryptoShiny)
+library(tidyverse)
+```
+
+```{r}
+pocket <- c("USD" = 100000, "BTC" = 0, "ETH" = 0)
+pocket
+
+#return the pocket after transaction
+transaction <- function(pocket, unit = 1, buycurrency = "BTC", sellcurrency = "USD", day = "01/12/2016") {
+  df <- day_hour("day", day, day, "BTC", "USD")
+  pocket[[sellcurrency]] <- pocket[[sellcurrency]]- unit*df[2,4]
+  pocket[[buycurrency]] <- pocket[[buycurrency]] + unit
+  return(pocket)
+}
+pocket <- transaction(pocket = pocket, unit = 10, buycurrency = "BTC", sellcurrency = "USD", day = "01/12/2016")
+pocket
+```
+
+
+```{r}
+NetUSDValue <- function(pocket, day = "01/10/2018"){
+  netusdvalue <- 0
+  for (name in names(pocket)){
+    df <- day_hour("day", day, day, name, "USD")
+    netusdvalue = netusdvalue + df[2,4]*pocket[[name]]
+  }
+  return(netusdvalue)
+}
+NetUSDValue(pocket)
+```
+
+```{r}
+NetUSDValue.df <- function(pocket, firstDay = "01/09/2018", lastDay = "01/12/2018"){
+  #Use the usd dataframe as base dataframe to sum the netvalue
+  netusdvalue.df <- day_hour("day", firstDay, lastDay, "USD", "USD") %>% 
+    mutate(netvalue = open*pocket[["USD"]]) %>% 
+    select(date, netvalue)
+  
+  #loop over all other non-usd-currencies 
+  for (name in names(pocket)){
+    if (name != "USD") {
+      df <- day_hour("day", firstDay, lastDay, name, "USD") %>% 
+    mutate(netvalue = open*pocket[[name]]) %>% 
+    select(date, netvalue)
+      
+      #sum two dataframe 
+      netusdvalue.df$netvalue <- netusdvalue.df$netvalue + df$netvalue
+      } #End of if
+    } #End of for loop
+  return(netusdvalue.df)
+}
+```
+
+
+```{r}
+NetUSDValue.df(pocket)
+```
+
+#Pocket history:
+#Net value based on the at-the-moment pocket
+
+
+
