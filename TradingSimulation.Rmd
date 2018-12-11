@@ -20,51 +20,63 @@ library(tidyverse)
 ```
 
 ```{r}
+#include the netvalue when doing the transaction
 #pocket <- c("USD" = 100000, "BTC" = 0, "ETH" = 0)
 startday = "01/10/2018"
 pocket_log <- data.frame("date" = as.POSIXct(startday,format="%d/%m/%Y", origin = "1970-01-01",tz = "GMT"),
-                         "USD" = 1000,"EUR" = 0, "GBP" = 0, "BTC" = 0, "ETH" = 0, "BNB" = 0, "BCC" = 0, "NEO" = 0, "LTC" = 0, "QTUM" = 0, "ADA" = 0, "XRP" = 0, "EOS" = 0, "TUSD" = 0, "IOTA" = 0, "XLM" = 0, "ONT" = 0, "TRX" = 0, "ETC" = 0, "ICX" = 0, "VEN" = 0, "NULS" = 0, "VET" = 0, "PAX" = 0)
-
-pocket_log[nrow(pocket_log), 1 : ncol(pocket_log)] 
+                         "NetUSDvalue" = 1000,"USD" = 1000,"EUR" = 0, "GBP" = 0, "BTC" = 0, "ETH" = 0, "BNB" = 0, "BCC" = 0, "NEO" = 0, "LTC" = 0, "QTUM" = 0, "ADA" = 0, "XRP" = 0, "EOS" = 0, "TUSD" = 0, "IOTA" = 0, "XLM" = 0, "ONT" = 0, "TRX" = 0, "ETC" = 0, "ICX" = 0, "VEN" = 0, "NULS" = 0, "VET" = 0, "PAX" = 0)
 
 #return the pocket_log after transaction
-transaction <- function(pocket, unit = 1, buycurrency = "BTC", sellcurrency = "USD", day = "05/12/2018") {
-  df <- day_hour("day", day, day, "BTC", "USD")
+transaction <- function(pocket_log, unit = 1, buycurrency = "BTC", sellcurrency = "USD", day = "05/12/2018", allowNegative = TRUE) {
+  
+  df <- day_hour("day", day, day, buycurrency, sellcurrency)
+  exchange <- df[2,4]
+  
+  #if allowNegative equals FALSE and the transaction leads to negative units --> return origin pocket_log
+  if ((allowNegative == FALSE) & (pocket_log[nrow(pocket_log),sellcurrency] - exchange * unit < 0)){
+    return(pocket_log)
+  }
+  else {
   #record the transaction date
   pocket_log[nrow(pocket_log)+1, 1] <- as.POSIXct(day,format="%d/%m/%Y", origin = "1970-01-01",tz = "GMT")
   #copy the amount of currencies from previous log
-  pocket_log[nrow(pocket_log), 2 : ncol(pocket_log)] <- pocket_log[nrow(pocket_log) - 1, 2 : ncol(pocket_log)]
+  pocket_log[nrow(pocket_log), 3 : ncol(pocket_log)] <- pocket_log[nrow(pocket_log) - 1, 3 : ncol(pocket_log)]
   #sell the currency and record on the lastest row at df[2,4] price
-  pocket_log[nrow(pocket_log),sellcurrency] <- (pocket_log[nrow(pocket_log),sellcurrency]) - (df[2,4]) * unit
+  pocket_log[nrow(pocket_log),sellcurrency] <- pocket_log[nrow(pocket_log),sellcurrency] - exchange * unit
   #buy the currency
-  pocket_log[nrow(pocket_log),buycurrency] <- pocket_log[nrow(pocket_log),buycurrency] + unit
+  pocket_log[nrow(pocket_log),buycurrency ] <- pocket_log[nrow(pocket_log),buycurrency] + unit
+  #Net value
   
+  pocket_log[nrow(pocket_log),2] <- NetUSDValue(as.list(pocket_log[nrow(pocket_log),]),pocket_log[nrow(pocket_log),1] )
   return(pocket_log)
-  # for a single pocket
-  # pocket[[sellcurrency]] <- pocket[[sellcurrency]]- unit*df[2,4]
-  # pocket[[buycurrency]] <- pocket[[buycurrency]] + unit
-  # return(pocket)
+  }
 }
 pocket_log <- transaction(pocket = pocket_log, unit = 0.02, buycurrency = "BTC", sellcurrency = "USD", day = "05/12/2018")
 pocket_log <- transaction(pocket = pocket_log, unit = 0.002, buycurrency = "BNB", sellcurrency = "USD", day = "07/12/2018")
-pocket_log <- transaction(pocket = pocket_log, unit = 0.1, buycurrency = "EUR", sellcurrency = "USD", day = "10/12/2018")
+pocket_log <- transaction(pocket = pocket_log, unit = 100, buycurrency = "EUR", sellcurrency = "USD", day = "10/12/2018")
+pocket_log <- transaction(pocket = pocket_log, unit = 80, buycurrency = "USD", sellcurrency = "BTC", day = "11/12/2018")
 
-pocket_log #why euro so expensive!!!???
-
-day_hour("day", "10/12/2018","10/12/2018", "EUR", "USD")[2,4] 
+pocket_log %>% 
+  ggplot(aes(x = date, y = NetUSDvalue)) +
+  geom_line()
 ```
 
 
 ```{r}
-NetUSDValue <- function(pocket, day = "01/10/2018"){
+NetUSDValue <- function(pocket, day = "11/12/2018"){
   netusdvalue <- 0
-  for (name in names(pocket)){
-    df <- day_hour("day", day, day, name, "USD")
-    netusdvalue = netusdvalue + df[2,4]*pocket[[name]]
-  }
+  for (name in names(pocket)){ #loop for none zero value currencies
+    if (name != "date" & name != "NetUSDvalue"){ 
+        if(pocket[[name]] != 0){
+      df <- day_hour("day", day, day, name, "USD")
+      netusdvalue = netusdvalue + df[2,4]*pocket[[name]]
+    }} #end of if
+  }#end of for
   return(netusdvalue)
 }
-NetUSDValue(pocket)
+
+#How to put the pocket_log inside the NetUSDValue 
+NetUSDValue(as.list(pocket_log[nrow(pocket_log),]),pocket_log[nrow(pocket_log),1] )
 ```
 
 ```{r}
@@ -88,14 +100,6 @@ NetUSDValue.df <- function(pocket, firstDay = "01/09/2018", lastDay = "01/12/201
   return(netusdvalue.df)
 }
 ```
-
-
-```{r}
-NetUSDValue.df(pocket)$date %>% class()
-```
-
-#Pocket history:
-#Net value based on the at-the-moment pocket
 
 
 
