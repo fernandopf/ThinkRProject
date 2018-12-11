@@ -15,6 +15,7 @@ globalVariables(
     "symbol",
     "fullName",
     "time",
-    "MACD"
+    "MACD",
+    "NetUSDvalue"
   )
 )

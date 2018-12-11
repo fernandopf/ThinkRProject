@@ -12,7 +12,7 @@
 NetUSDValue <- function(pocket, day = "11/12/2018"){
   netusdvalue <- 0
   for (name in names(pocket)){ #loop for none zero value currencies
-    if (name != "date"){
+    if (name != "date" & name != "NetUSDvalue"){
       if(pocket[[name]] != 0){
         df <- day_hour("day", day, day, name, "USD")
         netusdvalue = netusdvalue + df[2,4]*pocket[[name]]
@@ -20,3 +20,4 @@ NetUSDValue <- function(pocket, day = "11/12/2018"){
   }#end of for
   return(netusdvalue)
 }
+

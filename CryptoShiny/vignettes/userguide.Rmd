@@ -98,3 +98,21 @@ print(lastPrice)
 ```
 
 
+### Function to get the Net Value in USD in pocket
+```{r}
+pocket <- c("USD" = 100000, "BTC" = 0, "ETH" = 0)
+NetUSDValue(pocket, day = "11/12/2018")
+```
+
+### Function to do the transaction
+```{r}
+startday <- "01/10/2018"
+pocket_log <- data.frame("date" = as.POSIXct(startday,format="%d/%m/%Y", origin = "1970-01-01",tz = "GMT"),
+                         "NetUSDvalue" = 1000,"USD" = 1000,"EUR" = 0, "GBP" = 0, "BTC" = 0, "ETH" = 0, "BNB" = 0, "BCC" = 0, "NEO" = 0, "LTC" = 0, "QTUM" = 0, "ADA" = 0, "XRP" = 0, "EOS" = 0, "TUSD" = 0, "IOTA" = 0, "XLM" = 0, "ONT" = 0, "TRX" = 0, "ETC" = 0, "ICX" = 0, "VEN" = 0, "NULS" = 0, "VET" = 0, "PAX" = 0)
+pocket_log <- transaction(pocket = pocket_log, unit = 0.02, buycurrency = "BTC", sellcurrency = "USD", day = "05/12/2018")
+pocket_log <- transaction(pocket = pocket_log, unit = 0.002, buycurrency = "BNB", sellcurrency = "USD", day = "07/12/2018")
+pocket_log <- transaction(pocket = pocket_log, unit = 100, buycurrency = "EUR", sellcurrency = "USD", day = "10/12/2018")
+pocket_log
+```
+
+

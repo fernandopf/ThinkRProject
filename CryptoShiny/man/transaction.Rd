@@ -5,7 +5,7 @@
 \title{transaction}
 \usage{
 transaction(pocket_log, unit = 1, buycurrency = "BTC",
-  sellcurrency = "USD", day = "05/12/2018")
+  sellcurrency = "USD", day = "05/12/2018", allowNegative = TRUE)
 }
 \arguments{
 \item{pocket_log}{a data.frame which have the columns date and different currencies}
@@ -17,6 +17,8 @@ transaction(pocket_log, unit = 1, buycurrency = "BTC",
 \item{sellcurrency}{the currency you used to buy the buycurrency}
 
 \item{day}{the day you do the transaction}
+
+\item{allowNegative}{whether or not allow negative units happend}
 }
 \value{
 a updated pocket_log

@@ -268,7 +268,7 @@ app_server <- function(input, output, session){
     starting_date = "01/01/2017",
     initial_USD = 5000,
     initial_pocket = data.frame("date" = as.POSIXct("01/01/2017",format="%d/%m/%Y", origin = "1970-01-01",tz = "GMT"),
-                                "USD" = 5000,"EUR" = 0, "GBP" = 0,
+                                "NetUSDvalue" = 5000, "USD" = 5000,"EUR" = 0, "GBP" = 0,
                                 "BTC" = 0, "ETH" = 0, "BNB" = 0, "BCC" = 0, "NEO" = 0,
                                 "LTC" = 0, "QTUM" = 0, "ADA" = 0, "XRP" = 0, "EOS" = 0,
                                 "TUSD" = 0, "IOTA" = 0, "XLM" = 0, "ONT" = 0, "TRX" = 0,
@@ -281,13 +281,35 @@ app_server <- function(input, output, session){
     sellcurrency = "USD",
     unit = 0.02,
     pocket = data.frame("date" = as.POSIXct("01/01/2017",format="%d/%m/%Y", origin = "1970-01-01",tz = "GMT"),
-                        "USD" = 5000,"EUR" = 0, "GBP" = 0,
+                        "NetUSDvalue" = 5000, "USD" = 5000,"EUR" = 0, "GBP" = 0,
                         "BTC" = 0, "ETH" = 0, "BNB" = 0, "BCC" = 0, "NEO" = 0,
                         "LTC" = 0, "QTUM" = 0, "ADA" = 0, "XRP" = 0, "EOS" = 0,
                         "TUSD" = 0, "IOTA" = 0, "XLM" = 0, "ONT" = 0, "TRX" = 0,
                         "ETC" = 0, "ICX" = 0, "VEN" = 0, "NULS" = 0, "VET" = 0,
                         "PAX" = 0)
   )
+
+  #Options of the transaction date based on the starting date
+  observe({
+    updateDateInput(session = session,
+                    inputId = "transaction_date",
+                    #updated default value condition
+                    value = min(input$starting_date + 50, Sys.Date()),
+                    min = input$starting_date)
+  })
+  # the next transaction date is restricted by previous transaction date
+  observe({
+    input$Run_tab4.2
+    isolate({updateDateInput(session = session,
+                    inputId = "transaction_date",
+                    #updated default value condition
+                    value = min(input$transaction_date + 1, Sys.Date()),
+                    min = input$transaction_date)
+    })
+  })
+
+
+
   #------------------------------------------------------------------------------------
   #Set the pocket
   observe({
@@ -297,7 +319,7 @@ app_server <- function(input, output, session){
       param4$starting_date <- input$starting_date
       param4$initial_USD <- input$initial_USD
       param4$initial_pocket <- data.frame("date" = as.POSIXct(input$starting_date,format="%d/%m/%Y", origin = "1970-01-01",tz = "GMT"),
-                                          "USD" = input$initial_USD,"EUR" = 0, "GBP" = 0,
+                                          "NetUSDvalue" = input$initial_USD, "USD" = input$initial_USD,"EUR" = 0, "GBP" = 0,
                                           "BTC" = 0, "ETH" = 0, "BNB" = 0, "BCC" = 0, "NEO" = 0,
                                           "LTC" = 0, "QTUM" = 0, "ADA" = 0, "XRP" = 0, "EOS" = 0,
                                           "TUSD" = 0, "IOTA" = 0, "XLM" = 0, "ONT" = 0, "TRX" = 0,
@@ -327,20 +349,33 @@ app_server <- function(input, output, session){
   observeEvent(input$Run_tab4.2, {
     param4$pocket <- transaction(pocket_log = param4$pocket, input$unit,
                                  buycurrency = input$buycurrency, sellcurrency = input$sellcurrency,
-                                 day = input$transaction_date)
+                                 day = input$transaction_date, allowNegative = FALSE)
 
   })
 
   output$pocket_log <- renderDT({
-    param4$pocket
+    param4$pocket %>% arrange(desc(date))
   })
 
   output$netusdvalue <- renderText({
-
-
     netusdvalue <- NetUSDValue(as.list( param4$pocket[nrow(param4$pocket),]), param4$pocket[nrow(param4$pocket),1] )
-    glue("<font color=\"#FF0000\"><TT><font size=3>The net values in your pocket is:</TT></font> <TT><font size=10>{netusdvalue}</TT></font> <TT><font size=3>USD</TT></font> <TT><font size=3>in day T :{param4$transaction_date}</TT></font>")
+    glue("<font color=\"#FF0000\"><TT><font size=3>The net values in your pocket is:</TT></font> <TT><font size=5>{netusdvalue}</TT></font> <TT><font size=3>USD</TT></font> <TT><font size=3>in: {param4$transaction_date}</TT></font>")
   })
 
+  output$exchange <- renderText({
+    df <- day_hour("day", input$transaction_date, input$transaction_date, input$buycurrency, input$sellcurrency)
+    exchange <- df[2,4]
+    if (exchange == 0){
+    glue("<font color=\"#FF0000\"><TT><font size=3>WARNING! At least one of the currency selected was not yet available in this date. No deal is possible.</TT></font>")
+    }
+    else{
+    glue("<TT><font size=3>exchange rate : </TT></font> <TT><font size=3>1 {input$buycurrency} equals to {exchange} {input$sellcurrency}</TT></font>")
+    }
+  })
+
+  output$NetValuePlot <- renderPlot({
+        param4$pocket %>%
+          ggplot(aes(x = date, y = NetUSDvalue)) +
+          geom_line()})
 
 } #End of server---------
