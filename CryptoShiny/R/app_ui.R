@@ -175,7 +175,7 @@ app_ui <- function() {
 
                        sliderInput("initial_USD",
                                    "How much you have?",
-                                   min = 0, max = 50000,
+                                   min = 1000, max = 50000,
                                    value = 5000, step = 100 ),
 
                        actionButton(inputId = "Run_tab4.1", label= "Initial")

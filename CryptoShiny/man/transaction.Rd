@@ -5,7 +5,7 @@
 \title{transaction}
 \usage{
 transaction(pocket_log, unit = 1, buycurrency = "BTC",
-  sellcurrency = "USD", day = "05/12/2018", allowNegative = TRUE)
+  sellcurrency = "USD", day = "05/12/2018", allowNegative = FALSE)
 }
 \arguments{
 \item{pocket_log}{a data.frame which have the columns date and different currencies}

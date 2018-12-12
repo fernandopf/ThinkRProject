@@ -346,7 +346,7 @@ app_server <- function(input, output, session){
 
   observeEvent(input$Run_tab4.1, {
     param4$pocket <- param4$initial_pocket
-
+    param4$transaction_date <- input$transaction_date
   })
 
   observeEvent(input$Run_tab4.2, {
@@ -357,14 +357,34 @@ app_server <- function(input, output, session){
   })
 
   output$pocket_log <- renderDT({
-    param4$pocket %>% arrange(desc(date))
+    param4$pocket
   })
 
+  observeEvent(input$Run_tab4.2, {
   output$netusdvalue <- renderText({
     netusdvalue <- NetUSDValue(as.list( param4$pocket[nrow(param4$pocket),]), param4$pocket[nrow(param4$pocket),1] )
     glue("<font color=\"#FF0000\"><TT><font size=3>The net values in your pocket is:</TT></font> <TT><font size=5>{netusdvalue}</TT></font> <TT><font size=3>USD</TT></font> <TT><font size=3>in: {param4$transaction_date}</TT></font>")
   })
+  })
 
+  output$exchange <- renderText({
+    df <- day_hour("day", input$transaction_date, input$transaction_date, input$buycurrency, input$sellcurrency)
+    exchange <- df[2,4]
+    if (exchange == 0){
+      glue("<font color=\"#FF0000\"><TT><font size=3>WARNING! At least one of the currency selected was not yet available in this date. No deal is possible.</TT></font>")
+    }
+    # else{
+    #   if (param4$pocket[nrow(param4$pocket),param4$sellcurrency] - exchange * param4$unit < 0){
+    #     glue("<font color=\"#FF0000\"><TT><font size=3>WARNING! It seems you don't have enough {input$sellcurrency} to buy {param4$unit} more {input$buycurrency}. No deal will be made.</TT></font> <p><TT><font size=3>exchange rate : </TT></font> <TT><font size=3>1 {input$buycurrency} equals to {exchange} {input$sellcurrency}</TT></font>")
+    #   }
+      else {
+        glue("<TT><font size=3>exchange rate : </TT></font> <TT><font size=3>1 {input$buycurrency} equals to {exchange} {input$sellcurrency}</TT></font>")
+      }
+    #}
+  })
+
+
+  observeEvent(input$Run_tab4.2, {
   output$exchange <- renderText({
     df <- day_hour("day", input$transaction_date, input$transaction_date, input$buycurrency, input$sellcurrency)
     exchange <- df[2,4]
@@ -373,13 +393,16 @@ app_server <- function(input, output, session){
     }
     else{
       if (param4$pocket[nrow(param4$pocket),param4$sellcurrency] - exchange * param4$unit < 0){
-        glue("<font color=\"#FF0000\"><TT><font size=3>WARNING! It seems you don't have enough {param4$sellcurrency} to sell. No deal is made</TT></font> <p><TT><font size=3>exchange rate : </TT></font> <TT><font size=3>1 {input$buycurrency} equals to {exchange} {input$sellcurrency}</TT></font>")
+        glue("<font color=\"#FF0000\"><TT><font size=3>WARNING! It seems you don't have enough {input$sellcurrency} to buy {param4$unit} more {input$buycurrency}. No deal will be made.</TT></font> <p><TT><font size=3>exchange rate : </TT></font> <TT><font size=3>1 {input$buycurrency} equals to {exchange} {input$sellcurrency}</TT></font>")
       }
       else {
     glue("<TT><font size=3>exchange rate : </TT></font> <TT><font size=3>1 {input$buycurrency} equals to {exchange} {input$sellcurrency}</TT></font>")
       }
     }
   })
+})
+
+
 
   output$NetValuePlot <- renderPlot({
         param4$pocket %>%
