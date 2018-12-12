@@ -186,7 +186,7 @@ app_ui <- function() {
                        htmlOutput("exchange"),
                        dateInput(inputId = "transaction_date",
                                  label = "Date",
-                                 value = "05/05/2017",
+                                 value = "01/01/2017",
                                  #need to update the min constrain
                                  min = "01/01/2017", max = Sys.Date(),
                                  format = "dd/mm/yy",startview = 'year',

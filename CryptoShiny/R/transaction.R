@@ -21,6 +21,14 @@ transaction <- function(pocket_log, unit = 1, buycurrency = "BTC", sellcurrency 
   df <- day_hour("day", day, day, buycurrency, sellcurrency)
   exchange <- df[2,4]
 
+  #if exchange rate is zero, return the pocket_log directly without transaction
+  if (exchange == 0){
+    return(pocket_log)
+  }
+
+  else{
+
+
   #if allowNegative equals FALSE and the transaction leads to negative units --> return origin pocket_log
   if ((allowNegative == FALSE) & (pocket_log[nrow(pocket_log),sellcurrency] - exchange * unit < 0)){
     return(pocket_log)
@@ -38,5 +46,6 @@ transaction <- function(pocket_log, unit = 1, buycurrency = "BTC", sellcurrency 
 
     pocket_log[nrow(pocket_log),2] <- NetUSDValue(as.list(pocket_log[nrow(pocket_log),]),pocket_log[nrow(pocket_log),1] )
     return(pocket_log)
+    }
   }
 }

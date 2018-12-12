@@ -276,7 +276,7 @@ app_server <- function(input, output, session){
                                 "PAX" = 0),
 
     #action button 4.2
-    transaction_date = "05/05/2017",
+    transaction_date = "01/01/2017",
     buycurrency = "BTC",
     sellcurrency = "USD",
     unit = 0.02,
@@ -291,11 +291,14 @@ app_server <- function(input, output, session){
 
   #Options of the transaction date based on the starting date
   observe({
+    input$Run_tab4.1
+    isolate({
     updateDateInput(session = session,
                     inputId = "transaction_date",
                     #updated default value condition
-                    value = min(input$starting_date + 50, Sys.Date()),
+                    value = min(input$starting_date + 1, Sys.Date()),
                     min = input$starting_date)
+    })
   })
   # the next transaction date is restricted by previous transaction date
   observe({
@@ -303,7 +306,7 @@ app_server <- function(input, output, session){
     isolate({updateDateInput(session = session,
                     inputId = "transaction_date",
                     #updated default value condition
-                    value = min(input$transaction_date + 1, Sys.Date()),
+                    value = min(input$transaction_date, Sys.Date()),
                     min = input$transaction_date)
     })
   })
@@ -369,7 +372,12 @@ app_server <- function(input, output, session){
     glue("<font color=\"#FF0000\"><TT><font size=3>WARNING! At least one of the currency selected was not yet available in this date. No deal is possible.</TT></font>")
     }
     else{
+      if (param4$pocket[nrow(param4$pocket),param4$sellcurrency] - exchange * param4$unit < 0){
+        glue("<font color=\"#FF0000\"><TT><font size=3>WARNING! It seems you don't have enough {param4$sellcurrency} to sell. No deal is made</TT></font> <p><TT><font size=3>exchange rate : </TT></font> <TT><font size=3>1 {input$buycurrency} equals to {exchange} {input$sellcurrency}</TT></font>")
+      }
+      else {
     glue("<TT><font size=3>exchange rate : </TT></font> <TT><font size=3>1 {input$buycurrency} equals to {exchange} {input$sellcurrency}</TT></font>")
+      }
     }
   })
 
