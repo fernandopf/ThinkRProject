@@ -1,0 +1,74 @@
+---
+title: "Plots & ShinyApp Vignette"
+author: "Konstantinos PETROPOULOS"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r}
+library(CryptoShiny)
+```
+
+#Shiny App
+
+  The user interface was designed and implemented as a shiny application. The navbar page layout was preferred, such that a dedicated page would be provided for each main functionality of the package. The current version of the package includes the tabs below:
+  - HISTORICAL PRICE
+  - MINUTELY PRICES
+  - PRICE COMPARISON
+  - TRADING SIMULATION
+  
+###Historical Price
+
+  The introductory, and basic, tab of the application, where the historical data are displayed. The side bar provides the utilities for the user. There, the parameters for the currencies and the timeframe to be displayed are passed on. Moreover, the parameters for the financial analysis as well as the supplementary tools are inserted. The candle_plot object is returned and the combined plot is displayed.
+  
+###Minutely Price
+
+  On a similar fashion, an updated version of the data, for the current week, is displayed on this tab. The data are called in real-time, according to the user's choices on the corresponding side bar. The plot_lastweek object is returned and the combined plot is displayed.
+  
+###Price Comparison
+
+  The tab to providing information on the current exchange rate for the chosen currency. The currency is input on a side bar and the data are retrieved in real-time from the available set of platforms and provided on a tabular form, along with the average rate over all platforms.
+  
+###Trading Simulation
+
+  The tab providing the trading simulator. The user input on the chosen timeframe, the initial budget and the trading information are given on top, along with an action button to implement a deal. After initialization, the user can view the past activities on the ledger below. Finally, the evolution of the net value for all the currencies invested is exhibited on a separate plot.
+  
+#Candle Plot
+
+####Description
+
+  An interactive plot displaying the evolution of the exchange rate between two currencies over time. Most often a cryptocurrency with another crypotcurrency/fiat currency. Particular features include a boxplot indicating the "edge" values of the exchange rate at each date -opening/closing value and highest/lowest value- as well as a colour indication on the daily progress -red for loss/ green for profit. Furthermore, density lines are exhibited; namely, the daily average and the moving average.
+  On a supplementary plot beneath the main plot, the chosen financial tool is exhibited. Either a barplot of the volume of the transaction over the chosen time range, or the MACD analysis results as barplot. 
+  The interactive character of the plot returns details for every point on the plot, as well as a slider providing the option to zoom into a subrange of the exhibited range.
+  
+####Example with MACD
+#TODO: insert example dataframe
+
+```{r}
+candle_plot(data= example4, MACD)
+```
+####Example with Volume
+#TODO: insert example dataframe
+
+```{r}
+candle_plot(data= example4, volume)
+```
+
+
+#LastWeek Plot
+
+####Description
+
+  On this plot, the evolution of the exchange rate between two currencies is displayed for a pre-specified time interval. A real-time call returns the financial data for the current week, along with the data for the citations plot. Most often a cryptocurrency with another crypotcurrency/fiat currency is chosen for the plot. The hourly average of the exchange rate is exhibited as a scatterplot, on top of which, a statistical general additive model is implemented in order to generate a smooth density function for the displayed data. Displayed as a linear geom object.
+  Supplementary to the main plot, a barchart tool is integrated. For the chosen currency, the number of articles that cite the currency's name are displayed at a uesr-defined time-groupping -per hour, 3 hours, 6 hours, 12 hours, day. The data are provided by a selected number of online financial news sources. The purpose of this tool, implementing text mining on the news articles, is to provide information derived by non-financial means, as a general purpose indicator for predisposition of the market against the selected currency.
+  
+####Example
+
+```{r}
+plot_lastweek(cryptocurrency = "EOS", comparison = "GBP", grouping = "6 hours")
+```
+
