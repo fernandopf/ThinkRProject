@@ -296,7 +296,7 @@ app_server <- function(input, output, session){
     updateDateInput(session = session,
                     inputId = "transaction_date",
                     #updated default value condition
-                    value = min(input$starting_date + 1, Sys.Date()),
+                    value = min(input$starting_date, Sys.Date()),
                     min = input$starting_date)
     })
   })
@@ -346,13 +346,17 @@ app_server <- function(input, output, session){
 
   observeEvent(input$Run_tab4.1, {
     param4$pocket <- param4$initial_pocket
-    param4$transaction_date <- input$transaction_date
+    param4$transaction_date <- param4$starting_date #when click the initial --> the netvalue based on this
   })
 
   observeEvent(input$Run_tab4.2, {
     param4$pocket <- transaction(pocket_log = param4$pocket, input$unit,
                                  buycurrency = input$buycurrency, sellcurrency = input$sellcurrency,
                                  day = input$transaction_date, allowNegative = FALSE)
+    output$netusdvalue <- renderText({
+      netusdvalue <- NetUSDValue(as.list( param4$pocket[nrow(param4$pocket),]), param4$pocket[nrow(param4$pocket),1] )
+      glue("<font color=\"#FF0000\"><TT><font size=3>The net values in your pocket is:</TT></font> <TT><font size=5>{netusdvalue}</TT></font> <TT><font size=3>USD</TT></font> <TT><font size=3>in: {param4$transaction_date}</TT></font>")
+    })
 
   })
 
@@ -360,53 +364,48 @@ app_server <- function(input, output, session){
     param4$pocket
   })
 
-  observeEvent(input$Run_tab4.2, {
-  output$netusdvalue <- renderText({
-    netusdvalue <- NetUSDValue(as.list( param4$pocket[nrow(param4$pocket),]), param4$pocket[nrow(param4$pocket),1] )
-    glue("<font color=\"#FF0000\"><TT><font size=3>The net values in your pocket is:</TT></font> <TT><font size=5>{netusdvalue}</TT></font> <TT><font size=3>USD</TT></font> <TT><font size=3>in: {param4$transaction_date}</TT></font>")
-  })
-  })
-
+  #Even though if don't click the action button the param$.. won't change, input$.. will change
   output$exchange <- renderText({
     df <- day_hour("day", input$transaction_date, input$transaction_date, input$buycurrency, input$sellcurrency)
     exchange <- df[2,4]
+    exchangeinv <- round(1/exchange, digits = 5)
     if (exchange == 0){
       glue("<font color=\"#FF0000\"><TT><font size=3>WARNING! At least one of the currency selected was not yet available in this date. No deal is possible.</TT></font>")
     }
-    # else{
-    #   if (param4$pocket[nrow(param4$pocket),param4$sellcurrency] - exchange * param4$unit < 0){
-    #     glue("<font color=\"#FF0000\"><TT><font size=3>WARNING! It seems you don't have enough {input$sellcurrency} to buy {param4$unit} more {input$buycurrency}. No deal will be made.</TT></font> <p><TT><font size=3>exchange rate : </TT></font> <TT><font size=3>1 {input$buycurrency} equals to {exchange} {input$sellcurrency}</TT></font>")
-    #   }
+
       else {
-        glue("<TT><font size=3>exchange rate : </TT></font> <TT><font size=3>1 {input$buycurrency} equals to {exchange} {input$sellcurrency}</TT></font>")
+        glue("<TT><font size=3>exchange rate : </TT></font><p>
+             <TT><font size=3>1 {input$buycurrency} equals to {exchange} {input$sellcurrency}</TT></font><p>
+             <TT><font size=3>1 {input$sellcurrency} equals to {exchangeinv} {input$buycurrency}</TT></font><p>
+             <TT><font size=3> date: {input$transaction_date}</TT></font>")
       }
     #}
   })
 
-
-  observeEvent(input$Run_tab4.2, {
-  output$exchange <- renderText({
-    df <- day_hour("day", input$transaction_date, input$transaction_date, input$buycurrency, input$sellcurrency)
+  #only show when click action button 2 --> use param4
+  output$error_expensive <- renderText({
+    df <- day_hour("day", param4$transaction_date, param4$transaction_date, param4$buycurrency, param4$sellcurrency)
     exchange <- df[2,4]
     if (exchange == 0){
-    glue("<font color=\"#FF0000\"><TT><font size=3>WARNING! At least one of the currency selected was not yet available in this date. No deal is possible.</TT></font>")
+      glue("<font color=\"#FF0000\"><TT><font size=3>ERROR! TRANSACTION FAILD. : currency not available.</TT></font>")
     }
     else{
       if (param4$pocket[nrow(param4$pocket),param4$sellcurrency] - exchange * param4$unit < 0){
-        glue("<font color=\"#FF0000\"><TT><font size=3>WARNING! It seems you don't have enough {input$sellcurrency} to buy {param4$unit} more {input$buycurrency}. No deal will be made.</TT></font> <p><TT><font size=3>exchange rate : </TT></font> <TT><font size=3>1 {input$buycurrency} equals to {exchange} {input$sellcurrency}</TT></font>")
+        glue("<font color=\"#FF0000\"><TT><font size=3>ERROR! It seems you don't have enough {param4$sellcurrency} to buy {param4$unit} more {param4$buycurrency}. TRANSACTION FAILED.</TT></font>")
       }
-      else {
-    glue("<TT><font size=3>exchange rate : </TT></font> <TT><font size=3>1 {input$buycurrency} equals to {exchange} {input$sellcurrency}</TT></font>")
-      }
+      else{
+        if(param4$unit == 0){
+          glue("<font color=\"#FF0000\"><TT><font size=3>ERROR! TRANSACTION FAILD : unit can't be zero.</TT></font>")
+        }}
+      #When no error, return nothing
     }
   })
-})
-
 
 
   output$NetValuePlot <- renderPlot({
-        param4$pocket %>%
-          ggplot(aes(x = date, y = NetUSDvalue)) +
-          geom_line()})
+    param4$pocket %>%
+      ggplot(aes(x = date, y = NetUSDvalue)) +
+      geom_line()})
+
 
 } #End of server---------

@@ -200,7 +200,8 @@ app_ui <- function() {
                                    selected = "BTC", choices = all_coins ),
                        selectInput(inputId = "sellcurrency", label = "Sell",
                                    selected = "USD", choices = all_coins ) ,
-                       actionButton(inputId = "Run_tab4.2", label= "Deal")
+                       actionButton(inputId = "Run_tab4.2", label= "Deal"),
+                       htmlOutput("error_expensive")
                 ) #End of third column
               )
               ),#End of FluidRow

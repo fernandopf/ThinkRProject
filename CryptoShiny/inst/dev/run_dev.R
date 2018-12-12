@@ -1,4 +1,4 @@
-# This script allow you to quick clean your R session
+# This script allow you to quick clean your R sessionbui
 # update documentation and NAMESPACE, localy install the package
 # and run the main shinyapp from 'inst/app'
 .rs.api.documentSaveAll() # close and save all open file
