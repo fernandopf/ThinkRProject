@@ -5,7 +5,7 @@
 #' @examples
 #' Tsp_data(1543920423)
 Tsp_data <- function(timestamp) {
-  link <- paste("https://min-api.cryptocompare.com/data/v2/news/?lTs=", timestamp, sep="")
+  link <- paste("https://min-api.cryptocompare.com/data/v2/news/?lTs=", floor(timestamp), sep="")
   ndata <- fromJSON(link)
   data2 <- data.frame("time" = as.integer(ndata$Data$published_on), "body" = as.character(ndata$Data$body))
   return(data2)
@@ -20,14 +20,17 @@ Tsp_data <- function(timestamp) {
 dl_data_from <- function(timestp) {
   new_data <- NULL
   fdata <- NULL
-  timenow <- as.numeric(as.POSIXct("2018-12-01 1:00:00 EST"))
+  timenow <- as.numeric(Sys.time())
   while (timestp < timenow)
   {
     new_data <- Tsp_data(timenow)
     fdata <- rbind(fdata,new_data)
+    if (length(new_data$time) == 0) {
+      print("no data recovered for timestamp ")
+      print(timenow)
+    }
     timenow <- min(new_data$time)
   }
-  print(paste("Last news found was released on ", as.POSIXct(min(fdata$time), origin="1970-01-01"), sep = "" ))
   return(fdata)
 }
 
@@ -81,7 +84,7 @@ analyse_crps_news <- function(databodynews, currencySymbols) {
 SumlastHour <- function(hourTstp, CrpSymbols, BoolDataNews) {
   res <- BoolDataNews %>% filter(time<hourTstp, time>hourTstp-3600)
   resu <- hourTstp
-  for (i in 2:length(result)) {
+  for (i in 2:length(res)) {
     resa <- res %>% filter(res[i] == 1)
     resu <- cbind(resu, length(resa$time))
   }
@@ -120,7 +123,7 @@ resTspToHour <- function(resTsp, CrpSymbols) {
 SumlastDay <- function(dayTstp, CrpSymbols, BoolDataNews) {
   res <- BoolDataNews %>% filter(time<dayTstp, time>dayTstp-3600*24)
   resu <- dayTstp
-  for (i in 2:length(result)) {
+  for (i in 2:length(res)) {
     resa <- res %>% filter(res[i] == 1)
     resu <- cbind(resu, length(resa$time))
   }
@@ -156,4 +159,57 @@ resTspToDay <- function(resTsp, CrpSymbols) {
 get_imp_Crp <- function(){
   ndata <- fromJSON("https://min-api.cryptocompare.com/data/top/volumes?tsym=USDT")
   c(ndata$Data$SYMBOL,"USDT")
+}
+
+
+#' Updates the dataset CryptoNewsAnalysedDays with the latest news from CryptoCompare API
+#'
+#' @examples
+#' updateDayNewsData()
+updateDayNewsData <- function() {
+  dataDay <- read.csv("data/CryptoNewsAnalysedDays.csv")[-1]
+  dataDay$time <- as.POSIXct(dataDay$time)
+  newestDay <- max(dataDay$time)
+  Newdata <- dl_data_from(as.numeric(newestDay))
+  if (length(Newdata$time) != 0) {
+    Newdata <- Newdata %>% filter(time > newestDay)
+    if (length(Newdata$time) != 0) {
+      interesting_cryptos <- names(dataDay)[-1]
+      result <- analyse_crps_news(Newdata, interesting_cryptos)
+      finalDay <- resTspToDay(result, interesting_cryptos)
+      finalDay <- finalDay %>% filter(time != min(time)) #avoid duplicates
+      total <- rbind(finalDay, dataDay)
+      write.csv(total, "data/CryptoNewsAnalysedDays.csv")
+      print("updated")
+    }
+  }
+  if (length(Newdata$time) == 0) {
+    print("Already up to date")
+  }
+}
+
+#' Updates the dataset CryptoNewsAnalysedHours with the latest news from CryptoCompare API
+#'
+#' @examples
+#' updateHourNewsData()
+updateHourNewsData <- function() {
+  dataHour <- read.csv("data/CryptoNewsAnalysedHour.csv")[-1]
+  dataHour$time <- as.POSIXct(dataHour$time)
+  newestHour <- max(dataHour$time)
+  Newdata <- dl_data_from(as.numeric(newestHour))
+  if (length(Newdata$time) != 0) {
+    Newdata <- Newdata %>% filter(time > newestHour)
+    if (length(Newdata$time) != 0) {
+      interesting_cryptos <- names(dataHour)[-1]
+      result <- analyse_crps_news(Newdata, interesting_cryptos)
+      finalHour <- resTspToHour(result, interesting_cryptos)
+      finalHour <- finalHour %>% filter(time != min(time)) #avoid duplicates
+      total <- rbind(finalHour, dataHour)
+      write.csv(total, "data/CryptoNewsAnalysedHour.csv")
+      print("updated")
+    }
+  }
+  if (length(Newdata$time) == 0) {
+    print("Already up to date")
+  }
 }
