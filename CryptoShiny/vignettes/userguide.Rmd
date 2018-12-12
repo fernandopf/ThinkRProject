@@ -309,3 +309,22 @@ knitr::include_graphics("trading_1.png")
 knitr::include_graphics("trading_2.png")
 ```
   
+Some robustness settings:
+
+1. Aftering choosing the starting date, the transaction date can only range from the same or the day after.
+2. Once one transaction is made, the next transaction date can only range from the same or the day after.
+3. If user buy more than he could, display the error message and the transaction is not recorded. For example,
+```{r, out.width = "400px"}
+knitr::include_graphics("trading_3.png")
+```
+
+4. If in the selected transaction date, the currency was not yet available, return a warning message on the exchange rate. And if clicking the "DEAL", return a error message, and the transaction is not recorded. For example,
+```{r, out.width = "400px"}
+knitr::include_graphics("trading_4.png")
+```
+
+5. If the units is setted be zero and the user click "DEAL", return error. For example,
+```{r, out.width = "400px"}
+knitr::include_graphics("trading_5.png")
+```  
+  
