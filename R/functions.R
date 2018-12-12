@@ -170,6 +170,7 @@ updateDayNewsData <- function() {
   dataDay <- read.csv("data/CryptoNewsAnalysedDays.csv")[-1]
   dataDay$time <- as.POSIXct(dataDay$time)
   newestDay <- max(dataDay$time)
+  print(paste("News by day Data loaded from csv, number of entries: ", length(dataDay$time), ", last entry from: ", newestDay, sep=""))
   Newdata <- dl_data_from(as.numeric(newestDay))
   if (length(Newdata$time) != 0) {
     Newdata <- Newdata %>% filter(time > newestDay)
@@ -180,7 +181,7 @@ updateDayNewsData <- function() {
       finalDay <- finalDay %>% filter(time != min(time)) #avoid duplicates
       total <- rbind(finalDay, dataDay)
       write.csv(total, "data/CryptoNewsAnalysedDays.csv")
-      print("updated")
+      print(paste("CSV file updated: number of entries: ", length(total$time), ", last entry from: ", max(total$time), sep=""))
     }
   }
   if (length(Newdata$time) == 0) {

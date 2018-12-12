@@ -28,13 +28,14 @@ Here we download the dataset and store it to a csv file with dl_data_news functi
 #Analysing the dataset for plots data
 We load the dataset from csv for rapidity 
 ```{r}
-#data <- read.csv("CryptonewsData.csv")[-1]
+data <- read.csv("data/CryptonewsData.csv")[-1]
 ```
 
 We want to analyse the occurences of the 20 most capitalized cryptocurrencies; so we download the list of these cryptocurrencies symbols using get_imp_Crp function.
 Here we removed some the 20 currencies that were not available in our crypto dictionary.
 ```{r}
-interesting_crypto <- get_imp_Crp()[-c(8,13,15,16)]
+#interesting_crypto <- get_imp_Crp()[-c(8,13,15,16)]
+interesting_crypto <- c("")
 ```
 
 Now we can analyse the news dataset based on the cryptocurencies we chose with analyse_crps_news function.
@@ -45,7 +46,6 @@ result <- analyse_crps_news(data, interesting_crypto)
 Finally; we sum the occurences of each cryptocurrency per hour and per day for plotting; using the functions resTspToHour and resTspToDay.
 We then write them in csvs file to create the two datasets CryptoNewsOccurencesHour and CryptoNewsOccurencesDay
 ```{r}
-
 finalHour <- resTspToHour(result, interesting_crypto)
 write.csv(finalHour, "CryptoNewsOccurencesHour.csv")
 
@@ -61,6 +61,9 @@ updateHourNewsData()
 
 ```{r}
 updateDayNewsData()
+```
+```{r}
+dataNews <- read.csv("data/CryptoNewsOccurencesHour.csv")
 ```
 
 
