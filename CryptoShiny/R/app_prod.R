@@ -2,9 +2,10 @@
 {
   if (is.null(x))
     y
-  else x
+  else
+    x
 }
 #' return `TRUE` if in `production mode`
-app_prod <- function(){
-  getOption( "app.prod" ) %||% TRUE
+app_prod <- function() {
+  getOption("app.prod") %||% TRUE
 }

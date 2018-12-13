@@ -5,7 +5,6 @@
 #' @param cryptocurrency cryptocurrency id
 #'
 #' @return dataframe with prices on six platforms
-#' @export getLastPriceMultiplePlatforms
 #' @importFrom dplyr filter select desc
 #' @importFrom glue glue
 #' @importFrom lubridate floor_date
@@ -14,6 +13,7 @@
 #' @importFrom jsonlite fromJSON
 #' @importFrom httr GET
 #' @importFrom curl has_internet
+#' @export
 #'
 #' @examples
 getLastPriceMultiplePlatforms <- function(cryptocurrency){

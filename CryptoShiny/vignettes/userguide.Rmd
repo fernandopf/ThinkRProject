@@ -1,6 +1,6 @@
 ---
 title: "CryptoProject"
-author: "R for Data Science"
+author: "Ching-Yu LIN, Konstantinos PETROPOULOS, Fernando PEREZ FERNANDEZ, Jiahao WANG, Souhail ELAISSAOUI"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -123,8 +123,8 @@ It takes as input:
 - Cryptocurrency or currency you want to analyse
 - Cryptocurrency or currency to be compared with
 - Window moving average
-- Window quick MACD
-- Window slow MACD
+- Window quick exponential moving average
+- Window slow exponential moving average
 - Window signal MACD
 
 It returns a dataset with the time, highest price, lowest price, open price, close price and financial indicators in the chosen timeframe.
@@ -132,7 +132,6 @@ It returns a dataset with the time, highest price, lowest price, open price, clo
 Example of the Bitcoin price vs USD per hour.
 ```{r}
 exampleCryptoBTCUSDHour <- crypto("hour", "01/08/2018", "01/10/2018", "BTC", "USD",5 , 26, 12, 9)
-
 tail(exampleCryptoBTCUSDHour)
 ```
 
@@ -155,13 +154,13 @@ The interactive character of the plot returns details for every point on the plo
   
 Example with MACD:
 
-```{r}
+```{r, out.width = "600px"}
 candle_plot(data= exampleCryptoBTCUSDHour, MACD)
 ```
 
 Example with Volume:
 
-```{r}
+```{r, out.width = "600px"}
 candle_plot(data= exampleCryptoBTCUSDHour, volume)
 ```
 
@@ -173,7 +172,7 @@ On this plot, the evolution of the exchange rate between two currencies is displ
 Supplementary to the main plot, a barchart tool is integrated. For the chosen currency, the number of articles that cite the currency's name are displayed at a uesr-defined time-groupping -per hour, 3 hours, 6 hours, 12 hours, day. The data are provided by a selected number of online financial news sources. The purpose of this tool, implementing text mining on the news articles, is to provide information derived by non-financial means, as a general purpose indicator for predisposition of the market against the selected currency.
   
 
-```{r}
+```{r, out.width = "600px"}
 plot_lastweek(cryptocurrency = "EOS", comparison = "GBP", grouping = "6 hours")
 ```
 
@@ -189,14 +188,6 @@ lastPrice <- getLastPriceMultiplePlatforms("BTC")
 head(lastPrice)
 ```
 
-### Function to get the last Price from Bitfinex
-
-This function has been desigend to get the last price of the cryptocurrency in comparision with the desired currency of the platform Bitfinex.
-
-```{r}
-lastPrice <- getLastPriceBitfinex("ETH", "BTC")
-print(lastPrice)
-```
 
 ### Function to allow trading simulation
 
@@ -206,7 +197,7 @@ The follwing two functions are used to do the trading simulation, which is based
 startday = "01/10/2018"
 pocket_log <- data.frame("date" = as.POSIXct(startday,format="%d/%m/%Y", origin = "1970-01-01",tz = "GMT"),
                          "NetUSDvalue" = 1000,"USD" = 1000,"EUR" = 0, "GBP" = 0, "BTC" = 0, "ETH" = 0, "BNB" = 0, "BCC" = 0, "NEO" = 0, "LTC" = 0, "QTUM" = 0, "ADA" = 0, "XRP" = 0, "EOS" = 0, "TUSD" = 0, "IOTA" = 0, "XLM" = 0, "ONT" = 0, "TRX" = 0, "ETC" = 0, "ICX" = 0, "VEN" = 0, "NULS" = 0, "VET" = 0, "PAX" = 0)
-pocket_log %>% head()
+head(pocket_log)
 ```
 
 ### Transaction
@@ -270,16 +261,47 @@ The user interface was designed and implemented as a shiny application. The navb
 ### Historical Price
 
 The introductory, and basic, tab of the application, where the historical data are displayed. The side bar provides the utilities for the user. There, the parameters for the currencies and the timeframe to be displayed are passed on. Moreover, the parameters for the financial analysis as well as the supplementary tools are inserted. The candle_plot object is returned and the combined plot is displayed.
+For example:
+```{r, out.width = "600px"}
+knitr::include_graphics("historical_1.png")
+```
+Some robustness settings: 
+
+1. The red text part is the latest exchange rate of the selected currencies, automatically updating every ten seconds. 
+2. When a user choose a date range, the timeframe will automatically adapt to be sure the best display quality. Following are the rule of the adaptation.
+  (a) If the timerange is larger than 24 months, we recommend "month", and options are "month", "week", "day"
+  (b) If the timerange is larger than 24 weeks but smaller than 24 months, we recommend "week", and options are  "week", "day"
+  (c) If the timerange is larger than 24 days but smaller than 24 weeks, the only options is "day".
+  (d) If the timerange is smaller than 24 days, the only option is "hour"
+  
+  The choice of n = 24, is due to the display quality and the conviction of the MACD indicator, in which the window of EMA is 24.
+  
+3. When a user choose a timeframe, the parameters of the MACD will also automatically update to prevent the window size larger than the data points in the dataframe. The constraint is this paramters should not larger than the amount of data points minus five.
+  
   
 ### Price by minute
 
 On a similar fashion, an updated version of the data, for the current week, is displayed on this tab. The data are called in real-time, according to the user's choices on the corresponding side bar. The plot_lastweek object is returned and the combined plot is displayed.
+```{r, out.width = "600px"}
+knitr::include_graphics("minute_1.png")
+```
+
+
+Robustness setting:
+Since it takes a lot of time to load, process, display the data, we add a loading sign when the plot is loading. For example,
+```{r, out.width = "600px"}
+knitr::include_graphics("minute_2.png")
+```
+
   
 ### Price Comparison
 
 The tab to providing information on the current exchange rate for the chosen currency. The currency is input on a side bar and the data are retrieved in real-time from the available set of platforms and provided on a tabular form, along with the average rate over all platforms.
 
-```{r, out.width = "400px"}
+Robustness setting:
+If the price information of selected cryptocurrency is not available on some platforms, it display a blank (NA).
+
+```{r, out.width = "600px"}
 knitr::include_graphics("price_comparison.png")
 ```
   
@@ -302,10 +324,10 @@ In order to do a trading simulation, you need to
 
 6. If you want to initial the simulation, click "initial"
 
-```{r, out.width = "400px"}
+```{r, out.width = "600px"}
 knitr::include_graphics("trading_1.png")
 ```
-```{r, out.width = "400px"}
+```{r, out.width = "600px"}
 knitr::include_graphics("trading_2.png")
 ```
   
@@ -314,17 +336,17 @@ Some robustness settings:
 1. Aftering choosing the starting date, the transaction date can only range from the same or the day after.
 2. Once one transaction is made, the next transaction date can only range from the same or the day after.
 3. If user buy more than he could, display the error message and the transaction is not recorded. For example,
-```{r, out.width = "400px"}
+```{r, out.width = "600px"}
 knitr::include_graphics("trading_3.png")
 ```
 
 4. If in the selected transaction date, the currency was not yet available, return a warning message on the exchange rate. And if clicking the "DEAL", return a error message, and the transaction is not recorded. For example,
-```{r, out.width = "400px"}
+```{r, out.width = "600px"}
 knitr::include_graphics("trading_4.png")
 ```
 
 5. If the units is setted be zero and the user click "DEAL", return error. For example,
-```{r, out.width = "400px"}
+```{r, out.width = "600px"}
 knitr::include_graphics("trading_5.png")
 ```  
   

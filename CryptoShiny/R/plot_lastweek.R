@@ -8,11 +8,11 @@
 #' @param grouping the citations can be grouped in terms of "day", "12 hours", "6 hours", "3 hours", "hour".
 #'
 #' @return 2 plots. One of the exchange rate and one with the number of citations.
-#' @export plot_lastweek
 #' @importFrom dplyr group_by summarise mutate
 #' @importFrom lubridate floor_date
 #' @importFrom ggplot2 ggplot aes geom_point stat_smooth labs theme_bw theme element_blank geom_col geom_smooth
 #' @importFrom plotly subplot ggplotly
+#' @export
 #'
 #' @seealso \code{\link{candle_plot}}
 #'

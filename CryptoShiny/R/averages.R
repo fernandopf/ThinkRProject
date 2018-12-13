@@ -11,8 +11,8 @@
 #' @param n_signal_MACD signal MACD
 #'
 #' @return dataframe with the financial indicators added
-#' @export averages
 #' @importFrom pracma movavg
+#' @export
 #'
 #' @examples
 averages <- function(df, n_MA, n_quick_MACD, n_slow_MACD, n_signal_MACD){

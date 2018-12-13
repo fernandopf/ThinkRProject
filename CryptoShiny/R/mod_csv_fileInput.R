@@ -5,10 +5,10 @@
 # use `UI` as sufix if your module is both Input and Output
 #
 # examples :
-# ui side : mod_truc_bidulUI 
+# ui side : mod_truc_bidulUI
 # server side : mod_truc_bidul
 #
-# ui side : mod_machin_chouetteInput 
+# ui side : mod_machin_chouetteInput
 # server side : mod_machin_chouette
 
 # all shinyModule must have a documentation page
@@ -22,8 +22,7 @@
 #' @param id shiny id
 #' @param label fileInput label
 #'
-#' @export
-#' @examples 
+#' @examples
 #' library(shiny)
 #' library(DT)
 #' if (interactive()){
@@ -31,31 +30,39 @@
 #'   mod_csv_fileInput("fichier"),
 #' DTOutput("tableau")
 #' )
-#' 
+#'
 #' server <- function(input, output, session) {
 #'   data <- callModule(mod_csv_file,"fichier")
 #'   output$tableau <- renderDT({data()})
 #' }
-#' 
+#'
 #' shinyApp(ui, server)
 #' }
-#' 
+#'
 mod_csv_fileInput <- function(id, label = "CSV file") {
   ns <- NS(id)
 
   tagList(
     fileInput(ns("file"), label),
     checkboxInput(ns("heading"), "Has heading"),
-    selectInput(ns("quote"), "Quote", c(
-      "None" = "",
-      "Double quote" = "\"",
-      "Single quote" = "'"
-    )),
-    selectInput(ns("sep"), "Separator", c(
-      "comma" = ",",
-      "tabulation" = "\t",
-      "semicolon" = ";"
-    ))
+    selectInput(
+      ns("quote"),
+      "Quote",
+      c(
+        "None" = "",
+        "Double quote" = "\"",
+        "Single quote" = "'"
+      )
+    ),
+    selectInput(
+      ns("sep"),
+      "Separator",
+      c(
+        "comma" = ",",
+        "tabulation" = "\t",
+        "semicolon" = ";"
+      )
+    )
   )
 
 }
@@ -66,30 +73,32 @@ mod_csv_fileInput <- function(id, label = "CSV file") {
 #' @param input internal
 #' @param output internal
 #' @param session internal
-#' @param stringsAsFactors logical: should character vectors be converted to factors? 
+#' @param stringsAsFactors logical: should character vectors be converted to factors?
 #'
 #' @importFrom utils read.csv
 #' @importFrom glue glue
 #' @export
 #' @rdname mod_csv_fileInput
-mod_csv_file <- function(input, output, session, stringsAsFactors=TRUE) {
+mod_csv_file <-
+  function(input, output, session, stringsAsFactors = TRUE) {
+    userFile <- reactive({
+      validate(need(input$file, message = FALSE))
+      input$file
+    })
 
-  userFile <- reactive({
-    validate(need(input$file, message = FALSE))
-    input$file
-  })
+    observe({
+      message(glue::glue("File {userFile()$name} uploaded"))
+    })
 
-  observe({
-    message( glue::glue("File {userFile()$name} uploaded" ) )
-  })
+    dataframe <- reactive({
+      read.csv(
+        userFile()$datapath,
+        header = input$heading,
+        quote = input$quote,
+        sep = input$sep,
+        stringsAsFactors = stringsAsFactors
+      )
+    })
 
-  dataframe <- reactive({
-    read.csv(userFile()$datapath,
-             header = input$heading,
-             quote = input$quote,
-             sep = input$sep,
-             stringsAsFactors = stringsAsFactors)
-  })
-
-  dataframe
-}
+    dataframe
+  }
