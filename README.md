@@ -51,6 +51,14 @@ For running the Shiny App you need to call the function "run_app()"
 run_app()
 ```
 
+### Vignette
+
+You can understand and learn more about the project by reading the Vignette.
+
+```
+ browseVignettes(package = "CryptoShiny")
+```
+
 ### Functions to receive the data
 
 The user can use several functions to get the data of the cryptocurrencies from the API.
