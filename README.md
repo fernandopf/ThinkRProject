@@ -49,7 +49,6 @@ library(CryptoShiny)
 
 For running the Shiny App you need to run the follwing function.
 ```
-
 run_app()
 ```
 
@@ -64,7 +63,6 @@ The function "crypto.R" returns a dataset with the time, highest price, lowest p
 # Example of the Bitcoin price vs USD per hour.
 
 exampleCryptoBTCUSDHour <- crypto("hour", "01/08/2018", "01/10/2018", "BTC", "USD",5 , 26, 12, 9)
-
 ```
 
 The function "candle_plot.R" returns an interactive plot displaying the evolution of the exchange rate between two currencies over time.
@@ -72,28 +70,14 @@ The function "candle_plot.R" returns an interactive plot displaying the evolutio
 ```
 # Example
 candle_plot(data= exampleCryptoBTCUSDHour, MACD)
-
 ```
 
-```
-crypto.R
-candle_plot.R
-getLastPriceMultiplePlatform.R
-lastweek_minute.R
-lastweek_news_counter.R
-crypto_correlation.R
-day_hour.R
-plot_lastweek.R
-
-
-```
 The function "getLastPriceMultiplePlatform.R" returns a dataset with the price of that cryptocurrency in each platform (if avaliable).
 
 ```
 # Example to get the BTC price vs USD
 
 lastPrice <- getLastPriceMultiplePlatforms("BTC")
-
 ```
 
 The "function lastweek_minute.R" returns a dataframe with the date, high price, low price, close price, open price and direction (decreasing if the close price is lower than the open price, increasing otherwise) in each minute of the last week. 
@@ -110,12 +94,10 @@ The function "lastweek_news_counter.R" has been designed to count hourly how man
 # Example to get how many times the Bitcoin has been mentioned during the last week
 
 countNewsLastWeekBitcoin <- lastweek_news_counter("BTC")
-
 ```
 The function "crypto_correlation.R" can be used to get the correlation of two cryptocurrencies between two chosen dates.
 
 ```
-
 # Example to get the correlation of Bitcoin and Ethereum between 01/09/2018 and 01/10/2018.
 
 correlationBTCvsETH <- crypto_correlation("01/09/2018", "01/10/2018", "BTC", "ETH")
@@ -133,25 +115,19 @@ bitcoinVsDollarExampleDay <- day_hour("day", "01/12/2017", "01/08/2018", "BTC", 
 The function "plot_lastweek.R" returns a plot where the evolution of the exchange rate between two currencies is displayed for a pre-specified time interval.
 
 ```
-
 # Example to obtain the price of the Bitcoin in USD, from December 1th 2017 until August 1th 2018 with a daily timeframe.
 
 plot_lastweek(cryptocurrency = "EOS", comparison = "GBP", grouping = "6 hours")
-
 ```
 
 The function "averages.R" has been designed to add financial indicators into the dataset (Moving average and MACD). It takes as input a dataset and the windows of moving average, slow MACD, quick MACD and signal MACD and returns the dataset with the financial indicators added.
 
 
 ```
-
 # Example to add financial indicators to the dataset bitcoinVsDollarExampleWeek
 
 bitcoinVsDollaFinancialIndicators <- averages(bitcoinVsDollarExampleWeek, 5, 26, 12, 9)
-
 ```
-
-
 
 ## Authors
 
