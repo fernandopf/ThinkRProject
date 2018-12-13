@@ -53,6 +53,8 @@ run_app()
 
 ### Functions to receive the data
 
+The user can use several functions to get the data of the cryptocurrencies from the API.
+
 The function "day_hour.R" has been designed to receive the data of the desired cryptocurrency in an specific timeframe. It returns a dataframe with the date, high, low, close and open price in the timeframe, volume in the and direction (decreasing if the close price is lower than the open price, increasing otherwise).
 
 ```
@@ -60,7 +62,6 @@ The function "day_hour.R" has been designed to receive the data of the desired c
 
 bitcoinVsDollarExampleDay <- day_hour("day", "01/12/2017", "01/08/2018", "BTC", "USD")
 ```
-The user can use several functions to get the data of the cryptocurrencies.
 
 The function "crypto.R" returns a dataset with the time, highest price, lowest price, open price, close price and financial indicators in the chosen timeframe.
 
@@ -141,8 +142,4 @@ bitcoinVsDollaFinancialIndicators <- averages(bitcoinVsDollarExampleWeek, 5, 26,
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Thank you to "ThinkR" for teaching the subject and allow us to do this project.
 
