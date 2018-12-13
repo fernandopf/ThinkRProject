@@ -1,0 +1,99 @@
+---
+title: "News counting data construction"
+author: "R for Data Science"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r}
+library(CryptoShiny)
+```
+
+#Introduction
+
+The cryptocompare API gives us access to data about all the news articlesthat zere released about cryptocurrencies from 2013 to now.
+We want to interpret this news to see the evolution of the popularity of different cryptocurrencies during time.
+For this, we want to analyse how many time any cryptocurrency was mentioned in the news, each hour and each day.
+
+First we will try to download all the articles, their text body and the time each one was released. This first dataframe is huge and we will only keep the analysed ones.
+
+#Getting the whole CryptoNewsData set 
+This dataset stores all the news articles about cryptocurrencies released from 2013-08-01 18:30:00 that CryptoCompare API proposes
+
+Here we download the dataset and store it to a csv file with dl_data_news function
+```{r}
+#data <- dl_data_from(as.numeric(as.POSIXct("2013-11-25 1:00:00 EST")))
+#write.csv(data, "CryptonewsData.csv")
+```
+
+#Analysing the dataset for plots data
+We load the dataset from csv, as the dl_data_from function would take too much time, so we run it only once.
+Here the time is modelised by the timestamp, which is a very useful and can be converted into a date and precise hour: https://www.unixtimestamp.com/
+
+```{r}
+head(CryptonewsData)
+```
+
+We want to analyse the occurences of the 20 most capitalized cryptocurrencies; so we download the list of these cryptocurrencies symbols using get_imp_Crp function.
+Here we removed some the 20 currencies that were not available in our crypto dictionary.
+```{r}
+interesting_crypto <- get_imp_Crp()
+interesting_crypto
+```
+This vector of cryptocurrencies symbol will be translated into the name of each cryptocurrency by the function CryptoCurrencyName.
+This function uses the data from a "Radiovisual" github: "https://github.com/crypti/cryptocurrencies/blob/master/cryptocurrencies.json)"
+```{r}
+CryptoCurrencyName("BTC")
+CryptoCurrencyName("ETH")
+```
+By using CryptoCurrencyName dictionary, the function analyse_crps_news will verify if the each cryptocurrency was mentioned in those news articles.
+
+We analyse the news dataset based on the cryptocurencies we chose: we have a dataframe showing which articles mentions each cryptocurrency.
+```{r}
+interesting_crypto <- c("BTC", "ETH", "LTC", "XMR", "USDT")
+result <- analyse_crps_news(CryptonewsData[seq(1,500,1),], interesting_crypto)
+head(result)
+```
+
+Finally; we sum the occurences of each cryptocurrency per hour and per day for plotting; using the functions resTspToHour and resTspToDay.
+We then write them in csvs file to create the two datasets CryptoNewsOccurencesHour and CryptoNewsOccurencesDay
+```{r}
+finalHour <- resTspToHour(result, interesting_crypto)
+#write.csv(finalHour, "CryptoNewsOccurencesHour.csv")
+head(finalHour)
+finalDay <- resTspToDay(result, interesting_crypto)
+#write.csv(finalDay, "CryptoNewsOccurencesDays.csv")
+head(finalDay)
+```
+
+To make sure these datasets stay up to date for live usage, we can update them with the following functions: This updates the raw data in the folder raw-data.
+
+```{r}
+updateHourNewsData()
+```
+
+```{r}
+updateDayNewsData()
+```
+
+```{r}
+df1 <- day_hour("day", "01/02/2018", "01/12/2018", "BTC", "USD")
+df1
+```
+
+
+```{r}
+library(readr)
+library(tidyverse)
+CryptoNewsAnalysedDays <- read_csv("../data-raw/CryptoNewsAnalysedDays.csv")
+CryptoNewsAnalysedDays <- CryptoNewsAnalysedDays[c("time", "BTC")]
+colnames(CryptoNewsAnalysedDays) <- c("date", "news")
+
+CryptoNewsAnalysedDays
+df1 %>% left_join(CryptoNewsAnalysedDays, by = "date") 
+```
+
