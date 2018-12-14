@@ -39,6 +39,9 @@ crypto <-
 
       colnames(CryptoNewsAnalysed) <- c("date", "news")
 
+      attr(CryptoNewsAnalysed$date, "tzone") <- "GMT"
+      CryptoNewsAnalysed$date <- CryptoNewsAnalysed$date + 3600
+
       df.news <-
         df %>% left_join(CryptoNewsAnalysed, by = "date")
 
@@ -66,6 +69,9 @@ crypto <-
           CryptoNewsAnalysed[c("time", cryptocurrency)]
 
         colnames(CryptoNewsAnalysed) <- c("date", "news")
+        attr(CryptoNewsAnalysed$date, "tzone") <- "GMT"
+        CryptoNewsAnalysed$date <- CryptoNewsAnalysed$date + 3600
+
         df.news <-
           df %>% left_join(CryptoNewsAnalysed, by = "date")
 

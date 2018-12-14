@@ -20,6 +20,7 @@ globalVariables(
     "crp_dic",
     "CryptoNewsOccurencesDays",
     "CryptoNewsOccurencesHour",
-    "CryptonewsData"
+    "CryptonewsData",
+    "news"
   )
 )
