@@ -21,7 +21,7 @@ To collect the historical data of the Cryptocurrencies, we are using the API Cry
 
 - General info about all the existing cryptocurrencies
 
-- Latest 50 news about cryptocurrencies that have been publicated before a chosen time.
+- Data about all the news articles that were released about cryptocurrencies from 2013 to now.
 
 # Functions
 
@@ -135,7 +135,7 @@ exampleCryptoBTCUSDHour <- crypto("hour", "01/08/2018", "01/10/2018", "BTC", "US
 tail(exampleCryptoBTCUSDHour)
 ```
 
-### Function to get the correlation
+### Correlation
 
 Function to get the correlation of two cryptocurrencies between two chosen dates.
 
@@ -246,7 +246,85 @@ or equivalently,
 pocket_log[nrow(pocket_log),2]
 ```
 
-#Shiny App
+# News
+
+The cryptocompare API gives us access to data about all the news articles that were released about cryptocurrencies from 2013 to now. Our goal is to interpret this news to see the evolution of the popularity of different cryptocurrencies during time.
+
+For this, we want to analyse how many time any cryptocurrency was mentioned in the news, each hour and each day.
+
+First we will try to download all the articles, their text body and the time each one was released. This first dataframe is huge and we will only keep the analysed ones.
+
+### Getting the whole CryptoNewsData set 
+
+This dataset stores all the news articles about cryptocurrencies released from 2013-08-01 18:30:00 that CryptoCompare API proposes
+
+Here we download the dataset and store it to a csv file with dl_data_news function
+```{r}
+#data <- dl_data_from(as.numeric(as.POSIXct("2013-11-25 1:00:00 EST")))
+#write.csv(data, "CryptonewsData.csv")
+```
+
+### Analysing the dataset for plots data
+
+We load the dataset from csv, as the dl_data_from function would take too much time, so we run it only once.
+
+Here the time is modelised by the timestamp, which is a very useful and can be converted into a date and precise hour: https://www.unixtimestamp.com/
+
+```{r}
+head(CryptonewsData)
+```
+
+We want to analyse the occurences of the 20 most capitalized cryptocurrencies; so we download the list of these cryptocurrencies symbols using get_imp_Crp function.
+
+Here we removed some the 20 currencies that were not available in our crypto dictionary.
+
+```{r}
+#interesting_crypto <- get_imp_Crp()
+#interesting_crypto
+```
+
+This vector of cryptocurrencies symbol will be translated into the name of each cryptocurrency by the function CryptoCurrencyName.
+This function uses the data from a "Radiovisual" github: "https://github.com/crypti/cryptocurrencies/blob/master/cryptocurrencies.json)"
+
+```{r}
+CryptoCurrencyName("BTC")
+CryptoCurrencyName("ETH")
+```
+
+By using CryptoCurrencyName dictionary, the function analyse_crps_news will verify if the each cryptocurrency was mentioned in those news articles.
+
+We analyse the news dataset based on the cryptocurencies we chose: we have a dataframe showing which articles mentions each cryptocurrency.
+
+```{r}
+# interesting_crypto <- c("BTC", "ETH", "LTC", "XMR", "USDT")
+# result <- analyse_crps_news(CryptonewsData[seq(1,500,1),], interesting_crypto)
+# head(result)
+```
+
+Finally; we sum the occurences of each cryptocurrency per hour and per day for plotting; using the functions resTspToHour and resTspToDay.
+
+We then write them in csvs file to create the two datasets CryptoNewsOccurencesHour and CryptoNewsOccurencesDay
+
+```{r}
+# finalHour <- resTspToHour(result, interesting_crypto)
+# write.csv(finalHour, "CryptoNewsOccurencesHour.csv")
+# head(finalHour)
+# finalDay <- resTspToDay(result, interesting_crypto)
+# write.csv(finalDay, "CryptoNewsOccurencesDays.csv")
+# head(finalDay)
+```
+
+To make sure these datasets stay up to date for live usage, we can update them with the following functions: This updates the raw data in the folder raw-data.
+
+```{r}
+# updateHourNewsData()
+```
+
+```{r}
+# updateDayNewsData()
+```
+
+# Shiny App
 
 The user interface was designed and implemented as a shiny application. The navbar page layout was preferred, such that a dedicated page would be provided for each main functionality of the package. The current version of the package includes the tabs below:
   
@@ -350,3 +428,4 @@ knitr::include_graphics("trading_4.png")
 knitr::include_graphics("trading_5.png")
 ```  
   
+
