@@ -4,7 +4,7 @@
 #' @importFrom utils read.csv write.csv
 
 updateHourNewsData <- function() {
-  dataHour <- CryptoNewsOccurencesHour[-1]
+  dataHour <- CryptoNewsOccurencesHour
   dataHour$time <- as.POSIXct(dataHour$time)
   newestHour <- max(dataHour$time)
   Newdata <- dl_data_from(as.numeric(newestHour))

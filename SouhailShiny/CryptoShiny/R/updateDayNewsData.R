@@ -5,7 +5,7 @@
 #' @importFrom utils read.csv write.csv
 
 updateDayNewsData <- function() {
-  dataDay <- CryptoNewsOccurencesDays[-1]
+  dataDay <- CryptoNewsOccurencesDays
   dataDay$time <- as.POSIXct(dataDay$time)
   newestDay <- max(dataDay$time)
   print(glue("News by day Data loaded, number of entries: ", length(dataDay$time), ", last entry from: ", newestDay, sep=""))

@@ -34,15 +34,13 @@ crypto <-
       df <-
         day_hour(timeframe = "day", firstDay, lastDay, cryptocurrency, comparison)
 
-      CryptoNewsAnalysedDays <-
-        read_csv("../../data-raw/CryptoNewsAnalysedDays.csv")
-      CryptoNewsAnalysedDays <-
-        CryptoNewsAnalysedDays[c("time", cryptocurrency)]
+      CryptoNewsAnalysed <-
+        CryptoNewsOccurencesDays[c("time", cryptocurrency)]
 
-      colnames(CryptoNewsAnalysedDays) <- c("date", "news")
+      colnames(CryptoNewsAnalysed) <- c("date", "news")
 
       df.news <-
-        df %>% left_join(CryptoNewsAnalysedDays, by = "date")
+        df %>% left_join(CryptoNewsAnalysed, by = "date")
 
       df.transformed <-
         weekly_monthly_transformation(df.news, timeframe)
@@ -59,17 +57,17 @@ crypto <-
         day_hour(timeframe, firstDay, lastDay, cryptocurrency, comparison)
 
       if (timeframe %in% c("Day", "day")) {
-        CryptoNewsAnalysedDays <-
-          read_csv("../../data-raw/CryptoNewsAnalysedDays.csv") }
-      else {CryptoNewsAnalysedDays <-
-        read_csv("../../data-raw/CryptoNewsAnalysedHour.csv")}
+        CryptoNewsAnalysed <-
+          CryptoNewsOccurencesDays }
+      else {CryptoNewsAnalysed <-
+        CryptoNewsOccurencesHour}
 
-        CryptoNewsAnalysedDays <-
-          CryptoNewsAnalysedDays[c("time", cryptocurrency)]
+        CryptoNewsAnalysed <-
+          CryptoNewsAnalysed[c("time", cryptocurrency)]
 
-        colnames(CryptoNewsAnalysedDays) <- c("date", "news")
+        colnames(CryptoNewsAnalysed) <- c("date", "news")
         df.news <-
-          df %>% left_join(CryptoNewsAnalysedDays, by = "date")
+          df %>% left_join(CryptoNewsAnalysed, by = "date")
 
         df.averaged <-
           averages(df.news, n_MA, n_quick_MACD, n_slow_MACD, n_signal_MACD)

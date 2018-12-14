@@ -80,20 +80,4 @@ updateHourNewsData()
 updateDayNewsData()
 ```
 
-```{r}
-df1 <- day_hour("day", "01/02/2018", "01/12/2018", "BTC", "USD")
-df1
-```
-
-
-```{r}
-library(readr)
-library(tidyverse)
-CryptoNewsAnalysedDays <- read_csv("../data-raw/CryptoNewsAnalysedDays.csv")
-CryptoNewsAnalysedDays <- CryptoNewsAnalysedDays[c("time", "BTC")]
-colnames(CryptoNewsAnalysedDays) <- c("date", "news")
-
-CryptoNewsAnalysedDays
-df1 %>% left_join(CryptoNewsAnalysedDays, by = "date") 
-```
 
