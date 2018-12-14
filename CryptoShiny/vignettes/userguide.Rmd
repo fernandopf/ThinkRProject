@@ -87,8 +87,8 @@ head(exampleTsp,1)
 This function has been designed to count hourly how many times the inputted crpytocurrency has been mentioned in the news during the last week.
 
 ```{r}
-countNewsLastWeekBitcoin <- lastweek_news_counter("BTC")
-head(countNewsLastWeekBitcoin,1)
+#countNewsLastWeekBitcoin <- lastweek_news_counter("BTC")
+#head(countNewsLastWeekBitcoin,1)
 ```
 
 

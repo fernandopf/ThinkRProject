@@ -24,3 +24,8 @@ Function to calculate the correlation between two crypto currencies
 \details{
 This function is designed to calcualte the correlation between two cryptocurrencies in a given timeframe
 }
+\examples{
+\dontrun{
+crypto_correlation("01/09/2018", "01/10/2018", "BTC", "ETH")
+}
+}

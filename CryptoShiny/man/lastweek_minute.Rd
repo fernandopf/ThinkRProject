@@ -25,3 +25,8 @@ Function to get the information from the cryptocompare API per minute
 \details{
 This function has been designed to get a dataframe from the cryptocompare API with the highest, lowest, open and close price from the cryptocurrency chosen in minute of the last week.
 }
+\examples{
+\dontrun{
+lastweek_minute("BTC", "USD")
+}
+}

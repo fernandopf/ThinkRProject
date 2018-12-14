@@ -18,3 +18,6 @@ Function to count the inputted crpytocurrency being mentioned hourly in last wee
 \details{
 This function is designed for giving a delayed indicator for the given crypto in the most recent week
 }
+\examples{
+countNewsLastWeekBitcoin <- lastweek_news_counter("BTC")
+}

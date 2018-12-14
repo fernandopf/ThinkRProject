@@ -2,9 +2,13 @@
 #'
 #' @param CryptoSymbol a character representing the cryptocurrency Symbol
 #' @return Character representing the name of the wanted cryptocurrency
-#' @export CryptoCurrencyName
 #' @importFrom utils read.csv2 data
 #' @importFrom dplyr filter
+#' @example
+#' \dontrun{
+#' CryptoCurrencyName("BTC")
+#' }
+#' @export CryptoCurrencyName
 
 CryptoCurrencyName <- function(CryptoSymbol) {
   Symb <- crp_dic %>%

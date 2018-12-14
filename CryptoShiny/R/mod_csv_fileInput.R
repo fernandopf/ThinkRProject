@@ -23,6 +23,7 @@
 #' @param label fileInput label
 #'
 #' @examples
+#'
 #' library(shiny)
 #' library(DT)
 #' if (interactive()){

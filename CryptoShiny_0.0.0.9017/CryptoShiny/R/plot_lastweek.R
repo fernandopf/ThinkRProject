@@ -17,6 +17,7 @@
 #' @seealso \code{\link{candle_plot}}
 #'
 #' @examples
+#' plot_lastweek(cryptocurrency = "EOS", comparison = "GBP", grouping = "6 hours")
 #' \dontrun{
 #'
 #' Call with default values:

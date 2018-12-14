@@ -29,6 +29,8 @@ usethis::use_package("glue")
 usethis::use_package("shinythemes")
 usethis::use_package("shinydashboard")
 usethis::use_package("magrittr")
+usethis::use_package("readr")
+
 
 
 #Documents

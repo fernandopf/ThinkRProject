@@ -1,8 +1,8 @@
 Package: CryptoShiny
-Title: What the Package Does (one line, title case)
-Version: 0.0.0.9016
+Title: Package for Analysing Cryptocurrency Data and Trading Simulation
+Version: 0.0.0.9017
 Authors@R: person("Jiahao", "Wang", email = "jiahao.wang@polytechnique.edu", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Description: This is a project for the subject "R for Data Science" of the MSc Data Science for Business, taught jointly by Hec Paris and École Polytechnique..
 Depends: R (>= 3.5.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -31,5 +31,6 @@ Imports:
     DT,
     shinythemes,
     shinydashboard,
-    data.table
+    data.table,
+    readr
 RoxygenNote: 6.1.1

@@ -15,11 +15,13 @@
 #' @param n_signal_MACD signal MACD
 #'
 #' @return dataframe with the time, highest price, lowest price, open price, close price and financial indicators in the chosen timeframe
-#' @export
 #' @importFrom readr read_csv
 #' @importFrom dplyr left_join
 #'
 #' @examples
+#' crypto("hour", "01/08/2018", "01/10/2018", "BTC", "USD",5 , 26, 12, 9)
+#' @export
+
 crypto <-
   function(timeframe,
            firstDay,

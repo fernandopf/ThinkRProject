@@ -7,13 +7,15 @@
 #' @param timeframe month or day
 #'
 #' @return dataframe with the time, highest price, lowest price, open price, close price in the chosen timeframe
-#' @export weekly_monthly_transformation
 #' @return dataframe transformed
 #' @importFrom dplyr group_by summarise
 #' @importFrom lubridate floor_date
 #' @importFrom utils head tail
 #'
 #' @examples
+#' weekly_monthly_transformation(bitcoinVsDollarExampleDay, "week")
+#' @export weekly_monthly_transformation
+
 weekly_monthly_transformation <- function(df, timeframe){
   if (timeframe %in% c("Month", "month")){
     df.transformed <- df %>%

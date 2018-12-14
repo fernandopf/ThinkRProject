@@ -7,8 +7,11 @@
 #' @export
 #'
 #' @return a number indicates the net value
-#'
-#' @examples
+#' @example
+#' \dontrun{
+#' pocket <- c("USD" = 1000, "BTC" = 10, "ETH" = 5)
+#' NetUSDValue(pocket = pocket, day = "11/12/2018" )
+#' }
 NetUSDValue <- function(pocket, day = "11/12/2018") {
   netusdvalue <- 0
   for (name in names(pocket)) {

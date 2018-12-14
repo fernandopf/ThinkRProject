@@ -1,5 +1,3 @@
-
-
 #' day_hour
 #'
 #' Function to get the information from the cryptocompare API
@@ -19,6 +17,7 @@
 
 #' @return dataframe with all the information required
 #' @examples
+#' exampleSameCryptocurrency <- day_hour("day", "01/12/2017", "01/08/2018", "BTC", "BTC")
 #' @export
 day_hour <-
   function(timeframe,

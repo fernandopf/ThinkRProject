@@ -22,3 +22,6 @@ Function to transform the timeframe of the dataset
 \details{
 This function has been designed to transform  the timeframe (monthly or weekly) of the dataset returned by the function day_hour.R
 }
+\examples{
+weekly_monthly_transformation(bitcoinVsDollarExampleDay, "week")
+}

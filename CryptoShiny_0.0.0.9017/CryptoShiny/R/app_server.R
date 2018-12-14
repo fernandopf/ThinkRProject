@@ -4,14 +4,12 @@
 #' @param output output
 #' @param session session
 #'
-#' @return
 #' @export app_server
 #' @import shiny
 #' @importFrom plotly renderPlotly
 #' @importFrom DT renderDT
 #' @importFrom glue glue
 #'
-#' @examples
 app_server <- function(input, output, session){
   n <- 24
   # Anything that calls autoInvalidate will automatically invalidate

@@ -16,6 +16,11 @@ globalVariables(
     "fullName",
     "time",
     "MACD",
-    "NetUSDvalue"
+    "NetUSDvalue",
+    "crp_dic",
+    "CryptoNewsOccurencesDays",
+    "CryptoNewsOccurencesHour",
+    "CryptonewsData",
+    "news"
   )
 )

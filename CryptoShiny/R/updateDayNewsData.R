@@ -1,14 +1,27 @@
 #' Updates the dataset CryptoNewsAnalysedDays with the latest news from CryptoCompare API
-#' @export updateDayNewsData
+#'
 #' @importFrom dplyr filter mutate
 #' @importFrom glue glue
 #' @importFrom utils read.csv write.csv
+#' @example
+#' \dontrun{
+#' updateDayNewsData()
+#' }
+#' @export
 
 updateDayNewsData <- function() {
   dataDay <- CryptoNewsOccurencesDays
   dataDay$time <- as.POSIXct(dataDay$time)
   newestDay <- max(dataDay$time)
-  print(glue("News by day Data loaded, number of entries: ", length(dataDay$time), ", last entry from: ", newestDay, sep=""))
+  print(
+    glue(
+      "News by day Data loaded, number of entries: ",
+      length(dataDay$time),
+      ", last entry from: ",
+      newestDay,
+      sep = ""
+    )
+  )
   Newdata <- dl_data_from(as.numeric(newestDay))
   if (length(Newdata$time) != 0) {
     Newdata <- Newdata %>%
@@ -21,7 +34,15 @@ updateDayNewsData <- function() {
         filter(time != min(time)) #avoid duplicates
       total <- rbind(finalDay, dataDay)
       CryptoNewsOccurencesDays <- total
-      print(glue("Dataset updated: number of entries: ", length(total$time), ", last entry from: ", max(total$time), sep=""))
+      print(
+        glue(
+          "Dataset updated: number of entries: ",
+          length(total$time),
+          ", last entry from: ",
+          max(total$time),
+          sep = ""
+        )
+      )
     }
   }
   if (length(Newdata$time) == 0) {

@@ -1,7 +1,9 @@
 #' Updates the dataset CryptoNewsAnalysedHours with the latest news from CryptoCompare API
-#' @export updateHourNewsData
 #' @importFrom dplyr filter mutate
 #' @importFrom utils read.csv write.csv
+#' @example
+#' updateHourNewsData()
+#' @export
 
 updateHourNewsData <- function() {
   dataHour <- CryptoNewsOccurencesHour

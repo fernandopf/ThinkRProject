@@ -3,7 +3,6 @@
 #' @param resTsp dataframe of news article timestamp and boolean occurences of currencySymbols
 #' @param CrpSymbols a vector of characters representing the cryptocurrencys Symbols to be analysed
 #' @return Dataframe with a counter column per cryptosymbol, representing the number of times each cryptocurrency was cited in the news articles diring the hour
-#' @export resTspToHour
 #' @importFrom dplyr filter mutate
 #' @importFrom lubridate round_date
 

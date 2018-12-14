@@ -26,3 +26,6 @@ Function to  add financial indicators into the dataset
 \details{
 This function has been designed to add financial indicators into the dataset (Moving average and MACD)
 }
+\examples{
+averages(bitcoinVsDollarExampleWeek, 5, 26, 12, 9)
+}

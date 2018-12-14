@@ -16,6 +16,7 @@
 #' @export
 #'
 #' @examples
+#' getLastPriceMultiplePlatforms("BTC")
 getLastPriceMultiplePlatforms <- function(cryptocurrency){
 
   # First we need to check that we have internet connection (needed to call the API)

@@ -24,8 +24,8 @@ transaction(pocket_log, unit = 1, buycurrency = "BTC",
 a updated pocket_log
 }
 \description{
-this function is used to make a transaction
+This function is used to make a transaction
 }
 \details{
-this function takes the input pocket_log and record the transaction in the new row of the pocket_log
+This function takes the input pocket_log and record the transaction in the new row of the pocket_log
 }

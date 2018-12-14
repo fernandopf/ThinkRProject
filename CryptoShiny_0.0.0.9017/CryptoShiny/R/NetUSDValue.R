@@ -8,7 +8,6 @@
 #'
 #' @return a number indicates the net value
 #'
-#' @examples
 NetUSDValue <- function(pocket, day = "11/12/2018") {
   netusdvalue <- 0
   for (name in names(pocket)) {

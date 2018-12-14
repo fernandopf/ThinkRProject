@@ -11,6 +11,10 @@
 #' @importFrom plotly plot_ly layout add_lines subplot
 #' @importFrom rlang enquo
 #' @importFrom stats as.formula
+#' @example
+#' \dontrun{
+#' candle_plot(data= exampleCryptoBTCUSDHour, MACD)
+#'}
 #' @export
 #'
 #' @examples

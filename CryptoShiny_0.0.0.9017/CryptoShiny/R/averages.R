@@ -12,9 +12,9 @@
 #'
 #' @return dataframe with the financial indicators added
 #' @importFrom pracma movavg
-#' @export
-#'
 #' @examples
+#' averages(bitcoinVsDollarExampleWeek, 5, 26, 12, 9)
+#' @export
 averages <- function(df, n_MA, n_quick_MACD, n_slow_MACD, n_signal_MACD){
   out <- df %>%
     mutate(daily_average = (high +low)/2)  %>%

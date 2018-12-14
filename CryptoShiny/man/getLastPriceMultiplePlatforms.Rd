@@ -15,3 +15,8 @@ dataframe with prices on six platforms
 \description{
 Function used to get the last price of the imputted crypto on the 6 biggest platforms
 }
+\examples{
+\dontrun{
+getLastPriceMultiplePlatforms("BTC")
+}
+}

@@ -26,6 +26,7 @@ mod_csv_file(input, output, session, stringsAsFactors = TRUE)
 A shiny Module that imports csv file
 }
 \examples{
+
 library(shiny)
 library(DT)
 if (interactive()){

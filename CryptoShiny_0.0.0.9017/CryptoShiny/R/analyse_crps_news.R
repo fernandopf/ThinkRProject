@@ -7,7 +7,9 @@
 #' @importFrom dplyr filter mutate
 #'
 analyse_crps_news <- function(databodynews, currencySymbols) {
-  dataNews <- data.frame(sapply(currencySymbols, FUN = analyse_crp_news, databodynews=databodynews))
+  dataNews <-
+    data.frame(sapply(currencySymbols, FUN = analyse_crp_news, databodynews =
+                        databodynews))
   names(dataNews) <- currencySymbols
   dataNews <- cbind(databodynews[1], dataNews)
   dataNews$time <- as.numeric(dataNews$time)

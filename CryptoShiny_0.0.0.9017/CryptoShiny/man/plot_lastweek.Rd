@@ -22,6 +22,7 @@ A plot exhibitng the trend of the exchange rate between the currencies chosen is
 Supplementary, the number of citations referring to the chosen currency from selected news sources is shown.
 }
 \examples{
+plot_lastweek(cryptocurrency = "EOS", comparison = "GBP", grouping = "6 hours")
 \dontrun{
 
 Call with default values:

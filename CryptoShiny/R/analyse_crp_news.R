@@ -10,6 +10,8 @@
 analyse_crp_news <- function(databodynews, currencySymbol) {
   currencyName <- CryptoCurrencyName(currencySymbol)
   analysed <- databodynews %>%
-    mutate(!!currencySymbol :=  ifelse(grepl(as.character(currencyName),body,ignore.case = TRUE), 1, 0) )
-  return(analysed)
+    mutate(!!currencySymbol :=  ifelse(grepl(
+      as.character(currencyName), body, ignore.case = TRUE
+    ), 1, 0))
+  return(analysed[3])
 }

@@ -1,8 +1,8 @@
 #' transaction
 #'
-#' this function is used to make a transaction
+#' This function is used to make a transaction
 #'
-#' this function takes the input pocket_log and record the transaction in the new row of the pocket_log
+#' This function takes the input pocket_log and record the transaction in the new row of the pocket_log
 #'
 #' @param pocket_log a data.frame which have the columns date and different currencies
 #' @param unit how many unit of buycurrency you want to buy
@@ -12,10 +12,9 @@
 #' @param allowNegative whether or not allow negative units happend
 #'
 #' @return a updated pocket_log
+#'
 #' @export
-#'
-#'
-#' @examples
+
 transaction <-
   function(pocket_log,
            unit = 1,

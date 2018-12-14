@@ -29,3 +29,6 @@ Function to get the information from the cryptocompare API
 \details{
 This function has been designed to get a dataframe from the cryptocurrency API with the highest, lowest, open and close price from the cryptocurrency chosen in hour or day timeframe.
 }
+\examples{
+exampleSameCryptocurrency <- day_hour("day", "01/12/2017", "01/08/2018", "BTC", "BTC")
+}

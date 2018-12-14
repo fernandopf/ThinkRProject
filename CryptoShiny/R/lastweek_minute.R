@@ -14,10 +14,14 @@
 #' @importFrom jsonlite fromJSON
 #' @importFrom glue glue
 #' @importFrom curl has_internet
-#' @export
 #'
 #' @return dataframe with all the information required
 #' @examples
+#' \dontrun{
+#' lastweek_minute("BTC", "USD")
+#' }
+#' @export
+
 lastweek_minute <-
   function(cryptocurrency = "BTC",
            comparison = "USD",

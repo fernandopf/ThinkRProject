@@ -10,8 +10,13 @@
 #' @importFrom lubridate floor_date
 #' @importFrom jsonlite fromJSON
 #' @importFrom curl has_internet
-#' @export
 #' @examples
+#' \dontrun{
+#' countNewsLastWeekBitcoin <- lastweek_news_counter("BTC")
+#' }
+#' @export
+
+
 lastweek_news_counter <- function(cryptocurrency = "BTC") {
   # First we need to check that we have internet connection (needed to call the API)
   if (!has_internet()) {

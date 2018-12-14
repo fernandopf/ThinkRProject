@@ -12,9 +12,11 @@
 #' @return correlation between crypto A and crypto B
 #' @importFrom dplyr select mutate
 #' @importFrom stats cor
-#' @export
 #'
 #' @examples
+#' crypto_correlation("01/09/2018", "01/10/2018", "BTC", "ETH")
+#'
+#' @export
 crypto_correlation <- function(firstDay, lastDay, cryptoA, cryptoB) {
   cryptoAData <- day_hour("hour", firstDay, lastDay, cryptoA) %>%
     mutate(avg = (high + low) / 2) %>%

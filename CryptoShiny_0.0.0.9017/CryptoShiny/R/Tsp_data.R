@@ -6,11 +6,12 @@
 #' @param timestp date
 #'
 #' @return the dataframe retrieve from the api
-#' @export Tsp_data
 #' @importFrom glue glue
 #' @importFrom curl has_internet
 #' @importFrom jsonlite fromJSON
-#'
+#' @example
+#' Tsp_data(round(as.numeric(as.POSIXct(Sys.time(), format="%Y/%m/%d"))))
+#' @export
 
 Tsp_data <- function(timestp) {
 

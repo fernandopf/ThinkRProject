@@ -35,3 +35,6 @@ Master function
 \details{
 Master function which aggragate all the function of our package
 }
+\examples{
+crypto("hour", "01/08/2018", "01/10/2018", "BTC", "USD",5 , 26, 12, 9)
+}

@@ -4,10 +4,10 @@
 \alias{Tsp_data}
 \title{Tsp_data}
 \usage{
-Tsp_data(timestamp)
+Tsp_data(timestp)
 }
 \arguments{
-\item{timestamp}{date}
+\item{timestp}{date}
 }
 \value{
 the dataframe retrieve from the api
