@@ -1,6 +1,6 @@
 Package: CryptoShiny
 Title: Package for Analysing Cryptocurrency Data and Trading Simulation
-Version: 0.0.0.9017
+Version: 0.0.0.9018
 Authors@R: person("Jiahao", "Wang", email = "jiahao.wang@polytechnique.edu", role = c("aut", "cre"))
 Description: This is a project for the subject "R for Data Science" of the MSc Data Science for Business, taught jointly by Hec Paris and École Polytechnique..
 Depends: R (>= 3.5.0)
