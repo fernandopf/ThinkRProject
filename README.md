@@ -2,14 +2,14 @@
 
 ### Introduction
 
-This is a project for the subject "R for Data Science" of the MSc Data Science for Business, taught jointly by Hec Paris and École Polytechnique.
+This is a project for the subject "R for Data Science" of the MSc Data Science for Business, taught jointly by HEC Paris and École Polytechnique.
 
-It consisted on the analysis of the cryptocurrency market:
+It consists of the analysis of the cryptocurrency market:
 
-* First, we receiver the data from the API Cryptocompare and we perform an analysis from different cryptocurrencies.
-* Second, we analyse the impact the news have on the cryptocurrencies price.
-* Third, we compare the price of the cryptocurrencies on the 6 biggest platform.
-* Finally, we have implemented a trading simulator.
+* First, we received the data from the API Cryptocompare and we performed an analysis from different cryptocurrencies.
+* Second, we analysed the impact the news have on the cryptocurrencies price.
+* Third, we compared the price of the cryptocurrencies on the 6 biggest platform.
+* Finally, we had implemented a trading simulator.
 
 ### Prerequisites
 
@@ -31,7 +31,7 @@ install("<directory of the package>", dependencies = TRUE)
 After installing the dependecies and downloading the packages, you can install it by running the following command.
 
 ```
-install.package(<directory of the package>")
+install.packages(<directory of the package>")
 
 ```
 
@@ -142,79 +142,11 @@ bitcoinVsDollaFinancialIndicators <- averages(bitcoinVsDollarExampleWeek, 5, 26,
 ### Functions to analyse and retrieve the news data
 
 
-The cryptocompare API gives us access to data about all the news articles that were released about cryptocurrencies from 2013 to now. Our goal is to interpret this news to see the evolution of the popularity of different cryptocurrencies during time.
-
-For this, we want to analyse how many time any cryptocurrency was mentioned in the news, each hour and each day.
-
-First we will try to download all the articles, their text body and the time each one was released. This first dataframe is huge and we will only keep the analysed ones.
-
-### Getting the whole CryptoNewsData set 
-
-This dataset stores all the news articles about cryptocurrencies released from 2013-08-01 18:30:00 that CryptoCompare API proposes
-
-Here we download the dataset and store it to a csv file with dl_data_news function
-```{r}
-#data <- dl_data_from(as.numeric(as.POSIXct("2013-11-25 1:00:00 EST")))
-#write.csv(data, "CryptonewsData.csv")
+To update the news data, you can use the following two functions.
 ```
-
-### Analysing the dataset for plots data
-
-We load the dataset from csv, as the dl_data_from function would take too much time, so we run it only once.
-
-Here the time is modelised by the timestamp, which is a very useful and can be converted into a date and precise hour: https://www.unixtimestamp.com/
-
-```{r}
-head(CryptonewsData)
-```
-
-We want to analyse the occurences of the 20 most capitalized cryptocurrencies; so we download the list of these cryptocurrencies symbols using get_imp_Crp function.
-
-Here we removed some the 20 currencies that were not available in our crypto dictionary.
-
-```{r}
-#interesting_crypto <- get_imp_Crp()
-#interesting_crypto
-```
-
-This vector of cryptocurrencies symbol will be translated into the name of each cryptocurrency by the function CryptoCurrencyName.
-This function uses the data from a "Radiovisual" github: "https://github.com/crypti/cryptocurrencies/blob/master/cryptocurrencies.json)"
-
-```{r}
-CryptoCurrencyName("BTC")
-CryptoCurrencyName("ETH")
-```
-
-By using CryptoCurrencyName dictionary, the function analyse_crps_news will verify if the each cryptocurrency was mentioned in those news articles.
-
-We analyse the news dataset based on the cryptocurencies we chose: we have a dataframe showing which articles mentions each cryptocurrency.
-
-```{r}
-# interesting_crypto <- c("BTC", "ETH", "LTC", "XMR", "USDT")
-# result <- analyse_crps_news(CryptonewsData[seq(1,500,1),], interesting_crypto)
-# head(result)
-```
-
-Finally; we sum the occurences of each cryptocurrency per hour and per day for plotting; using the functions resTspToHour and resTspToDay.
-
-We then write them in csvs file to create the two datasets CryptoNewsOccurencesHour and CryptoNewsOccurencesDay
-
-```{r}
-# finalHour <- resTspToHour(result, interesting_crypto)
-# write.csv(finalHour, "CryptoNewsOccurencesHour.csv")
-# head(finalHour)
-# finalDay <- resTspToDay(result, interesting_crypto)
-# write.csv(finalDay, "CryptoNewsOccurencesDays.csv")
-# head(finalDay)
-```
-
-To make sure these datasets stay up to date for live usage, we can update them with the following functions: This updates the raw data in the folder raw-data.
-
-```{r}
 # updateHourNewsData()
 ```
-
-```{r}
+```
 # updateDayNewsData()
 ```
 

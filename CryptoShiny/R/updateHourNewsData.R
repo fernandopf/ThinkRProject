@@ -1,6 +1,7 @@
 #' Updates the dataset CryptoNewsAnalysedHours with the latest news from CryptoCompare API
 #' @importFrom dplyr filter mutate
 #' @importFrom utils read.csv write.csv
+#' @return updated dataframe
 #' @example
 #' \dontrun{
 #' updateHourNewsData()
@@ -29,4 +30,5 @@ updateHourNewsData <- function() {
   if (length(Newdata$time) == 0) {
     print("Already up to date")
   }
+  return(CryptoNewsOccurencesHour)
 }

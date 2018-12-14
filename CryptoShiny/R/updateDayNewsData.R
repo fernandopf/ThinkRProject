@@ -1,5 +1,6 @@
 #' Updates the dataset CryptoNewsAnalysedDays with the latest news from CryptoCompare API
 #'
+#' @return updated dataframe
 #' @importFrom dplyr filter mutate
 #' @importFrom glue glue
 #' @importFrom utils read.csv write.csv
@@ -48,4 +49,5 @@ updateDayNewsData <- function() {
   if (length(Newdata$time) == 0) {
     print("Already up to date")
   }
+  return(CryptoNewsOccurencesDays)
 }

@@ -6,6 +6,9 @@
 \usage{
 updateHourNewsData()
 }
+\value{
+updated dataframe
+}
 \description{
 Updates the dataset CryptoNewsAnalysedHours with the latest news from CryptoCompare API
 }

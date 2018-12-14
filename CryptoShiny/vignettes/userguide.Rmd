@@ -87,8 +87,8 @@ head(exampleTsp,1)
 This function has been designed to count hourly how many times the inputted crpytocurrency has been mentioned in the news during the last week.
 
 ```{r}
-#countNewsLastWeekBitcoin <- lastweek_news_counter("BTC")
-#head(countNewsLastWeekBitcoin,1)
+countNewsLastWeekBitcoin <- lastweek_news_counter("BTC")
+head(countNewsLastWeekBitcoin,1)
 ```
 
 
@@ -97,7 +97,6 @@ This function has been designed to count hourly how many times the inputted crpy
 This function has been designed to change the timeframe hour or day into month or week. It takes as input the dataset that return the function day_hour and return one dataset with the timeframe changed.
 
 ```{r}
-bitcoinVsDollarExampleDay
 CryptoNewsAnalysed <-CryptoNewsOccurencesDays[c("time", "BTC")]
 colnames(CryptoNewsAnalysed) <- c("date", "news")
 attr(CryptoNewsAnalysed$date, "tzone") <- "GMT"

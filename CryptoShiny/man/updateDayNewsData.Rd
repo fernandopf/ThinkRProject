@@ -6,6 +6,9 @@
 \usage{
 updateDayNewsData()
 }
+\value{
+updated dataframe
+}
 \description{
 Updates the dataset CryptoNewsAnalysedDays with the latest news from CryptoCompare API
 }
