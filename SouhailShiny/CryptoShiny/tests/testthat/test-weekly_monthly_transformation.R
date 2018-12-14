@@ -6,7 +6,7 @@ test_that("Number of point dataset:", {
 
   # Get the dataset from the function day_hour
   datasetToTransform <- day_hour("hour", firstDay, lastDay, "BTC", "ETH")
-
+  datasetToTransform$news <- rep(1,length(datasetToTransform$date))
   datasetTotestMonth <- weekly_monthly_transformation(datasetToTransform, "Month" )
   datasetTotestWeek <- weekly_monthly_transformation(datasetToTransform, "Week" )
 
@@ -28,6 +28,7 @@ test_that("Type of elements dataset:", {
 
   # Get the dataset from the function day_hour
   datasetToTransform <- day_hour("hour", firstDay, lastDay, "BTC", "ETH")
+  datasetToTransform$news <- rep(1,length(datasetToTransform$date))
   datasetTotestMonth <- weekly_monthly_transformation(datasetToTransform, "Month" )
 
   expect_is(datasetTotestMonth$date, "POSIXct")
