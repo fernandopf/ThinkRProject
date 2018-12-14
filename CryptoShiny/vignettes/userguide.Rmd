@@ -97,6 +97,15 @@ head(countNewsLastWeekBitcoin,1)
 This function has been designed to change the timeframe hour or day into month or week. It takes as input the dataset that return the function day_hour and return one dataset with the timeframe changed.
 
 ```{r}
+bitcoinVsDollarExampleDay
+CryptoNewsAnalysed <-CryptoNewsOccurencesDays[c("time", "BTC")]
+colnames(CryptoNewsAnalysed) <- c("date", "news")
+attr(CryptoNewsAnalysed$date, "tzone") <- "GMT"
+CryptoNewsAnalysed$date <- CryptoNewsAnalysed$date + 3600
+bitcoinVsDollarExampleDay <-bitcoinVsDollarExampleDay %>% dplyr::left_join(CryptoNewsAnalysed, by = "date")
+#------------------------To put the news columns inside the dataframe--------------------
+
+
 bitcoinVsDollarExampleWeek <- weekly_monthly_transformation(bitcoinVsDollarExampleDay, "week")
 head(bitcoinVsDollarExampleWeek)
 ```

@@ -1,11 +1,19 @@
 firstDay <- "01/08/2017"
 lastDay <- "01/02/2018"
 
+
 test_that("Number of point dataset:", {
   skip_if_not(curl::has_internet(), message = "no internet")
 
   # Get the dataset from the function day_hour
-  datasetToTransform <- day_hour("hour", firstDay, lastDay, "BTC", "ETH")
+  df <- day_hour("hour", firstDay, lastDay, "BTC", "ETH")
+  CryptoNewsAnalysed <-CryptoNewsOccurencesDays[c("time", "BTC")]
+  colnames(CryptoNewsAnalysed) <- c("date", "news")
+  attr(CryptoNewsAnalysed$date, "tzone") <- "GMT"
+  CryptoNewsAnalysed$date <- CryptoNewsAnalysed$date + 3600
+  datasetToTransform <-df %>% dplyr::left_join(CryptoNewsAnalysed, by = "date")
+
+
 
   datasetTotestMonth <- weekly_monthly_transformation(datasetToTransform, "Month" )
   datasetTotestWeek <- weekly_monthly_transformation(datasetToTransform, "Week" )
@@ -27,7 +35,14 @@ test_that("Type of elements dataset:", {
   skip_if_not(curl::has_internet(), message = "no internet")
 
   # Get the dataset from the function day_hour
-  datasetToTransform <- day_hour("hour", firstDay, lastDay, "BTC", "ETH")
+
+  df <- day_hour("hour", firstDay, lastDay, "BTC", "ETH")
+  CryptoNewsAnalysed <-CryptoNewsOccurencesDays[c("time", "BTC")]
+  colnames(CryptoNewsAnalysed) <- c("date", "news")
+  attr(CryptoNewsAnalysed$date, "tzone") <- "GMT"
+  CryptoNewsAnalysed$date <- CryptoNewsAnalysed$date + 3600
+  datasetToTransform <-df %>% dplyr::left_join(CryptoNewsAnalysed, by = "date")
+
   datasetTotestMonth <- weekly_monthly_transformation(datasetToTransform, "Month" )
 
   expect_is(datasetTotestMonth$date, "POSIXct")
